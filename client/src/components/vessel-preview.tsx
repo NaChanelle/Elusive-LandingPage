@@ -53,9 +53,12 @@ export default function VesselPreview() {
             "We don't just tell stories. We activate portals. Some will spark your memory. Others will awaken your mission. 
             All of them will leave you changed. The Cultural Codes Chronicles await your theories..."
           </p>
-          <div className="inline-block bg-neo-gold text-deep-charcoal px-6 py-2 rounded-full font-semibold">
+          <a 
+            href="/vessel" 
+            className="inline-block bg-neo-gold text-deep-charcoal px-6 py-2 rounded-full font-semibold hover:bg-neo-gold/90 transition-all transform hover:scale-105"
+          >
             VESSEL LAUNCHING SOON
-          </div>
+          </a>
         </div>
       </div>
     </section>

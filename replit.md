@@ -88,6 +88,29 @@ The companion mobile app will include:
 - **Mobile-responsive**: Afro-Futuristic aesthetic with Inter font
 - **Real-time Features**: Live clue drops and community engagement
 
+## Elusive Ecosystem Structure
+
+The landing page now supports the full Elusive ecosystem with clear pathways:
+
+### Main Landing Page (/)
+- **Hero Section**: Brand introduction with Cultural Curator-Detective voice
+- **Vessel Preview**: App teaser with link to dedicated Vessel page
+- **Event Teaser**: August 2025 event information (future: links to ticketing)
+- **User Journey**: Experience-based pathways for different user types
+- **Access Tiers**: Event pricing (Detective $15, Curator $35, Accomplice $75)
+- **Name Reservation**: Email collection with investigation interests
+
+### Vessel Teaser Page (/vessel)
+- **App Vision**: Detailed feature breakdown and development roadmap
+- **Original Story Studio Focus**: Creator toolkit for authentic mystery narratives
+- **Early Access Registration**: Pre-launch email collection with feature feedback
+- **Community Input**: User research for Story Studio development
+
+### Future Expansion Planned
+- **Ticketing Integration**: Event access and RSVP platform
+- **Connect Ecosystem**: Serialized video production and community involvement
+- **Creator Portal**: Extended tools for story development and publication
+
 ## Changelog
 
 ```
@@ -98,7 +121,15 @@ Changelog:
   * August 2025 event teaser section
   * Three-tier access system (Detective $15, Curator $35, Accomplice $75)
   * Name reservation form with investigation interests and role selection
+  * User journey roadmap for different experience levels
   * Mysterious investigative theme with Afro-Futuristic color palette
+  
+- June 16, 2025. Vessel teaser page and ecosystem expansion
+  * Dedicated Vessel app teaser page with detailed feature breakdown
+  * Original Story Studio focus for creator feedback collection
+  * Early access registration system for Vessel pre-launch
+  * Routing structure to support ecosystem expansion
+  * Strategic foundation for ticketing and connect integration
 ```
 
 ## User Preferences
