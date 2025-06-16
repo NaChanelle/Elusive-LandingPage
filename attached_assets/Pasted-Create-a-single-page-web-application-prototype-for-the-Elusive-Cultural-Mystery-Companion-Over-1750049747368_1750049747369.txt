@@ -1,0 +1,71 @@
+Create a single-page web application prototype for the 'Elusive Cultural Mystery Companion'.
+
+**Overall Aesthetic:**
+The app should embody an Afro-Futuristic aesthetic with a sophisticated, mysterious, and engaging feel. Use a color palette of deep charcoals/blacks (#1a1a2e, #16213e), rich golds (#ffd700), and accents of deep red (#e74c3c). All elements should have rounded corners. Use the 'Inter' font (or a similar modern sans-serif if 'Inter' isn't directly supported). Ensure the design is fully mobile-responsive.
+
+**Page Structure & Components:**
+
+1.  **Header:**
+    * At the top, display the app title: "Elusive: Cultural Mystery Companion".
+    * Below it, display a dynamic "Current Event Title" (e.g., "Murder at the Harlem Renaissance Gala"). This title should be easily changeable via a simple JavaScript variable.
+
+**--- UX Improvement 1: Optional, Value-Driven Welcome Overlay ---**
+2.  **Initial Welcome Overlay (Appears on First Visit):**
+    * Design a visually appealing, semi-transparent overlay that covers the entire screen on the user's *first* visit (use a simple browser flag or local storage check for this prototype, if possible, otherwise make it always appear for demo purposes).
+    * **Content:**
+        * A prominent title: "Welcome, Code-Breaker!"
+        * A short, punchy description: "Unravel the mystery. Connect with fellow enthusiasts."
+        * Clearly point to (visually or with text indicating direction) where the "Investigation Log" (clues) and "Community Theories" (discussion) sections are located below.
+        * A large, central button: "Begin Investigation" or "Enter App".
+    * **Behavior:** Clicking the button dismisses the overlay. The overlay should not reappear on subsequent page loads within the same browser session (for prototype, this can be a simple `display: none` after click).
+
+**--- End UX Improvement 1 ---**
+
+3.  **Event Hub Section (Pre-Event Immersion):**
+    * **Event Details Card:** A prominent, visually appealing card displaying the current event's brief synopsis, date, and location. Use placeholder text for the synopsis.
+    * **Character Roster:** A scrollable, grid-like section listing key characters. Each character should be represented by a card containing:
+        * A placeholder image (e.g., `https://placehold.co/100x100/333/fff?text=Character`).
+        * Their name (e.g., "Melody Waters").
+        * A very short descriptor (e.g., "Jazz Singer," "Club Owner").
+        * Provide at least 4-6 placeholder character entries.
+    * **Curated Cultural Lore:** A collapsible or expandable section titled "Cultural Insights" or "Lore Vault." Inside, provide:
+        * Rich text content (use detailed placeholder text for now, explaining a fictional cultural reference relevant to the event).
+        * At least 2-3 placeholder images (e.g., `https://placehold.co/300x200/555/fff?text=Cultural+Art`).
+    * **--- UX Improvement 3a: Enhanced Visual Cues for Collapsible ---**
+        * Ensure the toggle button/icon for this collapsible section (e.g., an arrow or chevron icon) visually indicates its state (pointing down when collapsed, up when expanded) and *animates smoothly* when clicked.
+
+4.  **"Clue Drop" Feed Section:**
+    * **Title:** "Investigation Log" or "Clue Feed".
+    * **--- UX Improvement 3b: Enhanced Visual Cues for New Clues ---**
+        * Add a small, subtle visual indicator (e.g., a "NEW" badge or a slight glow) next to the "Investigation Log" title if there's a new, unread clue (for prototype, this can be a hardcoded CSS class that you can manually toggle to demonstrate, or always present if easier for the tool).
+    * **Content Display:** A chronological, scrollable list of "clues" or "narrative updates."
+    * **Each Clue Item:** Should be a distinct card or block containing:
+        * A timestamp (e.g., "7:15 PM - Act I").
+        * A bold title (e.g., "Torn Sheet Music Found").
+        * A text description (e.g., "A crumpled piece of sheet music was discovered near the victim. Read the text below: [letter text]").
+        * Optionally, a small placeholder image if it's a visual clue (e.g., `https://placehold.co/150x100/666/fff?text=Clue`).
+    * **Data Source:** For this prototype, the clue data should be a hardcoded JavaScript array of objects. Populate it with at least 3-5 example clues to demonstrate the feed.
+
+5.  **"Theory & Observation" Board Section:**
+    * **Title:** "Community Theories" or "Observations".
+    * **--- UX Improvement 2: Contextual Call to Action for "Joining" ---**
+        * **Initial State:** When the page loads, the comment `textarea` and "Username" input field should be *hidden*. Instead, display a single, prominent "Share Your Theory" or "Join the Discussion" button.
+        * **Interaction:** When the "Share Your Theory" button is clicked:
+            * The `textarea` and "Username" input field become visible.
+            * A small, friendly prompt text appears above them: "Join the investigation! Enter a username to post your theory and connect with other code-breakers."
+            * The "Share Your Theory" button changes to a "Submit Theory" button.
+    * **Comment Display:** A scrollable list of submitted theories. Each theory should display the username (or "Anonymous" if the username field is left blank) and the text of the theory.
+    * **--- UX Improvement 3c: Enhanced Visual Cues for Submission ---**
+        * After a user clicks "Submit Theory," and the new comment appears in the list, provide a brief visual confirmation. This could be:
+            * A subtle, satisfying fade-in animation for the newly added comment.
+            * The input fields clearing automatically after submission.
+            * (No complex success messages are needed beyond this subtle visual feedback).
+    * **Data Handling:** For this prototype, store submitted comments in a simple JavaScript array in the browser's memory. Comments will *not* be persistent across page refreshes or sessions. This is purely for demonstrating the input and display functionality. Do NOT implement a complex backend database for this.
+
+**Technical Considerations for the AI Tool:**
+* Generate clean, semantic HTML5 structure.
+* Use Tailwind CSS for all styling. Load Tailwind via CDN: `<script src="https://cdn.tailwindcss.com"></script>`.
+* Use vanilla JavaScript for any dynamic elements (e.g., overlay show/hide, collapsible sections, showing/hiding comment inputs, adding comments to the array).
+* Ensure the design is fully responsive and looks good on mobile devices.
+* **Crucially, do NOT implement any complex backend database integrations, user authentication systems, or payment processing.** All data for event details, characters, lore, clues, and comments should be managed as simple JavaScript arrays or hardcoded placeholder content within the HTML/JS for this prototype.
+* The primary goal is a visually appealing and interactive *frontend* experience that demonstrates the core companion concept with a simplified onboarding flow.

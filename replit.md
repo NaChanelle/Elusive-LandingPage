@@ -78,11 +78,27 @@ The application is configured for Replit deployment with:
 
 The deployment uses Replit's autoscale target for automatic scaling based on demand.
 
+## Vessel App Features (Future Implementation)
+
+The companion mobile app will include:
+- **Event Hub**: Event details, character rosters, cultural lore vault
+- **Investigation Log**: Chronological clue feed with timestamps and visual clues
+- **Community Theories**: Interactive discussion board for sharing theories
+- **Welcome Overlay**: First-time user onboarding experience
+- **Mobile-responsive**: Afro-Futuristic aesthetic with Inter font
+- **Real-time Features**: Live clue drops and community engagement
+
 ## Changelog
 
 ```
 Changelog:
-- June 16, 2025. Initial setup
+- June 16, 2025. Initial setup and comprehensive landing page completion
+  * Hero section with animated elements and brand introduction
+  * Vessel app preview with Theory Boards, Cultural Code Library, Story Studios
+  * August 2025 event teaser section
+  * Three-tier access system (Detective $15, Curator $35, Accomplice $75)
+  * Name reservation form with investigation interests and role selection
+  * Mysterious investigative theme with Afro-Futuristic color palette
 ```
 
 ## User Preferences
