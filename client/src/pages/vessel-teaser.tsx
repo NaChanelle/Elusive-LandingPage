@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { Link, ArrowLeft, Eye, Users, Zap, BookOpen, Lightbulb, MessageSquare } from "lucide-react";
+import { useLocation } from "wouter";
+import { ArrowLeft, Eye, Users, Zap, BookOpen, Lightbulb, MessageSquare } from "lucide-react";
+import FeatureCarousel from "@/components/feature-carousel";
 import { insertReservationSchema, type InsertReservation } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -16,6 +18,7 @@ import { Button } from "@/components/ui/button";
 export default function VesselTeaser() {
   const { toast } = useToast();
   const [isSuccess, setIsSuccess] = useState(false);
+  const [, setLocation] = useLocation();
 
   const form = useForm<InsertReservation>({
     resolver: zodResolver(insertReservationSchema.extend({
@@ -156,9 +159,12 @@ export default function VesselTeaser() {
                 >
                   Reserve Another Access
                 </Button>
-                <Link href="/" className="inline-flex items-center justify-center px-6 py-3 border-2 border-social-red text-social-red rounded-lg font-semibold hover:bg-social-red hover:text-white transition-all">
+                <button 
+                  onClick={() => setLocation("/")}
+                  className="inline-flex items-center justify-center px-6 py-3 border-2 border-social-red text-social-red rounded-lg font-semibold hover:bg-social-red hover:text-white transition-all"
+                >
                   Return to Investigation Portal
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -173,10 +179,13 @@ export default function VesselTeaser() {
       <div className="border-b border-neo-gold/20 bg-black-mirror">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-3 text-neo-gold hover:text-neo-gold/80 transition-colors">
+            <button 
+              onClick={() => setLocation("/")}
+              className="flex items-center space-x-3 text-neo-gold hover:text-neo-gold/80 transition-colors"
+            >
               <ArrowLeft size={20} />
               <span>Back to Investigation Portal</span>
-            </Link>
+            </button>
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 border-2 border-neo-gold rotate-45 flex items-center justify-center">
                 <div className="w-2 h-2 bg-neo-gold rounded-full"></div>
@@ -223,35 +232,12 @@ export default function VesselTeaser() {
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">The Vision</h2>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto">
-              An immersive platform where mystery meets meaning, connecting cultural investigators 
+              An immersive platform where mystery meets meaning, connecting investigators 
               across space, time, and ancestry through collaborative storytelling.
             </p>
           </div>
           
-          <div className="grid lg:grid-cols-3 gap-8">
-            {vesselFeatures.map((feature, index) => {
-              const Icon = feature.icon;
-              return (
-                <div key={index} className="bg-medium-charcoal border border-neo-gold/30 rounded-xl p-8 hover:border-neo-gold/60 transition-all duration-300">
-                  <div className="text-neo-gold text-4xl mb-6">
-                    <Icon size={48} />
-                  </div>
-                  <h3 className="text-2xl font-serif font-semibold mb-4">{feature.title}</h3>
-                  <p className="text-gray-300 leading-relaxed mb-6">
-                    {feature.description}
-                  </p>
-                  <ul className="space-y-2">
-                    {feature.details.map((detail, detailIndex) => (
-                      <li key={detailIndex} className="text-sm text-gray-400 flex items-center">
-                        <div className="w-1 h-1 bg-neo-gold rounded-full mr-3"></div>
-                        {detail}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              );
-            })}
-          </div>
+          <FeatureCarousel features={vesselFeatures} />
         </div>
       </section>
 
