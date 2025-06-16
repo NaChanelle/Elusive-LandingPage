@@ -18,6 +18,7 @@ export default function Navigation() {
   const navItems = [
     { href: "vessel", label: "Vessel" },
     { href: "events", label: "Events" },
+    { href: "journey", label: "Your Journey" },
     { href: "tiers", label: "Access Tiers" },
     { href: "reserve", label: "Reserve" },
   ];

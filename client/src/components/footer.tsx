@@ -9,10 +9,10 @@ export default function Footer() {
   ];
 
   const connectLinks = [
-    { href: "#", label: "About Us" },
-    { href: "#", label: "Contact" },
-    { href: "#", label: "Join the Team" },
-    { href: "#", label: "Community" },
+    { href: "about", label: "About Us" },
+    { href: "contact", label: "Contact" },
+    { href: "team", label: "Join the Team" },
+    { href: "community", label: "Community" },
   ];
 
   return (
