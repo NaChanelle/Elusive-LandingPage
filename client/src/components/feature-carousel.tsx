@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 interface FeatureCarouselProps {
   features: {
-    icon: React.ComponentType<{ size?: number }>;
+    icon: React.ComponentType<any>;
     title: string;
     description: string;
     details: string[];
