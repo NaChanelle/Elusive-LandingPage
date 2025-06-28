@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, User, LogIn } from "lucide-react";
+import { Link } from "wouter";
 import { scrollToSection } from "@/lib/utils";
 
 export default function Navigation() {
@@ -38,24 +39,44 @@ export default function Navigation() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 border-2 border-neo-gold rotate-45 flex items-center justify-center">
-              <div className="w-2 h-2 bg-neo-gold rounded-full"></div>
+          <Link href="/">
+            <div className="flex items-center space-x-2 cursor-pointer">
+              <div className="w-8 h-8 border-2 border-neo-gold rotate-45 flex items-center justify-center">
+                <div className="w-2 h-2 bg-neo-gold rounded-full"></div>
+              </div>
+              <span className="text-xl font-serif font-semibold">Investigation Portal</span>
             </div>
-            <span className="text-xl font-serif font-semibold">Investigation Portal</span>
-          </div>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <button
-                key={item.href}
-                onClick={() => handleNavClick(item.href)}
-                className="text-gray-300 hover:text-neo-gold transition-colors duration-200"
-              >
-                {item.label}
-              </button>
-            ))}
+          <div className="hidden md:flex items-center space-x-8">
+            <div className="flex space-x-8">
+              {navItems.map((item) => (
+                <button
+                  key={item.href}
+                  onClick={() => handleNavClick(item.href)}
+                  className="text-gray-300 hover:text-neo-gold transition-colors duration-200"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+            
+            {/* Auth Buttons */}
+            <div className="flex items-center space-x-4 ml-6 border-l border-gray-700 pl-6">
+              <Link href="/signin">
+                <button className="flex items-center text-gray-300 hover:text-neo-gold px-3 py-2 text-sm font-medium transition-colors">
+                  <LogIn size={16} className="mr-2" />
+                  Sign In
+                </button>
+              </Link>
+              <Link href="/signup">
+                <button className="bg-gradient-to-r from-neo-gold to-social-red text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-neo-gold/90 hover:to-social-red/90 transition-all">
+                  <User size={16} className="mr-2 inline" />
+                  Join Investigation
+                </button>
+              </Link>
+            </div>
           </div>
 
           {/* Mobile Menu Button */}
@@ -80,6 +101,28 @@ export default function Navigation() {
                   {item.label}
                 </button>
               ))}
+              
+              {/* Mobile Auth Links */}
+              <div className="border-t border-gray-700 pt-3 mt-3">
+                <Link href="/signin">
+                  <button 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center text-gray-300 hover:text-neo-gold block px-3 py-2 text-base font-medium w-full text-left transition-colors"
+                  >
+                    <LogIn size={16} className="mr-2" />
+                    Sign In
+                  </button>
+                </Link>
+                <Link href="/signup">
+                  <button 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="bg-gradient-to-r from-neo-gold to-social-red text-white px-4 py-2 rounded-lg text-sm font-medium w-full mt-2 transition-all"
+                  >
+                    <User size={16} className="mr-2 inline" />
+                    Join Investigation
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
         )}
