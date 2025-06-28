@@ -248,6 +248,9 @@ export default function ComingSoon() {
               <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
                 Contact Us
               </a>
+              <Link href="/signup" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
+                Back to Main Site
+              </Link>
               <Link href="/privacy" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">Privacy</Link>
               <Link href="/terms" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">Terms</Link>
               <div className="flex space-x-4">

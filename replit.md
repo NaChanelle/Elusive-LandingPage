@@ -93,13 +93,15 @@ The companion mobile app will include:
 The ecosystem now features a complete user journey from first visit to community engagement:
 
 ### Coming Soon Landing Page (/)
-- **Primary Entry Point**: First visitor experience with prominent above-the-fold messaging
-- **Pulsing Elusive Logo**: Square animated branding with Neo-Gold accent
-- **Countdown Timer**: Live countdown to August 2025 event launch
-- **Feature Preview**: Three-card showcase of Exclusive Events, Creator Community, and Vessel App
-- **Email Signup**: Early access registration with immediate platform exploration CTA
-- **Navigation**: Clear pathways to Platform, Vessel App, and Sign In
-- **Social Media Integration**: Instagram, Twitter, and LinkedIn connections
+- **Primary Entry Point**: Simplified first visitor experience focused on lead capture
+- **Event-Focused Hero**: "The Investigation Begins" messaging highlighting August 2025 launch
+- **Pulsing Elusive Logo**: Square animated branding matching website design
+- **Countdown Timer**: Live countdown to August 2025 event creating urgency
+- **Minimal Navigation**: Header logo only, no competing navigation elements
+- **Primary CTA**: "Reserve Your Investigation" email signup form
+- **FAQ Section**: Three key questions about event timing, Vessel app, and pricing
+- **Protected Access**: Platform and Vessel app require signup to access
+- **Footer**: Copyright, contact, privacy/terms, and subtle social media links
 
 ### Main Platform (/platform)
 - **Hero Section**: Brand introduction with Cultural Curator-Detective voice
