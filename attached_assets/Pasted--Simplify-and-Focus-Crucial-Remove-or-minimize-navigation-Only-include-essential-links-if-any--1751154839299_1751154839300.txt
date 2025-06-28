@@ -1,0 +1,38 @@
+ Simplify and Focus (Crucial!)
+Remove or minimize navigation: Only include essential links, if any (e.g., a very subtle "back to main site" link in the footer).
+
+Prioritize the "Next Event" section: This should be your hero section.
+
+Headline: Make it bold and clear, directly about the event/launch.
+
+Value Proposition: Keep it concise and exciting.
+
+Hero Visual: As discussed, something more dynamic for the event.
+
+Countdown Timer: Place this prominently under the headline if the date is set.
+
+Primary CTA: A single, clear button like "Get Event Updates" or "Notify Me When Tickets Drop." This button should immediately scroll the user down to your simplified email signup form.
+
+2. Streamline the Lead Capture Form
+Minimal Fields: For the initial signup, aim for Email Address only, or at most, Name and Email Address.
+
+Clear Value: Reiterate the benefit of signing up right above the form (e.g., "Don't miss out on [Event Name] updates!").
+
+"Reserve Your Investigation" as the Form Title: This is a good phrase.
+
+3. Re-think the Product Tiers/Journeys
+Post-Conversion Content: The "Choose Your Journey" and detailed "Pricing Tiers" information is likely too much for an initial landing page. This content is fantastic, but it should live on your main website or be revealed after someone has signed up for updates.
+
+Brief Tease (Optional): You could have a very brief, high-level section below the signup form that says "What's coming next?" and very briefly mentions "Vessel" and "Cultural Codes Chronicles" as the larger ecosystem, but without going into deep detail or pricing. This helps set expectations for what they're signing up for updates about.
+
+4. Integrate Social Media (Subtly)
+Place social media links in the footer of the page. Don't make them a prominent feature in the main content area, as they can draw users away.
+
+5. Consider the FAQ/Contact Section
+A brief FAQ with 2-3 common questions (e.g., "When is the event?", "What is the Vessel app?") could be placed at the bottom, perhaps as accordions.
+
+A simple "Contact Us" link (e.g., mailto:your@email.com) in the footer.
+
+By simplifying the page and clearly defining its single primary goal (lead capture for the event/product launch), you'll dramatically improve your conversion rate. The content you have is great, but it needs to be strategically presented across your full web presence, not all on one initial landing page.
+
+What are your thoughts on focusing the landing page primarily on lead capture and moving the detailed product/tier information to a separate, deeper part of your website?

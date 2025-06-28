@@ -9,6 +9,7 @@ import VesselTeaser from "@/pages/vessel-teaser";
 import SignUp from "@/pages/signup";
 import SignIn from "@/pages/signin";
 import NotFound from "@/pages/not-found";
+import ProtectedRoute from "@/components/protected-route";
 
 function Router() {
   return (
