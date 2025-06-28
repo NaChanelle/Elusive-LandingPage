@@ -1,21 +1,37 @@
 import { Eye, Users, Zap } from "lucide-react";
+import SwipeableCards from "./swipeable-cards";
 
 export default function VesselPreview() {
-  const features = [
+  const vesselFeatures = [
     {
-      icon: Eye,
       title: "Theory Boards",
-      description: "Decode cultural patterns. Connect narrative threads. Uncover hidden truths through collaborative investigation."
+      description: "Decode cultural patterns. Connect narrative threads. Uncover hidden truths through collaborative investigation.",
+      features: [
+        "Visual clue mapping",
+        "Community collaboration", 
+        "Real-time theory sharing",
+        "Expert commentary"
+      ]
     },
     {
-      icon: Users,
       title: "Cultural Code Library",
-      description: "Archive of references. Bridge between generations. Repository of meaning and cultural significance."
+      description: "Archive of references. Bridge between generations. Repository of meaning and cultural significance.",
+      features: [
+        "Cultural pattern analysis",
+        "Historical connections",
+        "Expert interpretations", 
+        "Multimedia resources"
+      ]
     },
     {
-      icon: Zap,
       title: "Story Studios",
-      description: "Create. Collaborate. Transform strangers into accomplices in truth through shared narrative experience."
+      description: "Create. Collaborate. Transform strangers into accomplices in truth through shared narrative experience.",
+      features: [
+        "Collaborative storytelling",
+        "Creator partnerships",
+        "Original content development",
+        "Community feedback loops"
+      ]
     }
   ];
 
@@ -29,21 +45,8 @@ export default function VesselPreview() {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {features.map((feature, index) => {
-            const Icon = feature.icon;
-            return (
-              <div key={index} className="bg-medium-charcoal border border-neo-gold/30 rounded-xl p-8 hover:border-neo-gold/60 transition-all duration-300 hover:transform hover:scale-105">
-                <div className="text-neo-gold text-4xl mb-6">
-                  <Icon size={48} />
-                </div>
-                <h3 className="text-2xl font-serif font-semibold mb-4">{feature.title}</h3>
-                <p className="text-gray-300 leading-relaxed">
-                  {feature.description}
-                </p>
-              </div>
-            );
-          })}
+        <div className="mb-16">
+          <SwipeableCards cards={vesselFeatures} />
         </div>
         
         {/* Coming Soon Preview */}

@@ -1,171 +1,224 @@
-import { Check } from "lucide-react";
+import { useState } from "react";
+import { Check, Crown, Eye, Users, ChevronRight, Infinity, Headphones, Moon, Music, Gift, FileText, Radio } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { scrollToSection } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 
 export default function AccessTiers() {
-  const eventTiers = [
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
+
+  const tiers = [
     {
       name: "Detective",
-      price: 15,
-      priceType: "event",
-      description: "Basic investigation access",
+      description: "Essential tools for curious investigators",
+      monthlyPrice: 12.99,
+      yearlyPrice: 129.99,
+      originalYearlyPrice: 155.88,
       features: [
-        "Event attendance",
-        "Basic theory boards access",
-        "Community discussion"
+        { icon: Eye, text: "Monthly mystery case access" },
+        { icon: FileText, text: "Basic theory boards access" },
+        { icon: Users, text: "Community discussion access" },
+        { icon: Gift, text: "Event updates & announcements" },
+        { icon: Radio, text: "Mobile app early access" }
       ],
-      buttonText: "Reserve Detective Access",
-      buttonStyle: "border-2 border-neo-gold text-neo-gold hover:bg-neo-gold hover:text-deep-charcoal",
-      recommended: false
+      icon: Eye,
+      popular: false,
+      freeTrialDays: 7
     },
     {
       name: "Curator",
-      price: 35,
-      priceType: "event",
-      description: "Enhanced investigation tools",
+      description: "Enhanced immersive investigation experience",
+      monthlyPrice: 14.99,
+      yearlyPrice: 59.99,
+      originalYearlyPrice: 179.88,
       features: [
-        "All Detective features",
-        "Cultural code library access",
-        "Story studios participation",
-        "Exclusive content previews"
+        { icon: Infinity, text: "Unlimited mystery access for 7 days" },
+        { icon: Headphones, text: "50,000+ minutes of audio content designed for deep investigation" },
+        { icon: Moon, text: "Exclusive mystery stories narrated by familiar voices" },
+        { icon: Music, text: "Custom investigation soundscapes & focus music" },
+        { icon: Gift, text: "Premium cultural artifacts & expert analysis" },
+        { icon: Radio, text: "Live expert commentary & story sessions" }
       ],
-      buttonText: "Reserve Curator Access",
-      buttonStyle: "bg-neo-gold text-deep-charcoal hover:bg-neo-gold/90",
-      recommended: true
+      icon: Users,
+      popular: true,
+      freeTrialDays: 7,
+      badge: "7-Day Free Trial"
     },
     {
       name: "Accomplice",
-      price: 75,
-      priceType: "event",
-      description: "Full investigation partnership",
+      description: "All-in-one premium investigation toolkit",
+      monthlyPrice: 24.99,
+      yearlyPrice: 249.99,
+      originalYearlyPrice: 299.88,
       features: [
-        "All Curator features",
-        "Behind-the-scenes access",
-        "Co-creation opportunities",
-        "Vessel app early access"
+        { icon: Crown, text: "Access everything Elusive Origin has to offer" },
+        { icon: Gift, text: "Exclusive benefits like premium articles & subscriber-only content" },
+        { icon: Radio, text: "Audio app with narrated investigations & exclusive shows" },
+        { icon: Users, text: "Direct creator collaboration & co-creation opportunities" },
+        { icon: Eye, text: "VIP live events and annual gathering access" },
+        { icon: FileText, text: "Personal investigation mentor & priority support" }
       ],
-      buttonText: "Reserve Accomplice Access",
-      buttonStyle: "bg-social-red text-white hover:bg-social-red/90",
-      recommended: false
-    }
-  ];
-
-  const appTiers = [
-    {
-      name: "Explorer Monthly",
-      price: 12,
-      priceType: "month",
-      features: [
-        "Theory boards access",
-        "Cultural code library",
-        "Community features"
-      ]
-    },
-    {
-      name: "Investigator Annual",
-      price: 120,
-      priceType: "year",
-      features: [
-        "All Explorer features",
-        "Story studios unlimited",
-        "Priority event access"
-      ]
+      icon: Crown,
+      popular: false,
+      freeTrialDays: 0,
+      promoText: "This subscription includes unlimited access to Theory Boards, Story Studios, and Cultural Code Library."
     }
   ];
 
   return (
-    <section id="tiers" className="py-20 bg-black-mirror">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="tiers" className="py-24 px-6 bg-gradient-to-br from-[#363636] via-gray-800 to-black">
+      <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Access Tiers</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            Your All-in-One Investigation Planner
+          </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Choose your level of investigation. Each tier unlocks deeper access to the cultural code library.
+            Unlock deeper access to our cultural mystery ecosystem with premium features designed for every level of investigation.
           </p>
-        </div>
-        
-        <div className="grid md:grid-cols-3 gap-8 mb-20">
-          {eventTiers.map((tier, index) => (
-            <div 
-              key={index} 
-              className={cn(
-                "bg-medium-charcoal rounded-xl p-8 relative",
-                tier.recommended 
-                  ? "border-2 border-neo-gold transform scale-105" 
-                  : tier.name === "Accomplice" 
-                    ? "border border-social-red" 
-                    : "border border-gray-600"
-              )}
-            >
-              {tier.recommended && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-neo-gold text-deep-charcoal px-6 py-2 rounded-full text-sm font-semibold">
-                  RECOMMENDED
-                </div>
-              )}
-              
-              <div className="text-center mb-8">
-                <h3 className="text-2xl font-serif font-semibold mb-2">{tier.name}</h3>
-                <div className={cn(
-                  "text-4xl font-bold mb-4",
-                  tier.name === "Accomplice" ? "text-social-red" : "text-neo-gold"
-                )}>
-                  ${tier.price}<span className="text-lg text-gray-400">/{tier.priceType}</span>
-                </div>
-                <p className="text-gray-300">{tier.description}</p>
-              </div>
-              
-              <ul className="space-y-4 mb-8">
-                {tier.features.map((feature, featureIndex) => (
-                  <li key={featureIndex} className="flex items-center">
-                    <Check 
-                      className={cn(
-                        "mr-3",
-                        tier.name === "Accomplice" ? "text-social-red" : "text-neo-gold"
-                      )} 
-                      size={20} 
-                    />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              <button 
-                onClick={() => scrollToSection('reserve')}
-                className={cn(
-                  "w-full py-3 rounded-lg font-semibold transition-all",
-                  tier.buttonStyle
-                )}
+          <p className="text-gray-400 mt-4">You may cancel at any time.</p>
+          
+          {/* Billing Toggle */}
+          <div className="flex justify-center mt-8">
+            <div className="bg-gray-700 p-1 rounded-lg flex">
+              <button
+                onClick={() => setBillingCycle("monthly")}
+                className={`px-6 py-2 rounded-md text-sm font-medium transition-all ${
+                  billingCycle === "monthly"
+                    ? "bg-[#FFB90F] text-black"
+                    : "text-gray-300 hover:text-white"
+                }`}
               >
-                {tier.buttonText}
+                1 MONTH
+              </button>
+              <button
+                onClick={() => setBillingCycle("yearly")}
+                className={`px-6 py-2 rounded-md text-sm font-medium transition-all relative ${
+                  billingCycle === "yearly"
+                    ? "bg-[#FFB90F] text-black"
+                    : "text-gray-300 hover:text-white"
+                }`}
+              >
+                12 MONTHS
+                <Badge className="absolute -top-2 -right-2 bg-[#8B0000] text-white text-xs px-1">
+                  Popular
+                </Badge>
               </button>
             </div>
-          ))}
+          </div>
         </div>
-        
-        {/* App Subscription Tiers */}
-        <div className="mt-20">
-          <div className="text-center mb-12">
-            <h3 className="text-3xl font-serif font-semibold mb-4">Vessel App Subscriptions</h3>
-            <p className="text-lg text-gray-300">Ongoing access to the cultural investigation platform</p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-            {appTiers.map((tier, index) => (
-              <div key={index} className="bg-medium-charcoal border border-neo-gold rounded-xl p-8">
-                <h4 className="text-xl font-semibold mb-4">{tier.name}</h4>
-                <div className="text-3xl font-bold text-neo-gold mb-4">
-                  ${tier.price}<span className="text-lg text-gray-400">/{tier.priceType}</span>
-                </div>
-                <ul className="space-y-3 text-gray-300">
-                  {tier.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center">
-                      <Check className="text-neo-gold mr-3" size={20} />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+
+        <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {tiers.map((tier, index) => {
+            const Icon = tier.icon;
+            const price = billingCycle === "monthly" ? tier.monthlyPrice : tier.yearlyPrice;
+            const originalPrice = billingCycle === "yearly" ? tier.originalYearlyPrice : null;
+            const priceLabel = billingCycle === "monthly" ? "/mo" : "/yr.";
+            const savings = originalPrice ? Math.round(((originalPrice - price) / originalPrice) * 100) : 0;
+            
+            return (
+              <Card
+                key={tier.name}
+                className={`relative overflow-hidden transition-all duration-300 hover:scale-[1.02] ${
+                  tier.popular
+                    ? "border-[#FFB90F] border-2 bg-gradient-to-b from-blue-900/20 to-blue-800/20 backdrop-blur-sm"
+                    : "border-gray-700 bg-gradient-to-b from-gray-800/50 to-gray-900/50 backdrop-blur-sm"
+                } ${index === 0 ? 'md:transform md:scale-95' : ''} ${index === 2 ? 'md:transform md:scale-95' : ''}`}
+              >
+                {tier.badge && (
+                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2">
+                    <Badge className="bg-[#FFB90F] text-black font-semibold px-3 py-1 rounded-full">
+                      {tier.badge}
+                    </Badge>
+                  </div>
+                )}
+                
+                <CardHeader className="text-center pb-6 pt-8">
+                  <div className="mx-auto mb-4 p-3 rounded-2xl bg-gradient-to-br from-[#FFB90F] to-[#8B0000]">
+                    <Icon className="w-8 h-8 text-white" />
+                  </div>
+                  <CardTitle className="text-2xl font-bold text-white mb-2">
+                    {tier.name}
+                  </CardTitle>
+                  <CardDescription className="text-gray-400 text-sm px-2">
+                    {tier.description}
+                  </CardDescription>
+                  
+                  <div className="mt-6">
+                    {originalPrice && billingCycle === "yearly" && (
+                      <div className="text-gray-500 line-through text-lg">
+                        ${originalPrice}
+                      </div>
+                    )}
+                    <div className="flex items-baseline justify-center">
+                      <span className="text-3xl font-bold text-[#FFB90F]">
+                        ${price}
+                      </span>
+                      <span className="text-gray-400 ml-1 text-sm">{priceLabel}</span>
+                    </div>
+                    {savings > 0 && (
+                      <div className="text-green-400 text-sm mt-1">
+                        Save {savings}%
+                      </div>
+                    )}
+                  </div>
+                </CardHeader>
+                
+                <CardContent className="pt-0 px-6">
+                  <ul className="space-y-4 mb-8">
+                    {tier.features.map((feature, featureIndex) => {
+                      const FeatureIcon = feature.icon;
+                      return (
+                        <li key={featureIndex} className="flex items-start">
+                          <div className="mr-3 mt-0.5 p-1 rounded bg-[#FFB90F]/20">
+                            <FeatureIcon className="w-4 h-4 text-[#FFB90F]" />
+                          </div>
+                          <span className="text-gray-300 text-sm leading-relaxed">{feature.text}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                  
+                  {tier.promoText && (
+                    <div className="mb-4 p-3 bg-gray-800/50 rounded-lg border border-gray-700">
+                      <p className="text-xs text-gray-400 text-center">
+                        {tier.promoText}
+                      </p>
+                    </div>
+                  )}
+                  
+                  <Button
+                    onClick={() => scrollToSection('reserve')}
+                    className={`w-full h-12 font-semibold transition-all mb-4 ${
+                      tier.popular
+                        ? "bg-gradient-to-r from-[#FFB90F] to-[#8B0000] hover:from-[#E6A50E] hover:to-[#7A0000] text-white"
+                        : "bg-gray-700 hover:bg-gray-600 text-white border border-gray-600"
+                    }`}
+                  >
+                    {tier.freeTrialDays > 0 ? `Try Free & Subscribe` : `Subscribe Now`}
+                  </Button>
+                  
+                  {tier.freeTrialDays > 0 && (
+                    <div className="flex items-center justify-center text-green-400 text-sm">
+                      <Check className="w-4 h-4 mr-1" />
+                      No Payment Now!
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+
+        <div className="text-center mt-12 space-y-3">
+          <p className="text-gray-400 text-sm">
+            All subscriptions include automatic renewal terms
+          </p>
+          <p className="text-gray-500 text-xs max-w-2xl mx-auto">
+            If you subscribe via this app, payment will be automatically charged to your account upon confirmation of purchase. 
+            Subscriptions automatically renew unless cancelled at least 24 hours before the end of the current period.
+          </p>
         </div>
       </div>
     </section>
