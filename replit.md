@@ -90,21 +90,36 @@ The companion mobile app will include:
 
 ## Elusive Ecosystem Structure
 
-The landing page now supports the full Elusive ecosystem with clear pathways:
+The ecosystem now features a complete user journey from first visit to community engagement:
 
-### Main Landing Page (/)
+### Coming Soon Landing Page (/)
+- **Primary Entry Point**: First visitor experience with prominent above-the-fold messaging
+- **Pulsing Elusive Logo**: Square animated branding with Neo-Gold accent
+- **Countdown Timer**: Live countdown to August 2025 event launch
+- **Feature Preview**: Three-card showcase of Exclusive Events, Creator Community, and Vessel App
+- **Email Signup**: Early access registration with immediate platform exploration CTA
+- **Navigation**: Clear pathways to Platform, Vessel App, and Sign In
+- **Social Media Integration**: Instagram, Twitter, and LinkedIn connections
+
+### Main Platform (/platform)
 - **Hero Section**: Brand introduction with Cultural Curator-Detective voice
-- **Vessel Preview**: App teaser with link to dedicated Vessel page
-- **Event Teaser**: August 2025 event information (future: links to ticketing)
+- **Vessel Preview**: App teaser with swipe/drag mobile interaction
+- **Event Teaser**: August 2025 event information with access tiers
 - **User Journey**: Experience-based pathways for different user types
 - **Access Tiers**: Event pricing (Detective $15, Curator $35, Accomplice $75)
 - **Name Reservation**: Email collection with investigation interests
 
 ### Vessel Teaser Page (/vessel)
 - **App Vision**: Detailed feature breakdown and development roadmap
+- **Swipeable Cards**: Mobile swipe/drag functionality, desktop click interaction
 - **Original Story Studio Focus**: Creator toolkit for authentic mystery narratives
 - **Early Access Registration**: Pre-launch email collection with feature feedback
-- **Community Input**: User research for Story Studio development
+
+### Authentication System (/signup, /signin)
+- **Square Pulsing Logo**: Consistent branding across auth screens
+- **7-Day Free Trial**: Prominent trial offering with pricing toggles
+- **Mobile Responsive**: App-style pricing layout with savings percentages
+- **Password Visibility**: Toggle functionality for user convenience
 
 ### Future Expansion Planned
 - **Ticketing Integration**: Event access and RSVP platform
