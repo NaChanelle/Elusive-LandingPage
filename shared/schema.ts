@@ -5,6 +5,9 @@ import { z } from "zod";
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
+  email: text("email").notNull().unique(),
+  firstName: text("first_name").default(""),
+  lastName: text("last_name").default(""),
   password: text("password").notNull(),
 });
 
@@ -21,7 +24,14 @@ export const reservations = pgTable("reservations", {
 
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
+  email: true,
+  firstName: true,
+  lastName: true,
   password: true,
+}).extend({
+  email: z.string().email("Valid email is required"),
+  firstName: z.string().default(""),
+  lastName: z.string().default(""),
 });
 
 export const insertReservationSchema = createInsertSchema(reservations).omit({
