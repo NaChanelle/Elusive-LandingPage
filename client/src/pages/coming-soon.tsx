@@ -95,8 +95,8 @@ export default function ComingSoon() {
       <header className="relative z-50 p-6">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-[#FFB90F] rounded-lg flex items-center justify-center">
-              <div className="w-6 h-6 bg-black rounded-sm animate-pulse"></div>
+            <div className="w-8 h-8 border-2 border-neo-gold rotate-45 flex items-center justify-center">
+              <div className="w-2 h-2 bg-neo-gold rounded-full"></div>
             </div>
             <span className="text-xl font-bold tracking-wider">ELUSIVE</span>
           </div>
@@ -125,8 +125,9 @@ export default function ComingSoon() {
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
           {/* Pulsing Logo */}
           <div className="flex justify-center mb-8">
-            <div className="w-20 h-20 bg-[#FFB90F] rounded-lg flex items-center justify-center shadow-2xl shadow-[#FFB90F]/30 animate-pulse">
-              <div className="w-12 h-12 bg-black rounded-sm"></div>
+            <div className="w-20 h-20 border-4 border-neo-gold rotate-45 mx-auto mb-8 relative animate-pulse-glow">
+              <div className="absolute inset-3 bg-neo-gold/20 rotate-45"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-neo-gold rounded-full"></div>
             </div>
           </div>
 
@@ -302,6 +303,41 @@ export default function ComingSoon() {
                       Early Vessel app access
                     </li>
                   </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Why Join Section */}
+          <div className="mt-16 pt-8 border-t border-white/10 max-w-4xl mx-auto">
+            <h3 className="text-2xl font-bold mb-8 text-center">Why You'll Want to Join the Investigation</h3>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="flex items-start space-x-4">
+                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-2">Unravel hidden cultural narratives like never before</h4>
+                  <p className="text-gray-300 text-sm">Dive deep into authentic stories that challenge mainstream perspectives and reveal untold truths.</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-4">
+                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-2">Connect with a global community of curious minds</h4>
+                  <p className="text-gray-300 text-sm">Join investigators from around the world who share your passion for cultural discovery and meaningful dialogue.</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-4">
+                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-2">Experience immersive mysteries that challenge your perspective</h4>
+                  <p className="text-gray-300 text-sm">Engage in interactive experiences designed to expand your worldview and deepen cultural understanding.</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-4">
+                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-2">Shape the future of collaborative storytelling</h4>
+                  <p className="text-gray-300 text-sm">Become part of a revolutionary platform where your voice contributes to authentic cultural narratives.</p>
                 </div>
               </div>
             </div>

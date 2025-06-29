@@ -90,8 +90,8 @@ export default function Landing() {
       <header className="relative z-50 p-6">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-[#FFB90F] rounded-lg flex items-center justify-center">
-              <div className="w-6 h-6 bg-black rounded-sm animate-pulse"></div>
+            <div className="w-8 h-8 border-2 border-neo-gold rotate-45 flex items-center justify-center">
+              <div className="w-2 h-2 bg-neo-gold rounded-full"></div>
             </div>
             <span className="text-xl font-bold tracking-wider">ELUSIVE</span>
           </div>
@@ -115,8 +115,9 @@ export default function Landing() {
           <div className="space-y-8">
             {/* Pulsing Logo */}
             <div className="flex justify-center">
-              <div className="w-20 h-20 bg-[#FFB90F] rounded-lg flex items-center justify-center shadow-2xl shadow-[#FFB90F]/30 animate-pulse">
-                <div className="w-12 h-12 bg-black rounded-sm"></div>
+              <div className="w-20 h-20 border-4 border-neo-gold rotate-45 mx-auto mb-8 relative animate-pulse-glow">
+                <div className="absolute inset-3 bg-neo-gold/20 rotate-45"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-neo-gold rounded-full"></div>
               </div>
             </div>
 
