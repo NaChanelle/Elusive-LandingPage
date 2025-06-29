@@ -1,0 +1,83 @@
+Refine the 'Vessel' Web-App Preview Page.
+
+Overall Goal: Enhance user engagement, clarify product features, and optimize for early access sign-ups by incorporating dynamic visuals, a clear feature roadmap, and a streamlined user flow, all with a strong mobile-first approach.
+
+Key Adjustments Needed:
+
+Transform the 'MVP Preview Coming Soon' Section into a Dynamic App Visual Display:
+
+Action: Replace the current placeholder box labeled 'MVP Preview Coming Soon' with a prominent, visually rich area dedicated to showcasing the web-app.
+
+Content: This area should dynamically display high-fidelity mockups, screenshots, or short, silent GIF/video clips of the actual web-app UI.
+
+Interaction: If possible, implement a simple carousel or slider within this main visual display to cycle through a few key app interfaces (e.g., a Theory Board, the Story Studio interface). Prioritize clear visuals over text here.
+
+Implement a Tinder-Style Swipeable Feature Carousel:
+
+Action: Redesign the current text-heavy 'Theory Boards' and 'Original Story Studio' sections into a compact, mobile-first, swipeable horizontal carousel. This carousel will showcase the core features available in the initial launch/MVP.
+
+Interaction: The carousel must mimic a Tinder-like swipe motion, allowing users to easily move between feature 'cards' horizontally using touch gestures (and subtle navigation arrows/dots for desktop).
+
+Card Template: Each individual feature 'card' within the carousel should follow this structure:
+
+Dominant Visual: A high-resolution, relevant screenshot or GIF of that specific feature in action.
+
+Concise Title: A bold, clear title (e.g., 'Theory Boards', 'Original Story Studio').
+
+Single Benefit-Driven Sentence: A very brief, impactful sentence explaining the core value of that feature.
+
+Subtle Icon: The existing orange feature icons can be integrated subtly.
+
+Styling: Ensure cards are roughly 70-80% of the screen width on mobile for optimal swiping, with good spacing and clear readability of text over visuals.
+
+Placeholder Content: For now, generate 3-4 example feature cards using generic visuals and placeholder text for 'Theory Boards,' 'Original Story Studio,' and any other core initial launch features you anticipate.
+
+Introduce a Dedicated 'Future Features' / 'Roadmap' Section:
+
+Action: Create a new, distinct section on the page (placed after the initial core features carousel, but before the 'Secure Early Access' form) to communicate planned or upcoming features.
+
+Title: Use a clear title like 'What's Next for Vessel?' or 'Our Vision: The Vessel Roadmap.'
+
+Content: Briefly list or visually hint at features that are part of the long-term vision but not in the immediate MVP.
+
+Transparency: Use explicit language such as 'Planned for Future Release,' 'On Our Roadmap,' or 'Coming Soon.'
+
+Visual Cues: For these future features, use concept art, simpler icons, wireframes, or text-only descriptions to visually differentiate them from the initial launch features. Do not use polished screenshots for unbuilt features.
+
+Tie-in to Feedback: Include a brief sentence encouraging users to give feedback on these future features, linking to the 'Share Your Vision' box.
+
+Streamline the 'Secure Early Access' Form:
+
+Action: Adjust the existing 'Secure Early Access' form to prioritize simplicity for initial lead capture.
+
+Primary Fields: Make 'First Name,' 'Last Name,' and 'Email Address' the most prominent and required fields.
+
+Optional Fields: The 'Primary Interest in Vessel' dropdown and 'What features would you want in the Original Story Studio?' text area should be clearly marked as optional. They can be placed immediately below the primary fields or revealed via progressive disclosure (for now, keep them immediately below but clearly optional).
+
+Maintain: Keep the current strong CTA button 'Secure Early Access to Vessel' and the supporting value proposition text below it.
+
+Relocate and Enhance the 'Share Your Vision' Box:
+
+Action: Move the 'Share Your Vision' section to the very bottom of the page, just above the copyright/standard footer links.
+
+Visual Appeal: Redesign this section to be more visually engaging and distinct from the primary email signup form.
+
+Aesthetics: Give it a slightly different background color, subtle texture, or a clear bounding box to set it apart.
+
+Headline: Use a more inviting headline, e.g., 'Help Shape the Future of Story Studio' or 'Your Vision, Our Reality.'
+
+Prompt: Refine the text prompt for the input area, encouraging more open-ended feedback (e.g., 'What are your dream story creation tools or collaboration features for Vessel?').
+
+CTA: Add a clear 'Submit Feedback' button at the bottom of this redesigned box.
+
+Subtle Icon: Integrate a small, relevant icon (e.g., an idea lightbulb, a pencil, a thought bubble).
+
+General Guidelines for AI:
+
+Mobile Responsiveness: Ensure all new and adjusted elements are fully responsive and look excellent on all screen sizes, prioritizing mobile usability for the swipe carousel.
+
+Brand Consistency: Maintain the existing dark background, gold/orange accents, and overall mysterious/premium brand aesthetic.
+
+User Flow: Ensure a clear, intuitive flow from understanding the product to signing up for early access.
+
+Whitespace: Utilize appropriate whitespace to prevent visual clutter, especially with new sections being added."

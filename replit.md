@@ -148,6 +148,14 @@ Changelog:
   * Early access registration system for Vessel pre-launch
   * Routing structure to support ecosystem expansion
   * Strategic foundation for ticketing and connect integration
+
+- June 29, 2025. Vessel page enhancements and mobile optimization
+  * Added comprehensive app preview section with Theory Boards and Story Studio mockups
+  * Implemented subtle parallax scrolling effects throughout Vessel page
+  * Created mobile-first, Tinder-style swipeable feature carousel with 4 core features
+  * Added "How Early Access Works" 4-step user journey section
+  * Redesigned early access form with prominent Name/Email fields and optional feedback sections
+  * Enhanced visual hierarchy and user experience flow
 ```
 
 ## User Preferences

@@ -463,37 +463,66 @@ export default function VesselTeaser() {
           
           <div className="bg-medium-charcoal border border-neo-gold/30 rounded-2xl p-8 md:p-12">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                {/* Name Fields */}
-                <div className="grid md:grid-cols-2 gap-6">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                {/* Primary Fields Section */}
+                <div className="space-y-6">
+                  {/* Name Fields - Most Prominent */}
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <FormField
+                      control={form.control}
+                      name="firstName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white text-lg font-semibold">
+                            First Name <span className="text-social-red">*</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Enter your first name"
+                              {...field}
+                              className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold text-lg h-12"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="lastName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="text-white text-lg font-semibold">
+                            Last Name <span className="text-social-red">*</span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input 
+                              placeholder="Enter your last name"
+                              {...field}
+                              className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold text-lg h-12"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  {/* Email - Most Prominent */}
                   <FormField
                     control={form.control}
-                    name="firstName"
+                    name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="text-gray-300">First Name</FormLabel>
+                        <FormLabel className="text-white text-lg font-semibold">
+                          Email Address <span className="text-social-red">*</span>
+                        </FormLabel>
                         <FormControl>
                           <Input 
-                            placeholder="Enter your first name"
+                            type="email"
+                            placeholder="your.email@example.com"
                             {...field}
-                            className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="lastName"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-300">Last Name</FormLabel>
-                        <FormControl>
-                          <Input 
-                            placeholder="Enter your last name"
-                            {...field}
-                            className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold"
+                            className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold text-lg h-12"
                           />
                         </FormControl>
                         <FormMessage />
@@ -502,80 +531,71 @@ export default function VesselTeaser() {
                   />
                 </div>
 
-                {/* Email */}
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-300">Email Address</FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="email"
-                          placeholder="your.email@example.com"
-                          {...field}
-                          className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {/* Optional Fields Section */}
+                <div className="space-y-6 pt-6 border-t border-gray-600/50">
+                  <div className="text-center">
+                    <p className="text-gray-400 text-sm font-medium">
+                      Optional: Help us tailor your Vessel experience
+                    </p>
+                  </div>
 
-                {/* Role Interest */}
-                <FormField
-                  control={form.control}
-                  name="preferredRole"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-300">Primary Interest in Vessel</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  {/* Role Interest - Optional */}
+                  <FormField
+                    control={form.control}
+                    name="preferredRole"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-300 text-base">
+                          Primary Interest in Vessel <span className="text-gray-500 text-sm">(Optional)</span>
+                        </FormLabel>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <FormControl>
+                            <SelectTrigger className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold">
+                              <SelectValue placeholder="Select your primary interest" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="bg-medium-charcoal border-gray-600">
+                            <SelectItem value="original-story-creator" className="text-white hover:bg-black-mirror">
+                              Original Story Creator
+                            </SelectItem>
+                            <SelectItem value="theory-board-investigator" className="text-white hover:bg-black-mirror">
+                              Theory Board Investigator
+                            </SelectItem>
+                            <SelectItem value="community-collaborator" className="text-white hover:bg-black-mirror">
+                              Community Collaborator
+                            </SelectItem>
+                            <SelectItem value="reference-library-contributor" className="text-white hover:bg-black-mirror">
+                              Reference Library Contributor
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  {/* Story Studio Input - Optional */}
+                  <FormField
+                    control={form.control}
+                    name="interests"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="text-gray-300 text-base">
+                          What features would you want in the Original Story Studio? <span className="text-gray-500 text-sm">(Optional)</span>
+                        </FormLabel>
                         <FormControl>
-                          <SelectTrigger className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold">
-                            <SelectValue placeholder="Select your primary interest" />
-                          </SelectTrigger>
+                          <Textarea 
+                            placeholder="Share your ideas for story creation tools, collaboration features, or authenticity frameworks..."
+                            {...field}
+                            className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold"
+                            rows={3}
+                          />
                         </FormControl>
-                        <SelectContent className="bg-medium-charcoal border-gray-600">
-                          <SelectItem value="original-story-creator" className="text-white hover:bg-black-mirror">
-                            Original Story Creator
-                          </SelectItem>
-                          <SelectItem value="theory-board-investigator" className="text-white hover:bg-black-mirror">
-                            Theory Board Investigator
-                          </SelectItem>
-                          <SelectItem value="community-collaborator" className="text-white hover:bg-black-mirror">
-                            Community Collaborator
-                          </SelectItem>
-                          <SelectItem value="reference-library-contributor" className="text-white hover:bg-black-mirror">
-                            Reference Library Contributor
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                {/* Story Studio Input */}
-                <FormField
-                  control={form.control}
-                  name="interests"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-300">
-                        What features would you want in the Original Story Studio? (Optional)
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Share your ideas for story creation tools, collaboration features, or authenticity frameworks..."
-                          {...field}
-                          className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold"
-                          rows={4}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
                 {/* Submit Button */}
                 <Button 
