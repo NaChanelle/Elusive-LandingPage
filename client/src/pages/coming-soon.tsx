@@ -288,33 +288,41 @@ export default function ComingSoon() {
           {/* Why Join Section */}
           <div className="mt-16 pt-8 border-t border-white/10 max-w-4xl mx-auto">
             <h3 className="text-2xl font-bold mb-8 text-center">Why You'll Want to Join the Investigation</h3>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="flex items-start space-x-4">
-                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-lg mb-2">Unravel hidden cultural narratives like never before</h4>
-                  <p className="text-gray-300 text-sm">Dive deep into authentic stories that challenge mainstream perspectives and reveal untold truths.</p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="flex items-start space-x-4">
+                  <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-semibold text-lg mb-2">Unravel hidden cultural narratives like never before</h4>
+                    <p className="text-gray-300 text-sm">Dive deep into authentic stories that challenge mainstream perspectives and reveal untold truths.</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start space-x-4">
-                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-lg mb-2">Connect with a global community of curious minds</h4>
-                  <p className="text-gray-300 text-sm">Join investigators from around the world who share your passion for cultural discovery and meaningful dialogue.</p>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="flex items-start space-x-4">
+                  <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-semibold text-lg mb-2">Connect with a global community of curious minds</h4>
+                    <p className="text-gray-300 text-sm">Join investigators from around the world who share your passion for cultural discovery and meaningful dialogue.</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start space-x-4">
-                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-lg mb-2">Experience immersive mysteries that challenge your perspective</h4>
-                  <p className="text-gray-300 text-sm">Engage in interactive experiences designed to expand your worldview and deepen cultural understanding.</p>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="flex items-start space-x-4">
+                  <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-semibold text-lg mb-2">Experience immersive mysteries that challenge your perspective</h4>
+                    <p className="text-gray-300 text-sm">Engage in interactive experiences designed to expand your worldview and deepen cultural understanding.</p>
+                  </div>
                 </div>
               </div>
-              <div className="flex items-start space-x-4">
-                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-lg mb-2">Shape the future of collaborative storytelling</h4>
-                  <p className="text-gray-300 text-sm">Become part of a revolutionary platform where your voice contributes to authentic cultural narratives.</p>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <div className="flex items-start space-x-4">
+                  <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-semibold text-lg mb-2">Shape the future of collaborative storytelling</h4>
+                    <p className="text-gray-300 text-sm">Become part of a revolutionary platform where your voice contributes to authentic cultural narratives.</p>
+                  </div>
                 </div>
               </div>
             </div>
