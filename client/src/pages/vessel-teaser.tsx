@@ -19,6 +19,14 @@ export default function VesselTeaser() {
   const { toast } = useToast();
   const [isSuccess, setIsSuccess] = useState(false);
   const [, setLocation] = useLocation();
+  const [scrollY, setScrollY] = useState(0);
+
+  // Parallax effect
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const form = useForm<InsertReservation>({
     resolver: zodResolver(insertReservationSchema.extend({
@@ -196,9 +204,18 @@ export default function VesselTeaser() {
         </div>
       </div>
 
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-br from-deep-charcoal via-black-mirror to-deep-charcoal">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* Hero Section with Parallax */}
+      <section className="relative py-20 bg-gradient-to-br from-deep-charcoal via-black-mirror to-deep-charcoal overflow-hidden">
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{ transform: `translateY(${scrollY * 0.5}px)` }}
+        >
+          <div className="absolute top-20 left-20 w-32 h-32 border border-neo-gold rotate-45"></div>
+          <div className="absolute bottom-40 right-32 w-24 h-24 border border-social-red rotate-12"></div>
+          <div className="absolute top-1/3 right-20 w-16 h-16 bg-neo-gold opacity-30 rounded-full"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <div className="mb-8">
             <div className="inline-block text-neo-gold text-sm font-mono tracking-widest mb-4 animate-pulse">
               VESSEL PROTOCOL INITIALIZING...
@@ -209,7 +226,10 @@ export default function VesselTeaser() {
             </div>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 bg-gradient-to-r from-white via-neo-gold to-white bg-clip-text text-transparent">
+          <h1 
+            className="text-5xl md:text-7xl font-serif font-bold mb-6 bg-gradient-to-r from-white via-neo-gold to-white bg-clip-text text-transparent"
+            style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+          >
             Vessel
           </h1>
           
@@ -223,17 +243,138 @@ export default function VesselTeaser() {
             Where cultural curators become co-creators... Where theories transform into collective truth... 
             Where every story you encounter carries a key to unlock deeper understanding.
           </p>
+          
+          {/* Soft CTA */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              onClick={() => document.getElementById('app-preview')?.scrollIntoView({ behavior: 'smooth' })}
+              className="bg-neo-gold text-deep-charcoal hover:bg-neo-gold/90 px-8 py-3 text-lg font-semibold"
+            >
+              Experience the Vision
+              <ChevronRight className="ml-2 w-5 h-5" />
+            </Button>
+            <Button 
+              onClick={() => document.getElementById('early-access')?.scrollIntoView({ behavior: 'smooth' })}
+              variant="outline"
+              className="border-neo-gold text-neo-gold hover:bg-neo-gold hover:text-deep-charcoal px-8 py-3 text-lg font-semibold"
+            >
+              Get Early Access
+            </Button>
+          </div>
         </div>
       </section>
 
-      {/* Vision Section */}
-      <section className="py-20 bg-black-mirror">
+      {/* App Preview Section */}
+      <section id="app-preview" className="py-20 bg-black-mirror relative">
+        <div 
+          className="absolute inset-0 opacity-10"
+          style={{ transform: `translateY(${scrollY * 0.3}px)` }}
+        >
+          <div className="absolute top-40 left-40 w-20 h-20 border border-neo-gold rotate-45"></div>
+          <div className="absolute bottom-60 right-40 w-16 h-16 border border-social-red rotate-12"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Experience Vessel</h2>
+            <p className="text-xl text-gray-300 max-w-4xl mx-auto mb-8">
+              See how the Vessel app transforms cultural investigation through immersive interfaces and collaborative tools.
+            </p>
+          </div>
+          
+          {/* App Mockup Showcase */}
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+              <div className="bg-gradient-to-br from-neo-gold/20 to-social-red/20 rounded-2xl p-8 border border-neo-gold/30 backdrop-blur-sm">
+                <h3 className="text-2xl font-bold mb-4 text-neo-gold">Theory Boards Interface</h3>
+                <div className="bg-deep-charcoal rounded-lg p-6 mb-4 border border-white/10">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-neo-gold rounded-full"></div>
+                      <div className="w-3 h-3 bg-social-red rounded-full"></div>
+                      <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
+                    </div>
+                    <div className="text-xs text-gray-400">Theory Board Alpha</div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center space-x-3">
+                      <Eye className="w-4 h-4 text-neo-gold" />
+                      <div className="h-2 bg-neo-gold/30 rounded flex-1"></div>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2">
+                      <div className="h-12 bg-white/10 rounded border border-neo-gold/20"></div>
+                      <div className="h-12 bg-white/10 rounded border border-social-red/20"></div>
+                      <div className="h-12 bg-white/10 rounded border border-white/20"></div>
+                    </div>
+                    <div className="flex justify-between text-xs text-gray-400">
+                      <span>Evidence Map</span>
+                      <span>Community Theories</span>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm">Visual evidence mapping with real-time community collaboration and theory validation.</p>
+              </div>
+            </div>
+            
+            <div>
+              <div className="bg-gradient-to-br from-social-red/20 to-neo-gold/20 rounded-2xl p-8 border border-social-red/30 backdrop-blur-sm">
+                <h3 className="text-2xl font-bold mb-4 text-social-red">Story Studio Dashboard</h3>
+                <div className="bg-deep-charcoal rounded-lg p-6 mb-4 border border-white/10">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="text-sm text-neo-gold font-mono">STUDIO_ACTIVE</div>
+                    <Play className="w-4 h-4 text-social-red" />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="h-3 bg-social-red/40 rounded w-3/4"></div>
+                    <div className="h-3 bg-neo-gold/40 rounded w-1/2"></div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="space-y-2">
+                        <div className="h-2 bg-white/20 rounded w-full"></div>
+                        <div className="h-2 bg-white/20 rounded w-2/3"></div>
+                      </div>
+                      <div className="bg-white/5 rounded p-2 text-center">
+                        <BookOpen className="w-6 h-6 mx-auto text-neo-gold mb-1" />
+                        <div className="text-xs text-gray-400">Cultural Archive</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm">Intuitive story creation tools with cultural authenticity guides and community feedback loops.</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Interactive Demo Preview */}
+          <div className="bg-gradient-to-r from-deep-charcoal to-black-mirror rounded-2xl p-8 border border-neo-gold/20 text-center">
+            <div className="max-w-2xl mx-auto">
+              <h3 className="text-2xl font-bold mb-4">Interactive Demo Coming Soon</h3>
+              <p className="text-gray-300 mb-6">
+                Experience a limited preview of Vessel's core features. Navigate through Theory Boards, 
+                explore the Cultural Code Library, and try the Story Studio interface.
+              </p>
+              <div className="flex items-center justify-center space-x-4 mb-6">
+                <div className="flex items-center space-x-2 bg-white/10 rounded-full px-4 py-2">
+                  <div className="w-2 h-2 bg-neo-gold rounded-full animate-pulse"></div>
+                  <span className="text-sm">Demo Build: 47%</span>
+                </div>
+                <div className="text-sm text-gray-400">Estimated: 2 weeks</div>
+              </div>
+              <Button className="bg-neo-gold text-deep-charcoal hover:bg-neo-gold/90">
+                Notify Me When Ready
+                <Mail className="ml-2 w-4 h-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Enhanced Feature Showcase */}
+      <section className="py-20 bg-deep-charcoal">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">The Vision</h2>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">6 Core Features</h2>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto">
-              An immersive platform where mystery meets meaning, connecting investigators 
-              across space, time, and ancestry through collaborative storytelling.
+              Each feature designed to deepen cultural understanding and collaborative storytelling.
             </p>
           </div>
           
@@ -284,13 +425,70 @@ export default function VesselTeaser() {
         </div>
       </section>
 
+      {/* How Early Access Works */}
+      <section className="py-20 bg-gradient-to-br from-black-mirror to-deep-charcoal relative">
+        <div 
+          className="absolute inset-0 opacity-5"
+          style={{ transform: `translateY(${scrollY * 0.2}px)` }}
+        >
+          <div className="absolute top-32 left-32 w-24 h-24 border border-neo-gold rotate-45"></div>
+          <div className="absolute bottom-32 right-32 w-16 h-16 border border-social-red rotate-12"></div>
+        </div>
+        
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">How Early Access Works</h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Your journey from early access to full Vessel experience
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-4 gap-8">
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-neo-gold/20 border-2 border-neo-gold rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-neo-gold/30 transition-colors">
+                <span className="text-neo-gold font-bold text-xl">1</span>
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-neo-gold">Sign Up Below</h3>
+              <p className="text-gray-300 text-sm">Share your interests and help us understand what features matter most to you.</p>
+            </div>
+            
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-social-red/20 border-2 border-social-red rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-social-red/30 transition-colors">
+                <span className="text-social-red font-bold text-xl">2</span>
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-social-red">Receive Exclusive Updates</h3>
+              <p className="text-gray-300 text-sm">Get behind-the-scenes development insights and be first to see new features.</p>
+            </div>
+            
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-white/20 border-2 border-white rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-white/30 transition-colors">
+                <span className="text-white font-bold text-xl">3</span>
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-white">Vessel Protocol Launch</h3>
+              <p className="text-gray-300 text-sm">Be notified the moment early access opens and get priority access to the platform.</p>
+            </div>
+            
+            <div className="text-center group">
+              <div className="w-16 h-16 bg-gradient-to-r from-neo-gold to-social-red rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Lightbulb className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-lg font-semibold mb-2 text-white">Shape the Future</h3>
+              <p className="text-gray-300 text-sm">Your feedback directly influences Vessel's development and feature priorities.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Early Access Registration */}
-      <section className="py-20 bg-black-mirror">
+      <section id="early-access" className="py-20 bg-black-mirror">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Secure Early Access</h2>
-            <p className="text-xl text-gray-300 mb-8">
+            <p className="text-xl text-gray-300 mb-4">
               Be among the first to enter the Vessel. Help us build the future of interactive storytelling.
+            </p>
+            <p className="text-sm text-neo-gold">
+              Your feedback directly shapes Vessel's development and feature roadmap.
             </p>
           </div>
           
