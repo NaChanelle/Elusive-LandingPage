@@ -104,74 +104,7 @@ export default function VesselTeaser() {
     }
   ];
 
-  const vesselFeatures = [
-    {
-      icon: Eye,
-      title: "Theory Boards",
-      description: "Collaborative investigation spaces where cultural patterns emerge through community analysis",
-      details: [
-        "Interactive evidence mapping",
-        "Reference connection tools", 
-        "Community voting on theories",
-        "Cultural context layers"
-      ]
-    },
-    {
-      icon: Users,
-      title: "Cultural Code Library",
-      description: "Living archive connecting generations through shared meaning and storytelling traditions",
-      details: [
-        "Searchable reference database",
-        "User-contributed context",
-        "Generational bridge content",
-        "Meaning discovery tools"
-      ]
-    },
-    {
-      icon: Zap,
-      title: "Story Studios",
-      description: "Where strangers become accomplices in truth through collaborative narrative creation",
-      details: [
-        "Interactive story building",
-        "Character development tools",
-        "Plot threading system",
-        "Community feedback loops"
-      ]
-    },
-    {
-      icon: BookOpen,
-      title: "Original Story Studio",
-      description: "Creator toolkit for developing authentic mysteries rooted in cultural commentary",
-      details: [
-        "Story framework templates",
-        "Cultural authenticity guides",
-        "Community feedback system",
-        "Publication pathways"
-      ]
-    },
-    {
-      icon: Lightbulb,
-      title: "Investigation Dashboard",
-      description: "Personal command center tracking your theories, contributions, and discovery journey",
-      details: [
-        "Theory tracking system",
-        "Contribution analytics",
-        "Discovery milestones",
-        "Community recognition"
-      ]
-    },
-    {
-      icon: MessageSquare,
-      title: "Accomplice Network",
-      description: "Connect with fellow investigators across cities and storylines",
-      details: [
-        "Cross-city connections",
-        "Skill-based matching",
-        "Collaboration spaces",
-        "Mentorship opportunities"
-      ]
-    }
-  ];
+
 
   const storyStudioFeatures = [
     "Framework-guided story development with cultural authenticity checks",
