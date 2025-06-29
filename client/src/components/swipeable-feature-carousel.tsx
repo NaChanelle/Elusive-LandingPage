@@ -159,24 +159,60 @@ export default function SwipeableFeatureCarousel({ features }: SwipeableFeatureC
                         {/* Dynamic content based on feature */}
                         {feature.id === 'theory-boards' && (
                           <div className="grid grid-cols-3 gap-2 mt-4">
-                            <div className="h-16 bg-white/10 rounded border border-neo-gold/20"></div>
-                            <div className="h-16 bg-white/10 rounded border border-social-red/20"></div>
-                            <div className="h-16 bg-white/10 rounded border border-white/20"></div>
+                            <div className="h-16 bg-white/10 rounded border border-neo-gold/20 flex items-center justify-center">
+                              <Eye className="w-4 h-4 text-neo-gold" />
+                            </div>
+                            <div className="h-16 bg-white/10 rounded border border-social-red/20 flex items-center justify-center">
+                              <div className="w-6 h-6 bg-social-red/30 rounded-full"></div>
+                            </div>
+                            <div className="h-16 bg-white/10 rounded border border-white/20 flex items-center justify-center">
+                              <div className="grid grid-cols-2 gap-1">
+                                <div className="w-2 h-2 bg-white/40 rounded"></div>
+                                <div className="w-2 h-2 bg-white/40 rounded"></div>
+                                <div className="w-2 h-2 bg-white/40 rounded"></div>
+                                <div className="w-2 h-2 bg-white/40 rounded"></div>
+                              </div>
+                            </div>
                           </div>
                         )}
                         
-                        {feature.id === 'story-studio' && (
-                          <div className="space-y-2">
-                            <div className="h-3 bg-social-red/40 rounded w-3/4"></div>
-                            <div className="h-3 bg-neo-gold/40 rounded w-1/2"></div>
-                            <div className="flex justify-between mt-3">
-                              <div className="w-12 h-12 bg-white/10 rounded flex items-center justify-center">
-                                <BookOpen className="w-6 h-6 text-neo-gold" />
+                        {feature.id === 'live-events' && (
+                          <div className="space-y-3">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center space-x-2">
+                                <Calendar className="w-4 h-4 text-neo-gold" />
+                                <div className="text-xs text-neo-gold">LIVE</div>
                               </div>
-                              <div className="w-12 h-12 bg-white/10 rounded flex items-center justify-center">
-                                <Users className="w-6 h-6 text-social-red" />
+                              <div className="w-2 h-2 bg-social-red rounded-full animate-pulse"></div>
+                            </div>
+                            <div className="bg-white/10 rounded p-3 text-center">
+                              <div className="text-xs text-gray-300">Next Event</div>
+                              <div className="text-sm font-bold text-neo-gold">Aug 2025</div>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {feature.id === 'character-roster' && (
+                          <div className="space-y-2">
+                            <div className="flex items-center justify-between">
+                              <Users className="w-4 h-4 text-neo-gold" />
+                              <span className="text-xs text-gray-400">12 Active</span>
+                            </div>
+                            <div className="grid grid-cols-4 gap-2">
+                              <div className="w-8 h-8 bg-neo-gold/20 rounded-full flex items-center justify-center">
+                                <div className="w-4 h-4 bg-neo-gold rounded-full"></div>
+                              </div>
+                              <div className="w-8 h-8 bg-social-red/20 rounded-full flex items-center justify-center">
+                                <div className="w-4 h-4 bg-social-red rounded-full"></div>
+                              </div>
+                              <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center">
+                                <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
+                              </div>
+                              <div className="w-8 h-8 bg-green-500/20 rounded-full flex items-center justify-center">
+                                <div className="w-4 h-4 bg-green-500 rounded-full"></div>
                               </div>
                             </div>
+                            <div className="text-xs text-gray-400 text-center">Investigators • Curators • Storytellers</div>
                           </div>
                         )}
                         
@@ -194,18 +230,28 @@ export default function SwipeableFeatureCarousel({ features }: SwipeableFeatureC
                           </div>
                         )}
                         
-                        {feature.id === 'live-events' && (
-                          <div className="space-y-3">
+                        {feature.id === 'investigation-log' && (
+                          <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                              <div className="flex items-center space-x-2">
-                                <Calendar className="w-4 h-4 text-neo-gold" />
-                                <div className="text-xs text-neo-gold">LIVE</div>
-                              </div>
-                              <div className="w-2 h-2 bg-social-red rounded-full animate-pulse"></div>
+                              <BookOpen className="w-4 h-4 text-neo-gold" />
+                              <span className="text-xs text-gray-400">Timeline</span>
                             </div>
-                            <div className="bg-white/10 rounded p-3 text-center">
-                              <div className="text-xs text-gray-300">Next Event</div>
-                              <div className="text-sm font-bold text-neo-gold">Aug 2025</div>
+                            <div className="space-y-2">
+                              <div className="flex items-center space-x-2">
+                                <div className="w-2 h-2 bg-neo-gold rounded-full"></div>
+                                <div className="h-1 bg-neo-gold/30 rounded flex-1"></div>
+                                <span className="text-xs text-gray-400">15:42</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <div className="w-2 h-2 bg-social-red rounded-full"></div>
+                                <div className="h-1 bg-social-red/30 rounded flex-1"></div>
+                                <span className="text-xs text-gray-400">14:28</span>
+                              </div>
+                              <div className="flex items-center space-x-2">
+                                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                                <div className="h-1 bg-blue-500/30 rounded flex-1"></div>
+                                <span className="text-xs text-gray-400">13:15</span>
+                              </div>
                             </div>
                           </div>
                         )}

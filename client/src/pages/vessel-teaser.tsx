@@ -68,31 +68,16 @@ export default function VesselTeaser() {
     createReservation.mutate(data);
   };
 
-  // Swipeable Feature Carousel Data
-  const swipeableFeatures = [
+  // Core MVP Features - First Iteration Priority
+  const mvpFeatures = [
     {
       id: "theory-boards",
       title: "Theory Boards",
       description: "Visual evidence mapping with real-time community collaboration.",
       icon: Eye,
       visualPlaceholder: "THEORY_BOARD_ALPHA",
-      gradient: "bg-gradient-to-br from-neo-gold/20 to-social-red/20"
-    },
-    {
-      id: "story-studio", 
-      title: "Original Story Studio",
-      description: "Intuitive story creation with cultural authenticity guides.",
-      icon: BookOpen,
-      visualPlaceholder: "STUDIO_ACTIVE",
-      gradient: "bg-gradient-to-br from-social-red/20 to-neo-gold/20"
-    },
-    {
-      id: "cultural-library",
-      title: "Cultural Code Library", 
-      description: "Searchable archive of cultural knowledge and symbols.",
-      icon: Database,
-      visualPlaceholder: "ARCHIVE_INTERFACE",
-      gradient: "bg-gradient-to-br from-purple-500/20 to-blue-500/20"
+      gradient: "bg-gradient-to-br from-neo-gold/20 to-social-red/20",
+      status: "mvp"
     },
     {
       id: "live-events",
@@ -100,20 +85,69 @@ export default function VesselTeaser() {
       description: "Seamless connection between digital and real-world experiences.",
       icon: Calendar,
       visualPlaceholder: "EVENT_SYNC",
-      gradient: "bg-gradient-to-br from-green-500/20 to-teal-500/20"
+      gradient: "bg-gradient-to-br from-green-500/20 to-teal-500/20",
+      status: "mvp"
+    },
+    {
+      id: "character-roster",
+      title: "Character Roster",
+      description: "Track participants and their roles in ongoing investigations.",
+      icon: Users,
+      visualPlaceholder: "ROSTER_INTERFACE",
+      gradient: "bg-gradient-to-br from-blue-500/20 to-purple-500/20",
+      status: "mvp"
+    },
+    {
+      id: "cultural-library",
+      title: "Cultural Code Library", 
+      description: "Searchable archive of cultural knowledge and symbols.",
+      icon: Database,
+      visualPlaceholder: "ARCHIVE_INTERFACE",
+      gradient: "bg-gradient-to-br from-purple-500/20 to-blue-500/20",
+      status: "mvp"
+    },
+    {
+      id: "investigation-log",
+      title: "Investigation Log",
+      description: "Chronological timeline of clues, discoveries, and community insights.",
+      icon: BookOpen,
+      visualPlaceholder: "LOG_INTERFACE",
+      gradient: "bg-gradient-to-br from-orange-500/20 to-red-500/20",
+      status: "mvp"
+    }
+  ];
+
+  // Future Roadmap Features
+  const roadmapFeatures = [
+    {
+      id: "story-studio",
+      title: "Original Story Studio",
+      description: "Complete creator toolkit for developing authentic mysteries rooted in cultural commentary.",
+      icon: Lightbulb,
+      status: "roadmap",
+      timeline: "Long-term Vision"
+    },
+    {
+      id: "advanced-theory-tools",
+      title: "Advanced Theory Tools",
+      description: "AI-powered pattern recognition and cross-investigation analysis.",
+      icon: Zap,
+      status: "roadmap", 
+      timeline: "Future Release"
+    },
+    {
+      id: "community-governance",
+      title: "Community Governance",
+      description: "Democratic decision-making tools for investigation direction and story validation.",
+      icon: MessageSquare,
+      status: "roadmap",
+      timeline: "On Our Roadmap"
     }
   ];
 
 
 
-  const storyStudioFeatures = [
-    "Framework-guided story development with cultural authenticity checks",
-    "Community feedback integration for iterative improvement", 
-    "Reference library with cultural context and meaning",
-    "Publishing pathways from digital creation to live events",
-    "Mentorship connections with established cultural storytellers",
-    "Collaboration tools for co-creation with other investigators"
-  ];
+
 
   if (isSuccess) {
     return (
@@ -337,62 +371,81 @@ export default function VesselTeaser() {
         </div>
       </section>
 
-      {/* Enhanced Feature Showcase */}
+      {/* MVP Core Features Showcase */}
       <section className="py-20 bg-deep-charcoal">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Core Features</h2>
+            <div className="inline-block bg-neo-gold/20 border border-neo-gold rounded-full px-4 py-2 mb-4">
+              <span className="text-neo-gold text-sm font-mono tracking-wider">LAUNCHING AUGUST 2025</span>
+            </div>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Core MVP Features</h2>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto">
-              Each feature designed to deepen cultural understanding and collaborative storytelling.
+              Five essential features forming the foundation of your investigation experience.
             </p>
           </div>
           
-          <SwipeableFeatureCarousel features={swipeableFeatures} />
+          <SwipeableFeatureCarousel features={mvpFeatures} />
         </div>
       </section>
 
-      {/* Original Story Studio Focus */}
-      <section className="py-20 bg-deep-charcoal">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Original Story Studio</h2>
-              <p className="text-xl text-neo-gold mb-6">
-                Empowering authentic voices to craft mysteries that matter
-              </p>
-              <p className="text-lg text-gray-300 mb-8 leading-relaxed">
-                The heart of Vessel where creators develop original mystery narratives rooted in genuine 
-                experiences and social commentary. From digital creation to live event realization.
-              </p>
-              
-              <div className="space-y-4 mb-8">
-                {storyStudioFeatures.map((feature, index) => (
-                  <div key={index} className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-neo-gold rounded-full mt-2 flex-shrink-0"></div>
-                    <p className="text-gray-300">{feature}</p>
+      {/* Future Features Roadmap */}
+      <section className="py-20 bg-gradient-to-br from-black-mirror to-deep-charcoal relative">
+        <div 
+          className="absolute inset-0 opacity-5"
+          style={{ transform: `translateY(${scrollY * 0.15}px)` }}
+        >
+          <div className="absolute top-20 left-20 w-16 h-16 border border-neo-gold rotate-45"></div>
+          <div className="absolute bottom-40 right-40 w-12 h-12 border border-social-red rotate-12"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">What's Next for Vessel?</h2>
+            <p className="text-xl text-gray-300 max-w-4xl mx-auto mb-8">
+              Our long-term vision extends far beyond the initial launch. Here's what we're building toward.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {roadmapFeatures.map((feature, index) => (
+              <div key={feature.id} className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-sm hover:bg-white/10 transition-all">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="w-12 h-12 bg-white/10 rounded-lg flex items-center justify-center">
+                    <feature.icon className="w-6 h-6 text-neo-gold" />
                   </div>
-                ))}
+                  <span className="text-xs text-gray-400 bg-gray-800 rounded-full px-3 py-1">
+                    {feature.timeline}
+                  </span>
+                </div>
+                
+                <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
+                <p className="text-gray-300 text-sm leading-relaxed mb-4">{feature.description}</p>
+                
+                <div className="flex items-center text-xs text-gray-400">
+                  <div className="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                  <span>Planned for Future Release</span>
+                </div>
               </div>
-            </div>
-            
-            <div className="bg-gradient-to-br from-neo-gold/10 to-social-red/10 border border-neo-gold/30 rounded-2xl p-8">
-              <h3 className="text-2xl font-serif font-semibold mb-4 text-center">Share Your Vision</h3>
-              <p className="text-gray-300 text-center mb-6">
-                Help shape the Original Story Studio by sharing what features would empower your storytelling
-              </p>
-              <div className="bg-medium-charcoal rounded-lg p-6">
-                <p className="text-sm text-gray-400 mb-4">Tell us about your ideal story creation tools:</p>
-                <ul className="space-y-2 text-sm text-gray-300">
-                  <li>• What frameworks would help you develop authentic narratives?</li>
-                  <li>• How should community feedback integrate into the creation process?</li>
-                  <li>• What pathways from digital to live events would you value?</li>
-                  <li>• How can we ensure stories maintain authenticity and depth?</li>
-                </ul>
-              </div>
-            </div>
+            ))}
+          </div>
+          
+          <div className="text-center mt-12">
+            <p className="text-gray-300 mb-6">
+              Your feedback shapes our roadmap. Let us know which future features excite you most.
+            </p>
+            <Button 
+              onClick={() => document.getElementById('early-access')?.scrollIntoView({ behavior: 'smooth' })}
+              variant="outline"
+              className="border-neo-gold text-neo-gold hover:bg-neo-gold hover:text-deep-charcoal"
+            >
+              Share Your Vision Below
+              <ChevronRight className="ml-2 w-4 h-4" />
+            </Button>
           </div>
         </div>
       </section>
+
+
 
       {/* How Early Access Works */}
       <section className="py-20 bg-gradient-to-br from-black-mirror to-deep-charcoal relative">
@@ -574,18 +627,18 @@ export default function VesselTeaser() {
                     )}
                   />
 
-                  {/* Story Studio Input - Optional */}
+                  {/* MVP Features Feedback - Optional */}
                   <FormField
                     control={form.control}
                     name="interests"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-gray-300 text-base">
-                          What features would you want in the Original Story Studio? <span className="text-gray-500 text-sm">(Optional)</span>
+                          Which MVP features excite you most? <span className="text-gray-500 text-sm">(Optional)</span>
                         </FormLabel>
                         <FormControl>
                           <Textarea 
-                            placeholder="Share your ideas for story creation tools, collaboration features, or authenticity frameworks..."
+                            placeholder="Tell us about your interest in Theory Boards, Investigation Log, Character Roster, Cultural Library, or Live Events..."
                             {...field}
                             className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold"
                             rows={3}
@@ -617,6 +670,53 @@ export default function VesselTeaser() {
                 the Original Story Studio features based on your feedback.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Share Your Vision Section */}
+      <section className="py-16 bg-gradient-to-br from-deep-charcoal via-black-mirror to-deep-charcoal border-t border-gray-800">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-gradient-to-br from-neo-gold/10 to-social-red/10 border border-neo-gold/30 rounded-2xl p-8 md:p-12 backdrop-blur-sm">
+            <div className="text-center mb-8">
+              <div className="w-16 h-16 bg-neo-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Lightbulb className="w-8 h-8 text-neo-gold" />
+              </div>
+              <h3 className="text-3xl font-serif font-bold mb-4">Help Shape the Future of Vessel</h3>
+              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+                Your vision guides our roadmap. Share ideas for future features and tell us what would make Vessel invaluable for cultural investigation.
+              </p>
+            </div>
+            
+            <div className="bg-black-mirror/50 rounded-xl p-6 mb-6">
+              <h4 className="text-lg font-semibold mb-4 text-neo-gold">What are your dream investigation tools?</h4>
+              <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-300">
+                <div>
+                  <p className="mb-2">🔍 <strong>Theory Development:</strong> How should evidence connect across investigations?</p>
+                  <p className="mb-2">📚 <strong>Cultural Archive:</strong> What knowledge should be preserved and shared?</p>
+                </div>
+                <div>
+                  <p className="mb-2">🎭 <strong>Story Creation:</strong> What frameworks would empower authentic narratives?</p>
+                  <p className="mb-2">🌐 <strong>Community Tools:</strong> How should investigators collaborate across distances?</p>
+                </div>
+              </div>
+            </div>
+            
+            <form className="space-y-4">
+              <Textarea 
+                placeholder="Describe your ideal cultural investigation platform. What features would transform how communities preserve and share their stories?"
+                className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold min-h-[120px]"
+              />
+              <div className="flex flex-col sm:flex-row gap-4 items-center">
+                <Input 
+                  placeholder="Your email (optional)"
+                  className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold"
+                />
+                <Button className="bg-neo-gold text-deep-charcoal hover:bg-neo-gold/90 px-8 py-2 font-semibold whitespace-nowrap">
+                  Submit Feedback
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </section>
