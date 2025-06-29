@@ -15,16 +15,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={ComingSoon} />
-      <Route path="/platform">
-        <ProtectedRoute>
-          <Landing />
-        </ProtectedRoute>
-      </Route>
-      <Route path="/vessel">
-        <ProtectedRoute>
-          <VesselTeaser />
-        </ProtectedRoute>
-      </Route>
+      <Route path="/platform" component={Landing} />
+      <Route path="/vessel" component={VesselTeaser} />
       <Route path="/signup" component={SignUp} />
       <Route path="/signin" component={SignIn} />
       <Route component={NotFound} />

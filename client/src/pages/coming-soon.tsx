@@ -93,13 +93,24 @@ export default function ComingSoon() {
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
       {/* Header */}
       <header className="relative z-50 p-6">
-        <div className="flex items-center justify-center max-w-6xl mx-auto">
+        <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-[#FFB90F] rounded-lg flex items-center justify-center">
               <div className="w-6 h-6 bg-black rounded-sm animate-pulse"></div>
             </div>
             <span className="text-xl font-bold tracking-wider">ELUSIVE</span>
           </div>
+          <nav className="hidden md:flex items-center space-x-6">
+            <Link href="/platform" className="text-sm text-gray-300 hover:text-[#FFB90F] transition-colors">
+              Main Platform
+            </Link>
+            <Link href="/vessel" className="text-sm text-gray-300 hover:text-[#FFB90F] transition-colors">
+              Vessel App
+            </Link>
+            <Link href="/signup" className="bg-[#FFB90F] text-black px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#FFB90F]/90 transition-colors">
+              Sign Up
+            </Link>
+          </nav>
         </div>
       </header>
 
