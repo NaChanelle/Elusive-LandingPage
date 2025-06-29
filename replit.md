@@ -104,12 +104,13 @@ The ecosystem now features a complete user journey from first visit to community
 - **Footer**: Copyright, contact, privacy/terms, and subtle social media links
 
 ### Main Platform (/platform)
-- **Hero Section**: Brand introduction with Cultural Curator-Detective voice
-- **Vessel Preview**: App teaser with swipe/drag mobile interaction
-- **Event Teaser**: August 2025 event information with access tiers
-- **User Journey**: Experience-based pathways for different user types
-- **Access Tiers**: Event pricing (Detective $15, Curator $35, Accomplice $75)
-- **Name Reservation**: Email collection with investigation interests
+- **Event-Focused Landing Page**: Optimized for lead capture with minimal navigation
+- **Hero Event Section**: "Next Event" headline with August 2025 countdown timer
+- **Value Proposition**: "Join the mystery. Shape the story. Become an accomplice in truth."
+- **Primary CTAs**: "Reserve Your Spot" and "Learn More" buttons with smooth scroll
+- **Streamlined Signup**: Simplified form with just First Name (optional) and Email
+- **Brief Ecosystem Tease**: What's Coming Next section without overwhelming detail
+- **Essential FAQ**: Three key questions about timing, Vessel app, and pricing
 
 ### Vessel Teaser Page (/vessel)
 - **App Vision**: Detailed feature breakdown and development roadmap
