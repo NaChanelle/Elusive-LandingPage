@@ -5,7 +5,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
-import { Clock, Mail, Menu, ChevronUp } from "lucide-react";
+import { Clock, Mail, Menu, ChevronUp, ChevronDown } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function ComingSoon() {
   const [email, setEmail] = useState("");
@@ -115,7 +116,7 @@ export default function ComingSoon() {
             <div className={`transition-all duration-700 ${scrolled ? 'opacity-0 transform translate-x-8 scale-0' : 'opacity-100 transform translate-x-0 scale-100'}`}>
               <Link href="/platform">
                 <Button className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-6 py-2 rounded-full transition-all duration-300 hover:scale-105">
-                  Sign-Up for event updates
+                  Get Event Updates
                 </Button>
               </Link>
             </div>
@@ -144,7 +145,7 @@ export default function ComingSoon() {
           <div className="md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-sm border-t border-white/10 p-4 space-y-3">
             <Link href="/platform" onClick={() => setMobileMenuOpen(false)}>
               <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg">
-                Sign-Up for event updates
+                Get Event Updates
               </Button>
             </Link>
             <Link href="/vessel" onClick={() => setMobileMenuOpen(false)}>
@@ -171,7 +172,7 @@ export default function ComingSoon() {
             <div className="absolute top-full right-0 mt-2 bg-black/95 backdrop-blur-sm border border-white/20 rounded-lg p-3 space-y-2 min-w-[200px] shadow-xl">
               <Link href="/platform" onClick={() => setMobileMenuOpen(false)}>
                 <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-2 rounded-lg text-sm">
-                  Sign-Up for event updates
+                  Get Event Updates
                 </Button>
               </Link>
               <Link href="/vessel" onClick={() => setMobileMenuOpen(false)}>
@@ -426,20 +427,34 @@ export default function ComingSoon() {
       <section className="py-16">
         <div className="max-w-3xl mx-auto px-6">
           <h3 className="text-2xl font-bold mb-8 text-center text-white">Frequently Asked Questions</h3>
-          <div className="space-y-6">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <h4 className="font-semibold text-lg mb-2 text-white">When does the first event launch?</h4>
-              <p className="text-gray-300 text-sm">Our inaugural cultural investigation event launches in August 2025. Early access members will receive exclusive previews and first access to tickets.</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <h4 className="font-semibold text-lg mb-2 text-white">What is the Vessel companion app?</h4>
-              <p className="text-gray-300 text-sm">Vessel is our mobile companion app that enhances your investigation experience with real-time clue drops, community theories, and cultural code libraries.</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <h4 className="font-semibold text-lg mb-2 text-white">How much does it cost to participate?</h4>
-              <p className="text-gray-300 text-sm">We offer three tiers: Detective ($15), Curator ($35), and Accomplice ($75). Each tier provides different levels of access and community features.</p>
-            </div>
-          </div>
+          <Accordion type="single" collapsible className="space-y-4">
+            <AccordionItem value="item-1" className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
+              <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
+                When does the first event launch?
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-4 text-gray-300 text-sm">
+                Our inaugural cultural investigation event launches in August 2025. Early access members will receive exclusive previews and first access to tickets.
+              </AccordionContent>
+            </AccordionItem>
+            
+            <AccordionItem value="item-2" className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
+              <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
+                What is the Vessel companion app?
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-4 text-gray-300 text-sm">
+                Vessel is our mobile companion app that enhances your investigation experience with real-time clue drops, community theories, and cultural code libraries.
+              </AccordionContent>
+            </AccordionItem>
+            
+            <AccordionItem value="item-3" className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
+              <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
+                How much does it cost to participate?
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-4 text-gray-300 text-sm">
+                We offer three tiers: Detective ($15), Curator ($35), and Accomplice ($75). Each tier provides different levels of access and community features.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
       </section>
 
@@ -460,6 +475,19 @@ export default function ComingSoon() {
           </div>
         </div>
       </footer>
+
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <div className="fixed bottom-6 right-6 z-50">
+          <Button
+            onClick={scrollToTop}
+            className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+            size="icon"
+          >
+            <ChevronUp className="w-5 h-5" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

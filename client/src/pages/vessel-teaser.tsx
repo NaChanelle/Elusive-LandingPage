@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useLocation } from "wouter";
-import { ArrowLeft, Eye, Users, Zap, BookOpen, Lightbulb, MessageSquare } from "lucide-react";
+import { ArrowLeft, Eye, Users, Zap, BookOpen, Lightbulb, MessageSquare, Play, ChevronRight, Mail, Globe } from "lucide-react";
 import FeatureCarousel from "@/components/feature-carousel";
 import { insertReservationSchema, type InsertReservation } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
