@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useLocation } from "wouter";
-import { ArrowLeft, Eye, Users, Zap, BookOpen, Lightbulb, MessageSquare, Play, ChevronRight, Mail, Globe } from "lucide-react";
-import FeatureCarousel from "@/components/feature-carousel";
+import { ArrowLeft, Eye, Users, Zap, BookOpen, Lightbulb, MessageSquare, Play, ChevronRight, Mail, Globe, Database, Calendar } from "lucide-react";
+import SwipeableFeatureCarousel from "@/components/swipeable-feature-carousel";
 import { insertReservationSchema, type InsertReservation } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -67,6 +67,42 @@ export default function VesselTeaser() {
   const onSubmit = (data: InsertReservation) => {
     createReservation.mutate(data);
   };
+
+  // Swipeable Feature Carousel Data
+  const swipeableFeatures = [
+    {
+      id: "theory-boards",
+      title: "Theory Boards",
+      description: "Visual evidence mapping with real-time community collaboration.",
+      icon: Eye,
+      visualPlaceholder: "THEORY_BOARD_ALPHA",
+      gradient: "bg-gradient-to-br from-neo-gold/20 to-social-red/20"
+    },
+    {
+      id: "story-studio", 
+      title: "Original Story Studio",
+      description: "Intuitive story creation with cultural authenticity guides.",
+      icon: BookOpen,
+      visualPlaceholder: "STUDIO_ACTIVE",
+      gradient: "bg-gradient-to-br from-social-red/20 to-neo-gold/20"
+    },
+    {
+      id: "cultural-library",
+      title: "Cultural Code Library", 
+      description: "Searchable archive of cultural knowledge and symbols.",
+      icon: Database,
+      visualPlaceholder: "ARCHIVE_INTERFACE",
+      gradient: "bg-gradient-to-br from-purple-500/20 to-blue-500/20"
+    },
+    {
+      id: "live-events",
+      title: "Live Events Integration",
+      description: "Seamless connection between digital and real-world experiences.",
+      icon: Calendar,
+      visualPlaceholder: "EVENT_SYNC",
+      gradient: "bg-gradient-to-br from-green-500/20 to-teal-500/20"
+    }
+  ];
 
   const vesselFeatures = [
     {
@@ -372,13 +408,13 @@ export default function VesselTeaser() {
       <section className="py-20 bg-deep-charcoal">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">6 Core Features</h2>
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Core Features</h2>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto">
               Each feature designed to deepen cultural understanding and collaborative storytelling.
             </p>
           </div>
           
-          <FeatureCarousel features={vesselFeatures} />
+          <SwipeableFeatureCarousel features={swipeableFeatures} />
         </div>
       </section>
 
