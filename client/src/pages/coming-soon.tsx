@@ -341,7 +341,7 @@ export default function ComingSoon() {
           <div className="mt-16 max-w-2xl mx-auto">
             <h3 className="text-xl font-semibold mb-6 text-center">Frequently Asked Questions</h3>
             <div className="space-y-4">
-              <details className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+              <details className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 text-left">
                 <summary className="cursor-pointer font-medium text-[#FFB90F] hover:text-[#FFA500] transition-colors">
                   When is the first event?
                 </summary>
