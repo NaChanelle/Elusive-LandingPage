@@ -224,7 +224,7 @@ export default function ComingSoon() {
                   <ul className="text-left space-y-2 mb-6">
                     <li className="flex items-center text-sm">
                       <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                      Event access & materials
+                      Digital access
                     </li>
                     <li className="flex items-center text-sm">
                       <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
@@ -250,7 +250,7 @@ export default function ComingSoon() {
                     <Users className="w-6 h-6 text-[#FFB90F]" />
                   </div>
                   <h4 className="text-xl font-bold mb-2">Curator</h4>
-                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">$35</div>
+                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">$49</div>
                   <p className="text-gray-300 mb-6 text-sm">
                     For cultural enthusiasts who want to shape the investigation experience.
                   </p>
