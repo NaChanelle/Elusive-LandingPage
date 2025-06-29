@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
-import { ChevronRight, Mail, Calendar, Users, Sparkles, Clock, Search, Crown } from "lucide-react";
+import { Clock, Mail } from "lucide-react";
 
 export default function ComingSoon() {
   const [email, setEmail] = useState("");
@@ -17,66 +17,45 @@ export default function ComingSoon() {
   });
   const { toast } = useToast();
 
-  // Countdown to August 2025 event
+  // Calculate time until August 1, 2025
   useEffect(() => {
-    const targetDate = new Date("2025-08-01T00:00:00").getTime();
+    const targetDate = new Date("2025-08-01T00:00:00Z");
 
-    const timer = setInterval(() => {
-      const now = new Date().getTime();
-      const difference = targetDate - now;
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const difference = targetDate.getTime() - now.getTime();
 
       if (difference > 0) {
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
         });
       }
-    }, 1000);
+    };
+
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
   }, []);
 
   const signupMutation = useMutation({
     mutationFn: async (email: string) => {
-      const response = await fetch("/api/reservations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email,
-          firstName: "Early Access",
-          lastName: "Subscriber",
-          investigationInterests: ["coming-soon"],
-          preferredRole: "Detective",
-          interests: "Early access signup from coming soon page"
-        }),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`${response.status}: ${response.statusText}`);
-      }
-      
-      return response.json();
+      return await apiRequest("/api/reservations", "POST", { email });
     },
     onSuccess: () => {
       toast({
-        title: "You're on the list!",
-        description: "Ready to join the investigation? Create your account to get started!",
-        action: (
-          <Link href="/signup" className="bg-[#FFB90F] text-black px-3 py-1 rounded text-sm font-semibold">
-            Sign Up
-          </Link>
-        ),
+        title: "Success!",
+        description: "You're on the list! We'll notify you when the investigation begins.",
       });
       setEmail("");
     },
-    onError: (error: any) => {
+    onError: (error: Error) => {
       toast({
-        title: "Already registered",
-        description: "This email is already on our early access list.",
+        title: "Notification failed",
+        description: error.message || "Something went wrong. Please try again.",
         variant: "destructive",
       });
     },
@@ -95,8 +74,8 @@ export default function ComingSoon() {
       <header className="relative z-50 p-6 bg-black">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 border-2 border-neo-gold rotate-45 flex items-center justify-center">
-              <div className="w-2 h-2 bg-neo-gold rounded-full"></div>
+            <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
+              <div className="w-2 h-2 bg-[#FFB90F] rounded-full"></div>
             </div>
             <span className="text-xl font-bold tracking-wider">ELUSIVE</span>
           </div>
@@ -113,7 +92,6 @@ export default function ComingSoon() {
       
       {/* Hero Section - Black Background */}
       <section className="relative bg-black px-6 py-16">
-        {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-32 h-32 border border-[#FFB90F] rotate-45"></div>
           <div className="absolute bottom-40 right-32 w-24 h-24 border border-[#8B0000] rotate-12"></div>
@@ -123,13 +101,13 @@ export default function ComingSoon() {
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
           {/* Pulsing Logo */}
           <div className="flex justify-center mb-8">
-            <div className="w-20 h-20 border-4 border-neo-gold rotate-45 mx-auto mb-8 relative animate-pulse-glow">
-              <div className="absolute inset-3 bg-neo-gold/20 rotate-45"></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-neo-gold rounded-full"></div>
+            <div className="w-20 h-20 border-4 border-[#FFB90F] rotate-45 mx-auto mb-8 relative animate-pulse-glow">
+              <div className="absolute inset-3 bg-[#FFB90F]/20 rotate-45"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#FFB90F] rounded-full"></div>
             </div>
           </div>
 
-          {/* Main Headline - Next Event Focus */}
+          {/* Main Headline */}
           <div className="space-y-6">
             <h1 className="text-5xl md:text-7xl font-bold leading-tight">
               Decode Culture.{" "}
@@ -144,7 +122,7 @@ export default function ComingSoon() {
             </p>
           </div>
 
-          {/* Countdown Timer */}
+          {/* Countdown Timer - Black Background */}
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-2xl mx-auto mb-8">
             <div className="flex items-center justify-center mb-4">
               <Clock className="w-6 h-6 text-[#FFB90F] mr-2" />
@@ -181,22 +159,21 @@ export default function ComingSoon() {
             </p>
             
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="relative">
-                <Input
-                  type="email"
-                  placeholder="Enter your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-xl h-12 pr-32"
-                  required
-                />
-                <Button
-                  type="submit"
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-[#FFB90F] focus:ring-[#FFB90F]"
+                required
+              />
+              <div className="flex justify-center">
+                <Button 
+                  type="submit" 
                   disabled={signupMutation.isPending}
-                  className="absolute right-1 top-1 h-10 bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-semibold rounded-lg px-6 transition-all duration-200"
+                  className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105"
                 >
-                  {signupMutation.isPending ? "Adding you..." : "Notify Me"}
-                  <ChevronRight className="w-4 h-4 ml-1" />
+                  {signupMutation.isPending ? "Notifying..." : "Notify Me"}
                 </Button>
               </div>
             </form>
@@ -249,162 +226,143 @@ export default function ComingSoon() {
             </div>
           </div>
 
-
-
-          {/* Early Tester Testimonials */}
-          <div className="mt-16 pt-8 border-t border-white/10 max-w-3xl mx-auto">
-            <h3 className="text-xl font-semibold mb-8 text-center">What Early Investigators Are Saying</h3>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                <p className="text-lg text-gray-100 mb-4 italic">
-                  "I've never experienced anything like it! Elusive Origin is truly groundbreaking."
-                </p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-[#FFB90F] font-semibold text-sm">MR</span>
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">Maya Rodriguez</p>
-                    <p className="text-xs text-gray-400">Early Investigator</p>
+          {/* Auto-scrolling Image Gallery */}
+          <div className="mt-16 overflow-hidden">
+            <div className="flex animate-scroll space-x-6" style={{width: 'calc(200% + 24px)'}}>
+              {[...Array(16)].map((_, i) => (
+                <div key={i} className="flex-shrink-0 w-64 h-64 bg-white/10 rounded-lg border border-white/20 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                      <svg className="w-8 h-8 text-[#FFB90F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-400">Investigation {(i % 8) + 1}</p>
                   </div>
                 </div>
-              </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                <p className="text-lg text-gray-100 mb-4 italic">
-                  "This platform reveals stories I never knew existed. It's changing how I see culture."
-                </p>
-                <div className="flex items-center">
-                  <div className="w-10 h-10 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-[#FFB90F] font-semibold text-sm">JK</span>
-                  </div>
-                  <div>
-                    <p className="font-medium text-sm">Jordan Kim</p>
-                    <p className="text-xs text-gray-400">Beta Participant</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Why Join Section */}
-          <div className="mt-16 pt-8 border-t border-white/10 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold mb-8 text-center">Why You'll Want to Join the Investigation</h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                <div className="flex items-start space-x-4">
-                  <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <h4 className="font-semibold text-lg mb-2">Unravel hidden cultural narratives like never before</h4>
-                    <p className="text-gray-300 text-sm">Dive deep into authentic stories that challenge mainstream perspectives and reveal untold truths.</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                <div className="flex items-start space-x-4">
-                  <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <h4 className="font-semibold text-lg mb-2">Connect with a global community of curious minds</h4>
-                    <p className="text-gray-300 text-sm">Join investigators from around the world who share your passion for cultural discovery and meaningful dialogue.</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                <div className="flex items-start space-x-4">
-                  <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <h4 className="font-semibold text-lg mb-2">Experience immersive mysteries that challenge your perspective</h4>
-                    <p className="text-gray-300 text-sm">Engage in interactive experiences designed to expand your worldview and deepen cultural understanding.</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                <div className="flex items-start space-x-4">
-                  <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                  <div>
-                    <h4 className="font-semibold text-lg mb-2">Shape the future of collaborative storytelling</h4>
-                    <p className="text-gray-300 text-sm">Become part of a revolutionary platform where your voice contributes to authentic cultural narratives.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Brief What's Coming Tease */}
-          <div className="mt-12 pt-8 border-t border-white/10 max-w-2xl mx-auto">
-            <h3 className="text-lg font-semibold mb-4">What's Coming Next?</h3>
-            <p className="text-gray-300 text-sm leading-relaxed">
-              The August event is just the beginning of the Elusive ecosystem. You'll get updates about 
-              our Vessel companion app and Cultural Codes Chronicles as they develop.
-            </p>
-          </div>
-
-          {/* FAQ Section */}
-          <div className="mt-16 max-w-2xl mx-auto">
-            <h3 className="text-xl font-semibold mb-6 text-center">Frequently Asked Questions</h3>
-            <div className="space-y-4">
-              <details className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 text-left">
-                <summary className="cursor-pointer font-medium text-[#FFB90F] hover:text-[#FFA500] transition-colors">
-                  When is the first event?
-                </summary>
-                <p className="mt-3 text-gray-300 text-sm">
-                  The inaugural cultural investigation experience launches in August 2025. Exact dates and venue details will be shared with early access subscribers first.
-                </p>
-              </details>
-              <details className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 text-left">
-                <summary className="cursor-pointer font-medium text-[#FFB90F] hover:text-[#FFA500] transition-colors">
-                  What is the Vessel app?
-                </summary>
-                <p className="mt-3 text-gray-300 text-sm">
-                  Vessel is your companion app for cultural exploration, featuring investigation logs, community theories, and real-time clue drops during events.
-                </p>
-              </details>
-              <details className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 text-left">
-                <summary className="cursor-pointer font-medium text-[#FFB90F] hover:text-[#FFA500] transition-colors">
-                  How much will tickets cost?
-                </summary>
-                <p className="mt-3 text-gray-300 text-sm">
-                  We'll have multiple access tiers to ensure everyone can participate. Pricing and tier details will be announced closer to the event launch.
-                </p>
-              </details>
+              ))}
             </div>
           </div>
         </div>
       </section>
-      {/* Footer */}
-      <footer className="relative mt-16 py-8 border-t border-white/10">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <p className="text-sm text-gray-400">&copy; 2025 Elusive Origin. All rights reserved.</p>
-            <div className="flex items-center space-x-6">
-              <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
-                Contact Us
-              </a>
-              <Link href="/signup" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
-                Back to Main Site
-              </Link>
-              <Link href="/privacy" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">Privacy</Link>
-              <Link href="/terms" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">Terms</Link>
-              <div className="flex space-x-4">
-                <a href="https://instagram.com/elusiveorigin" className="text-gray-400 hover:text-[#FFB90F] transition-colors">
-                  <span className="sr-only">Instagram</span>
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                  </svg>
-                </a>
-                <a href="https://twitter.com/elusiveorigin" className="text-gray-400 hover:text-[#FFB90F] transition-colors">
-                  <span className="sr-only">Twitter</span>
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-                  </svg>
-                </a>
-                <a href="https://linkedin.com/company/elusiveorigin" className="text-gray-400 hover:text-[#FFB90F] transition-colors">
-                  <span className="sr-only">LinkedIn</span>
-                  <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                  </svg>
-                </a>
+
+      {/* Early Tester Testimonials - Neo Gold Background */}
+      <section className="bg-gradient-to-br from-[#FFB90F] to-[#FFA500] py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h3 className="text-xl font-semibold mb-8 text-center text-black">What Early Investigators Are Saying</h3>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-black/10 backdrop-blur-sm rounded-xl p-6 border border-black/20">
+              <p className="text-lg text-black mb-4 italic">
+                "I've never experienced anything like it! Elusive Origin is truly groundbreaking."
+              </p>
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-black/20 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-black font-semibold text-sm">MR</span>
+                </div>
+                <div>
+                  <p className="font-medium text-sm text-black">Maya Rodriguez</p>
+                  <p className="text-xs text-black/70">Early Investigator</p>
+                </div>
               </div>
             </div>
+            <div className="bg-black/10 backdrop-blur-sm rounded-xl p-6 border border-black/20">
+              <p className="text-lg text-black mb-4 italic">
+                "This platform reveals stories I never knew existed. It's changing how I see culture."
+              </p>
+              <div className="flex items-center">
+                <div className="w-10 h-10 bg-black/20 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-black font-semibold text-sm">JK</span>
+                </div>
+                <div>
+                  <p className="font-medium text-sm text-black">Jordan Kim</p>
+                  <p className="text-xs text-black/70">Beta Participant</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Join Section - Social Mirror Red Background */}
+      <section className="bg-gradient-to-br from-[#8B0000] to-[#A00000] py-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <h3 className="text-2xl font-bold mb-8 text-center text-white">Why You'll Want to Join the Investigation</h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <div className="flex items-start space-x-4">
+                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-2 text-white">Unravel hidden cultural narratives like never before</h4>
+                  <p className="text-gray-200 text-sm">Dive deep into authentic stories that challenge mainstream perspectives and reveal untold truths.</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <div className="flex items-start space-x-4">
+                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-2 text-white">Connect with a global community of curious minds</h4>
+                  <p className="text-gray-200 text-sm">Join investigators from around the world who share your passion for cultural discovery and meaningful dialogue.</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <div className="flex items-start space-x-4">
+                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-2 text-white">Experience immersive mysteries that challenge your perspective</h4>
+                  <p className="text-gray-200 text-sm">Engage in interactive experiences designed to expand your worldview and deepen cultural understanding.</p>
+                </div>
+              </div>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <div className="flex items-start space-x-4">
+                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                <div>
+                  <h4 className="font-semibold text-lg mb-2 text-white">Shape the future of collaborative storytelling</h4>
+                  <p className="text-gray-200 text-sm">Become part of a revolutionary platform where your voice contributes to authentic cultural narratives.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section - Darker Background */}
+      <section className="bg-gradient-to-br from-[#363636] to-[#4a4a4a] py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h3 className="text-2xl font-bold mb-8 text-center text-white">Frequently Asked Questions</h3>
+          <div className="space-y-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <h4 className="font-semibold text-lg mb-2 text-white">When does the first event launch?</h4>
+              <p className="text-gray-200 text-sm">Our inaugural cultural investigation event launches in August 2025. Early access members will receive exclusive previews and first access to tickets.</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <h4 className="font-semibold text-lg mb-2 text-white">What is the Vessel companion app?</h4>
+              <p className="text-gray-200 text-sm">Vessel is our mobile companion app that enhances your investigation experience with real-time clue drops, community theories, and cultural code libraries.</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <h4 className="font-semibold text-lg mb-2 text-white">How much does it cost to participate?</h4>
+              <p className="text-gray-200 text-sm">We offer three tiers: Detective ($15), Curator ($35), and Accomplice ($75). Each tier provides different levels of access and community features.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-black py-8">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <div className="w-6 h-6 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
+              <div className="w-1.5 h-1.5 bg-[#FFB90F] rounded-full"></div>
+            </div>
+            <span className="text-lg font-bold tracking-wider">ELUSIVE ORIGIN</span>
+          </div>
+          <p className="text-gray-400 text-sm mb-4">© 2025 Elusive Origin. All rights reserved.</p>
+          <div className="flex justify-center space-x-6 text-sm">
+            <a href="#" className="text-gray-400 hover:text-[#FFB90F] transition-colors">Privacy Policy</a>
+            <a href="#" className="text-gray-400 hover:text-[#FFB90F] transition-colors">Terms of Service</a>
+            <a href="#" className="text-gray-400 hover:text-[#FFB90F] transition-colors">Contact</a>
           </div>
         </div>
       </footer>

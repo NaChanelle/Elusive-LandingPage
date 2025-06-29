@@ -120,6 +120,32 @@
     background: linear-gradient(135deg, var(--neo-gold), var(--social-red));
   }
 
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(255, 185, 15, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(255, 185, 15, 0.6);
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-scroll {
+    animation: scroll 20s linear infinite;
+  }
+
   .font-serif {
     font-family: 'Playfair Display', serif;
   }
