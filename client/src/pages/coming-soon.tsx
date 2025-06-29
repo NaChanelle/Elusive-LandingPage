@@ -90,9 +90,9 @@ export default function ComingSoon() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
+    <div className="min-h-screen text-white">
       {/* Header */}
-      <header className="relative z-50 p-6">
+      <header className="relative z-50 p-6 bg-black">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 border-2 border-neo-gold rotate-45 flex items-center justify-center">
@@ -110,8 +110,9 @@ export default function ComingSoon() {
           </nav>
         </div>
       </header>
-      {/* Hero Section */}
-      <main className="relative flex flex-col items-center justify-center px-6 py-12">
+      
+      {/* Hero Section - Black Background */}
+      <section className="relative bg-black px-6 py-16">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-32 h-32 border border-[#FFB90F] rotate-45"></div>
@@ -368,7 +369,7 @@ export default function ComingSoon() {
             </div>
           </div>
         </div>
-      </main>
+      </section>
       {/* Footer */}
       <footer className="relative mt-16 py-8 border-t border-white/10">
         <div className="max-w-6xl mx-auto px-6">
