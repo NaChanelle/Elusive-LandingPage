@@ -10,6 +10,7 @@ import { Clock, Mail, Menu } from "lucide-react";
 export default function ComingSoon() {
   const [email, setEmail] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -27,6 +28,18 @@ export default function ComingSoon() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileMenuOpen && !(event.target as Element).closest('header')) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [mobileMenuOpen]);
 
   // Calculate time until August 1, 2025
   useEffect(() => {
@@ -80,9 +93,9 @@ export default function ComingSoon() {
   };
 
   return (
-    <div className="min-h-screen text-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
       {/* Header */}
-      <header className={`fixed top-0 left-0 right-0 z-50 p-6 transition-all duration-500 ${scrolled ? 'bg-black/95 backdrop-blur-sm' : 'bg-black'}`}>
+      <header className="relative z-50 p-6">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
@@ -109,24 +122,64 @@ export default function ComingSoon() {
             </div>
           </nav>
 
-          {/* Hamburger Menu (appears on scroll) */}
-          <div className={`transition-all duration-700 delay-300 ${scrolled ? 'opacity-100 transform translate-x-0 scale-100' : 'opacity-0 transform translate-x-8 scale-0'}`}>
-            <Button className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg backdrop-blur-sm border border-white/20">
-              <Menu className="w-5 h-5" />
-            </Button>
-          </div>
-
           {/* Mobile Menu Button (always visible on mobile) */}
           <div className="md:hidden">
-            <Button className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg backdrop-blur-sm border border-white/20">
+            <Button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg backdrop-blur-sm border border-white/20"
+            >
               <Menu className="w-5 h-5" />
             </Button>
           </div>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-sm border-t border-white/10 p-4 space-y-3">
+            <Link href="/platform" onClick={() => setMobileMenuOpen(false)}>
+              <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg">
+                Sign-Up for event updates
+              </Button>
+            </Link>
+            <Link href="/vessel" onClick={() => setMobileMenuOpen(false)}>
+              <Button className="w-full bg-[#8B0000] hover:bg-[#8B0000]/90 text-white font-medium py-3 rounded-lg">
+                Preview Vessel app
+              </Button>
+            </Link>
+          </div>
+        )}
       </header>
+
+      {/* Fixed Hamburger Menu (appears on desktop scroll) */}
+      <div className={`fixed top-6 right-6 z-50 hidden md:block transition-all duration-700 delay-300 ${scrolled ? 'opacity-100 transform translate-x-0 scale-100' : 'opacity-0 transform translate-x-8 scale-0 pointer-events-none'}`}>
+        <div className="relative">
+          <Button 
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="bg-black/90 hover:bg-black text-white p-3 rounded-lg backdrop-blur-sm border border-white/20 shadow-lg"
+          >
+            <Menu className="w-5 h-5" />
+          </Button>
+          
+          {/* Dropdown Menu for Fixed Hamburger */}
+          {mobileMenuOpen && (
+            <div className="absolute top-full right-0 mt-2 bg-black/95 backdrop-blur-sm border border-white/20 rounded-lg p-3 space-y-2 min-w-[200px] shadow-xl">
+              <Link href="/platform" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-2 rounded-lg text-sm">
+                  Sign-Up for event updates
+                </Button>
+              </Link>
+              <Link href="/vessel" onClick={() => setMobileMenuOpen(false)}>
+                <Button className="w-full bg-[#8B0000] hover:bg-[#8B0000]/90 text-white font-medium py-2 rounded-lg text-sm">
+                  Preview Vessel app
+                </Button>
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
       
       {/* Hero Section - Black Background */}
-      <section className="relative bg-black px-6 py-16 pt-32">
+      <section className="relative bg-black px-6 py-16">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-32 h-32 border border-[#FFB90F] rotate-45"></div>
           <div className="absolute bottom-40 right-32 w-24 h-24 border border-[#8B0000] rotate-12"></div>
