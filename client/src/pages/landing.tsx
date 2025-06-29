@@ -5,7 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
-import { Clock, ChevronRight, Mail, Users, Sparkles } from "lucide-react";
+import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown } from "lucide-react";
 import { insertReservationSchema, type InsertReservation } from "@shared/schema";
 
 export default function Landing() {
@@ -214,6 +214,109 @@ export default function Landing() {
                 </div>
                 <h4 className="text-xl font-semibold mb-3">Cultural Codes Chronicles</h4>
                 <p className="text-gray-300">Ongoing storytelling ecosystem and creator community</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Access Tiers Section */}
+          <div className="mt-20 pt-8 border-t border-white/10 max-w-4xl mx-auto">
+            <h3 className="text-3xl font-bold mb-8 text-center">Choose Your Investigation Level</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Detective Tier */}
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-[#FFB90F]/50 transition-all duration-300">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-6 h-6 text-[#FFB90F]" />
+                  </div>
+                  <h4 className="text-xl font-bold mb-2">Detective</h4>
+                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">$15</div>
+                  <p className="text-gray-300 mb-6 text-sm">
+                    Perfect for curious minds ready to start their first cultural investigation.
+                  </p>
+                  <ul className="text-left space-y-2 mb-6">
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
+                      Event access & materials
+                    </li>
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
+                      Basic investigation tools
+                    </li>
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
+                      Community access
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Curator Tier */}
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border-2 border-[#FFB90F] hover:border-[#FFB90F]/80 transition-all duration-300 relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-[#FFB90F] text-black px-3 py-1 rounded-full text-xs font-semibold">
+                    POPULAR
+                  </span>
+                </div>
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Users className="w-6 h-6 text-[#FFB90F]" />
+                  </div>
+                  <h4 className="text-xl font-bold mb-2">Curator</h4>
+                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">$35</div>
+                  <p className="text-gray-300 mb-6 text-sm">
+                    For cultural enthusiasts who want to shape the investigation experience.
+                  </p>
+                  <ul className="text-left space-y-2 mb-6">
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
+                      Everything in Detective
+                    </li>
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
+                      Advanced storytelling tools
+                    </li>
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
+                      Priority community features
+                    </li>
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
+                      Exclusive content access
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              {/* Accomplice Tier */}
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-[#8B0000]/50 transition-all duration-300">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-[#8B0000]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Crown className="w-6 h-6 text-[#8B0000]" />
+                  </div>
+                  <h4 className="text-xl font-bold mb-2">Accomplice</h4>
+                  <div className="text-3xl font-bold text-[#8B0000] mb-4">$75</div>
+                  <p className="text-gray-300 mb-6 text-sm">
+                    For dedicated investigators who want the complete immersive experience.
+                  </p>
+                  <ul className="text-left space-y-2 mb-6">
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
+                      Everything in Curator
+                    </li>
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
+                      VIP event experience
+                    </li>
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
+                      Direct creator collaboration
+                    </li>
+                    <li className="flex items-center text-sm">
+                      <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
+                      Early Vessel app access
+                    </li>
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

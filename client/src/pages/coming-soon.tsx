@@ -107,9 +107,6 @@ export default function ComingSoon() {
             <Link href="/vessel" className="text-sm text-gray-300 hover:text-[#FFB90F] transition-colors">
               Vessel App
             </Link>
-            <Link href="/signup" className="bg-[#FFB90F] text-black px-4 py-2 rounded-lg text-sm font-semibold hover:bg-[#FFB90F]/90 transition-colors">
-              Sign Up
-            </Link>
           </nav>
         </div>
       </header>
@@ -197,7 +194,7 @@ export default function ComingSoon() {
                   disabled={signupMutation.isPending}
                   className="absolute right-1 top-1 h-10 bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-semibold rounded-lg px-6 transition-all duration-200"
                 >
-                  {signupMutation.isPending ? "Joining..." : "Join Now"}
+                  {signupMutation.isPending ? "Adding you..." : "Notify Me"}
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
@@ -206,103 +203,83 @@ export default function ComingSoon() {
             <p className="text-xs text-gray-400 mt-3">
               No spam. Unsubscribe anytime. We respect your privacy.
             </p>
+            
+            {/* Share This Page */}
+            <div className="mt-6 pt-4 border-t border-white/10">
+              <p className="text-sm text-gray-400 mb-3 text-center">Share with fellow investigators:</p>
+              <div className="flex justify-center space-x-4">
+                <a 
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('Join the cultural investigation at Elusive Origin - August 2025 event coming soon!')}&url=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-white/10 hover:bg-[#1DA1F2] rounded-lg flex items-center justify-center transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                  </svg>
+                </a>
+                <a 
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-white/10 hover:bg-[#4267B2] rounded-lg flex items-center justify-center transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                </a>
+                <a 
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 bg-white/10 hover:bg-[#0077b5] rounded-lg flex items-center justify-center transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+                <a 
+                  href={`mailto:?subject=${encodeURIComponent('Elusive Origin - Cultural Investigation Platform')}&body=${encodeURIComponent('Check out this upcoming cultural investigation platform launching August 2025: ' + window.location.href)}`}
+                  className="w-10 h-10 bg-white/10 hover:bg-[#FFB90F] rounded-lg flex items-center justify-center transition-colors"
+                >
+                  <Mail className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
           </div>
 
-          {/* Access Tiers Section */}
-          <div className="mt-16 pt-8 border-t border-white/10 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold mb-8 text-center">Choose Your Investigation Level</h3>
-            <div className="grid md:grid-cols-3 gap-6">
-              {/* Detective Tier */}
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-[#FFB90F]/50 transition-all duration-300">
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Search className="w-6 h-6 text-[#FFB90F]" />
+
+
+          {/* Early Tester Testimonials */}
+          <div className="mt-16 pt-8 border-t border-white/10 max-w-3xl mx-auto">
+            <h3 className="text-xl font-semibold mb-8 text-center">What Early Investigators Are Saying</h3>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <p className="text-lg text-gray-100 mb-4 italic">
+                  "I've never experienced anything like it! Elusive Origin is truly groundbreaking."
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-[#FFB90F] font-semibold text-sm">MR</span>
                   </div>
-                  <h4 className="text-xl font-bold mb-2">Detective (free investigation)</h4>
-                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">$0.00</div>
-                  <p className="text-gray-300 mb-6 text-sm">7 days free.
-                  Perfect for curious minds ready to start their first cultural investigation.</p>
-                  <ul className="text-left space-y-2 mb-6">
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                      Digital access
-                    </li>
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                      Basic investigation tools
-                    </li>
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                      Community access
-                    </li>
-                  </ul>
+                  <div>
+                    <p className="font-medium text-sm">Maya Rodriguez</p>
+                    <p className="text-xs text-gray-400">Early Investigator</p>
+                  </div>
                 </div>
               </div>
-
-              {/* Curator Tier */}
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border-2 border-[#FFB90F] hover:border-[#FFB90F]/80 transition-all duration-300 relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-[#FFB90F] text-black px-3 py-1 rounded-full text-xs font-semibold">
-                    POPULAR
-                  </span>
-                </div>
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Users className="w-6 h-6 text-[#FFB90F]" />
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+                <p className="text-lg text-gray-100 mb-4 italic">
+                  "This platform reveals stories I never knew existed. It's changing how I see culture."
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-[#FFB90F] font-semibold text-sm">JK</span>
                   </div>
-                  <h4 className="text-xl font-bold mb-2">Curator</h4>
-                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">$49</div>
-                  <p className="text-gray-300 mb-6 text-sm">For thrill enthusiasts who want to shape the investigation experience.</p>
-                  <ul className="text-left space-y-2 mb-6">
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                      Everything in Detective
-                    </li>
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                      Advanced storytelling tools
-                    </li>
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                      Priority community features
-                    </li>
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                      Exclusive content access
-                    </li>
-                  </ul>
-                </div>
-              </div>
-
-              {/* Accomplice Tier */}
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-[#8B0000]/50 transition-all duration-300">
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-[#8B0000]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Crown className="w-6 h-6 text-[#8B0000]" />
+                  <div>
+                    <p className="font-medium text-sm">Jordan Kim</p>
+                    <p className="text-xs text-gray-400">Beta Participant</p>
                   </div>
-                  <h4 className="text-xl font-bold mb-2">Accomplice</h4>
-                  <div className="text-3xl font-bold text-[#8B0000] mb-4">$75</div>
-                  <p className="text-gray-300 mb-6 text-sm">
-                    For dedicated investigators who want the complete immersive experience.
-                  </p>
-                  <ul className="text-left space-y-2 mb-6">
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
-                      Everything in Curator
-                    </li>
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
-                      VIP event experience
-                    </li>
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
-                      Direct creator collaboration
-                    </li>
-                    <li className="flex items-center text-sm">
-                      <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
-                      Early Vessel app access
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>
