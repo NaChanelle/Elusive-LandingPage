@@ -219,9 +219,8 @@ export default function ComingSoon() {
                   </div>
                   <h4 className="text-xl font-bold mb-2">Detective (free investigation)</h4>
                   <div className="text-3xl font-bold text-[#FFB90F] mb-4">$0.00</div>
-                  <p className="text-gray-300 mb-6 text-sm">
-                    Perfect for curious minds ready to start their first cultural investigation.
-                  </p>
+                  <p className="text-gray-300 mb-6 text-sm">7 days free.
+                  Perfect for curious minds ready to start their first cultural investigation.</p>
                   <ul className="text-left space-y-2 mb-6">
                     <li className="flex items-center text-sm">
                       <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
