@@ -178,8 +178,8 @@ export default function ComingSoon() {
         </div>
       </div>
       
-      {/* Hero Section - Black Background */}
-      <section className="relative bg-black px-6 py-16">
+      {/* Hero Section */}
+      <section className="relative px-6 py-16">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-32 h-32 border border-[#FFB90F] rotate-45"></div>
           <div className="absolute bottom-40 right-32 w-24 h-24 border border-[#8B0000] rotate-12"></div>
@@ -334,8 +334,8 @@ export default function ComingSoon() {
         </div>
       </section>
 
-      {/* Early Tester Testimonials - Black Background */}
-      <section className="bg-black py-16">
+      {/* Early Tester Testimonials */}
+      <section className="py-16">
         <div className="max-w-3xl mx-auto px-6">
           <h3 className="text-xl font-semibold mb-8 text-center text-white">What Early Investigators Are Saying</h3>
           <div className="grid md:grid-cols-2 gap-8">
@@ -371,8 +371,8 @@ export default function ComingSoon() {
         </div>
       </section>
 
-      {/* Why Join Section - Black Background */}
-      <section className="bg-black py-16">
+      {/* Why Join Section */}
+      <section className="py-16">
         <div className="max-w-4xl mx-auto px-6">
           <h3 className="text-2xl font-bold mb-8 text-center text-white">Why You'll Want to Join the Investigation</h3>
           <div className="grid md:grid-cols-2 gap-6">
@@ -416,8 +416,8 @@ export default function ComingSoon() {
         </div>
       </section>
 
-      {/* FAQ Section - Black Background */}
-      <section className="bg-black py-16">
+      {/* FAQ Section */}
+      <section className="py-16">
         <div className="max-w-3xl mx-auto px-6">
           <h3 className="text-2xl font-bold mb-8 text-center text-white">Frequently Asked Questions</h3>
           <div className="space-y-6">
@@ -438,7 +438,7 @@ export default function ComingSoon() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black py-8">
+      <footer className="py-8 border-t border-white/10">
         <div className="max-w-6xl mx-auto px-6 text-center">
           <div className="flex items-center justify-center space-x-3 mb-4">
             <div className="w-6 h-6 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
