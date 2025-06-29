@@ -5,12 +5,13 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
-import { Clock, Mail, Menu } from "lucide-react";
+import { Clock, Mail, Menu, ChevronUp } from "lucide-react";
 
 export default function ComingSoon() {
   const [email, setEmail] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -19,10 +20,11 @@ export default function ComingSoon() {
   });
   const { toast } = useToast();
 
-  // Handle scroll effect for menu transformation
+  // Handle scroll effect for menu transformation and back to top button
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 100);
+      setShowBackToTop(window.scrollY > 500);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -90,6 +92,10 @@ export default function ComingSoon() {
     if (email) {
       signupMutation.mutate(email);
     }
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
