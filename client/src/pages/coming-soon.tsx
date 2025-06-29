@@ -5,10 +5,11 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
-import { Clock, Mail } from "lucide-react";
+import { Clock, Mail, Menu } from "lucide-react";
 
 export default function ComingSoon() {
   const [email, setEmail] = useState("");
+  const [scrolled, setScrolled] = useState(false);
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -16,6 +17,16 @@ export default function ComingSoon() {
     seconds: 0,
   });
   const { toast } = useToast();
+
+  // Handle scroll effect for menu transformation
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Calculate time until August 1, 2025
   useEffect(() => {
@@ -71,7 +82,7 @@ export default function ComingSoon() {
   return (
     <div className="min-h-screen text-white">
       {/* Header */}
-      <header className="relative z-50 p-6 bg-black">
+      <header className={`fixed top-0 left-0 right-0 z-50 p-6 transition-all duration-500 ${scrolled ? 'bg-black/95 backdrop-blur-sm' : 'bg-black'}`}>
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-3">
             <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
@@ -79,19 +90,43 @@ export default function ComingSoon() {
             </div>
             <span className="text-xl font-bold tracking-wider">ELUSIVE</span>
           </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            <Link href="/platform" className="text-sm text-gray-300 hover:text-[#FFB90F] transition-colors">
-              Main Platform
-            </Link>
-            <Link href="/vessel" className="text-sm text-gray-300 hover:text-[#FFB90F] transition-colors">
-              Vessel App
-            </Link>
+          
+          {/* Desktop Navigation with Animated Buttons */}
+          <nav className="hidden md:flex items-center space-x-4">
+            <div className={`transition-all duration-700 ${scrolled ? 'opacity-0 transform translate-x-8 scale-0' : 'opacity-100 transform translate-x-0 scale-100'}`}>
+              <Link href="/platform">
+                <Button className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-6 py-2 rounded-full transition-all duration-300 hover:scale-105">
+                  Sign-Up for event updates
+                </Button>
+              </Link>
+            </div>
+            <div className={`transition-all duration-700 delay-100 ${scrolled ? 'opacity-0 transform translate-x-8 scale-0' : 'opacity-100 transform translate-x-0 scale-100'}`}>
+              <Link href="/vessel">
+                <Button className="bg-[#8B0000] hover:bg-[#8B0000]/90 text-white font-medium px-6 py-2 rounded-full transition-all duration-300 hover:scale-105">
+                  Preview Vessel app
+                </Button>
+              </Link>
+            </div>
           </nav>
+
+          {/* Hamburger Menu (appears on scroll) */}
+          <div className={`transition-all duration-700 delay-300 ${scrolled ? 'opacity-100 transform translate-x-0 scale-100' : 'opacity-0 transform translate-x-8 scale-0'}`}>
+            <Button className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg backdrop-blur-sm border border-white/20">
+              <Menu className="w-5 h-5" />
+            </Button>
+          </div>
+
+          {/* Mobile Menu Button (always visible on mobile) */}
+          <div className="md:hidden">
+            <Button className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg backdrop-blur-sm border border-white/20">
+              <Menu className="w-5 h-5" />
+            </Button>
+          </div>
         </div>
       </header>
       
       {/* Hero Section - Black Background */}
-      <section className="relative bg-black px-6 py-16">
+      <section className="relative bg-black px-6 py-16 pt-32">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-20 left-20 w-32 h-32 border border-[#FFB90F] rotate-45"></div>
           <div className="absolute bottom-40 right-32 w-24 h-24 border border-[#8B0000] rotate-12"></div>
@@ -246,36 +281,36 @@ export default function ComingSoon() {
         </div>
       </section>
 
-      {/* Early Tester Testimonials - Neo Gold Background */}
-      <section className="bg-gradient-to-br from-[#FFB90F] to-[#FFA500] py-16">
+      {/* Early Tester Testimonials - Black Background */}
+      <section className="bg-black py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h3 className="text-xl font-semibold mb-8 text-center text-black">What Early Investigators Are Saying</h3>
+          <h3 className="text-xl font-semibold mb-8 text-center text-white">What Early Investigators Are Saying</h3>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-black/10 backdrop-blur-sm rounded-xl p-6 border border-black/20">
-              <p className="text-lg text-black mb-4 italic">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <p className="text-lg text-white mb-4 italic">
                 "I've never experienced anything like it! Elusive Origin is truly groundbreaking."
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-black/20 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-black font-semibold text-sm">MR</span>
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-white font-semibold text-sm">MR</span>
                 </div>
                 <div>
-                  <p className="font-medium text-sm text-black">Maya Rodriguez</p>
-                  <p className="text-xs text-black/70">Early Investigator</p>
+                  <p className="font-medium text-sm text-white">Maya Rodriguez</p>
+                  <p className="text-xs text-gray-300">Early Investigator</p>
                 </div>
               </div>
             </div>
-            <div className="bg-black/10 backdrop-blur-sm rounded-xl p-6 border border-black/20">
-              <p className="text-lg text-black mb-4 italic">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+              <p className="text-lg text-white mb-4 italic">
                 "This platform reveals stories I never knew existed. It's changing how I see culture."
               </p>
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-black/20 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-black font-semibold text-sm">JK</span>
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                  <span className="text-white font-semibold text-sm">JK</span>
                 </div>
                 <div>
-                  <p className="font-medium text-sm text-black">Jordan Kim</p>
-                  <p className="text-xs text-black/70">Beta Participant</p>
+                  <p className="font-medium text-sm text-white">Jordan Kim</p>
+                  <p className="text-xs text-gray-300">Beta Participant</p>
                 </div>
               </div>
             </div>
@@ -283,8 +318,8 @@ export default function ComingSoon() {
         </div>
       </section>
 
-      {/* Why Join Section - Social Mirror Red Background */}
-      <section className="bg-gradient-to-br from-[#8B0000] to-[#A00000] py-16">
+      {/* Why Join Section - Black Background */}
+      <section className="bg-black py-16">
         <div className="max-w-4xl mx-auto px-6">
           <h3 className="text-2xl font-bold mb-8 text-center text-white">Why You'll Want to Join the Investigation</h3>
           <div className="grid md:grid-cols-2 gap-6">
@@ -293,7 +328,7 @@ export default function ComingSoon() {
                 <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h4 className="font-semibold text-lg mb-2 text-white">Unravel hidden cultural narratives like never before</h4>
-                  <p className="text-gray-200 text-sm">Dive deep into authentic stories that challenge mainstream perspectives and reveal untold truths.</p>
+                  <p className="text-gray-300 text-sm">Dive deep into authentic stories that challenge mainstream perspectives and reveal untold truths.</p>
                 </div>
               </div>
             </div>
@@ -302,7 +337,7 @@ export default function ComingSoon() {
                 <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h4 className="font-semibold text-lg mb-2 text-white">Connect with a global community of curious minds</h4>
-                  <p className="text-gray-200 text-sm">Join investigators from around the world who share your passion for cultural discovery and meaningful dialogue.</p>
+                  <p className="text-gray-300 text-sm">Join investigators from around the world who share your passion for cultural discovery and meaningful dialogue.</p>
                 </div>
               </div>
             </div>
@@ -311,7 +346,7 @@ export default function ComingSoon() {
                 <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h4 className="font-semibold text-lg mb-2 text-white">Experience immersive mysteries that challenge your perspective</h4>
-                  <p className="text-gray-200 text-sm">Engage in interactive experiences designed to expand your worldview and deepen cultural understanding.</p>
+                  <p className="text-gray-300 text-sm">Engage in interactive experiences designed to expand your worldview and deepen cultural understanding.</p>
                 </div>
               </div>
             </div>
@@ -320,7 +355,7 @@ export default function ComingSoon() {
                 <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
                 <div>
                   <h4 className="font-semibold text-lg mb-2 text-white">Shape the future of collaborative storytelling</h4>
-                  <p className="text-gray-200 text-sm">Become part of a revolutionary platform where your voice contributes to authentic cultural narratives.</p>
+                  <p className="text-gray-300 text-sm">Become part of a revolutionary platform where your voice contributes to authentic cultural narratives.</p>
                 </div>
               </div>
             </div>
@@ -328,22 +363,22 @@ export default function ComingSoon() {
         </div>
       </section>
 
-      {/* FAQ Section - Darker Background */}
-      <section className="bg-gradient-to-br from-[#363636] to-[#4a4a4a] py-16">
+      {/* FAQ Section - Black Background */}
+      <section className="bg-black py-16">
         <div className="max-w-3xl mx-auto px-6">
           <h3 className="text-2xl font-bold mb-8 text-center text-white">Frequently Asked Questions</h3>
           <div className="space-y-6">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
               <h4 className="font-semibold text-lg mb-2 text-white">When does the first event launch?</h4>
-              <p className="text-gray-200 text-sm">Our inaugural cultural investigation event launches in August 2025. Early access members will receive exclusive previews and first access to tickets.</p>
+              <p className="text-gray-300 text-sm">Our inaugural cultural investigation event launches in August 2025. Early access members will receive exclusive previews and first access to tickets.</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
               <h4 className="font-semibold text-lg mb-2 text-white">What is the Vessel companion app?</h4>
-              <p className="text-gray-200 text-sm">Vessel is our mobile companion app that enhances your investigation experience with real-time clue drops, community theories, and cultural code libraries.</p>
+              <p className="text-gray-300 text-sm">Vessel is our mobile companion app that enhances your investigation experience with real-time clue drops, community theories, and cultural code libraries.</p>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
               <h4 className="font-semibold text-lg mb-2 text-white">How much does it cost to participate?</h4>
-              <p className="text-gray-200 text-sm">We offer three tiers: Detective ($15), Curator ($35), and Accomplice ($75). Each tier provides different levels of access and community features.</p>
+              <p className="text-gray-300 text-sm">We offer three tiers: Detective ($15), Curator ($35), and Accomplice ($75). Each tier provides different levels of access and community features.</p>
             </div>
           </div>
         </div>
