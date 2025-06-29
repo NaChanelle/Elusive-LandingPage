@@ -349,7 +349,7 @@ export default function ComingSoon() {
                   The inaugural cultural investigation experience launches in August 2025. Exact dates and venue details will be shared with early access subscribers first.
                 </p>
               </details>
-              <details className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10">
+              <details className="bg-white/5 backdrop-blur-sm rounded-lg p-4 border border-white/10 text-left">
                 <summary className="cursor-pointer font-medium text-[#FFB90F] hover:text-[#FFA500] transition-colors">
                   What is the Vessel app?
                 </summary>
