@@ -113,7 +113,6 @@ export default function ComingSoon() {
           </nav>
         </div>
       </header>
-
       {/* Hero Section */}
       <main className="relative flex flex-col items-center justify-center px-6 py-12">
         {/* Background Pattern */}
@@ -218,8 +217,8 @@ export default function ComingSoon() {
                   <div className="w-12 h-12 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                     <Search className="w-6 h-6 text-[#FFB90F]" />
                   </div>
-                  <h4 className="text-xl font-bold mb-2">Detective</h4>
-                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">$15</div>
+                  <h4 className="text-xl font-bold mb-2">Detective (free investigation)</h4>
+                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">$0.00</div>
                   <p className="text-gray-300 mb-6 text-sm">
                     Perfect for curious minds ready to start their first cultural investigation.
                   </p>
@@ -352,7 +351,6 @@ export default function ComingSoon() {
           </div>
         </div>
       </main>
-
       {/* Footer */}
       <footer className="relative mt-16 py-8 border-t border-white/10">
         <div className="max-w-6xl mx-auto px-6">
