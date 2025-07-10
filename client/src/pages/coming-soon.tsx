@@ -1,15 +1,11 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
 import { Clock, Mail, Menu, ChevronUp, ChevronDown } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import "../mailerlite.css";
 
 export default function ComingSoon() {
-  const [email, setEmail] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -19,7 +15,6 @@ export default function ComingSoon() {
     minutes: 0,
     seconds: 0,
   });
-  const { toast } = useToast();
 
   // Handle scroll effect for menu transformation and back to top button
   useEffect(() => {
@@ -68,32 +63,37 @@ export default function ComingSoon() {
     return () => clearInterval(timer);
   }, []);
 
-  const signupMutation = useMutation({
-    mutationFn: async (email: string) => {
-      return await apiRequest("/api/reservations", "POST", { email });
-    },
-    onSuccess: () => {
-      toast({
-        title: "Success!",
-        description: "You're on the list! We'll notify you when the investigation begins.",
-      });
-      setEmail("");
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Notification failed",
-        description: error.message || "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (email) {
-      signupMutation.mutate(email);
-    }
-  };
+
+  // Add MailerLite scripts
+  useEffect(() => {
+    // Add MailerLite form script
+    const script = document.createElement('script');
+    script.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
+    script.async = true;
+    document.head.appendChild(script);
+
+    // Add tracking script
+    const trackingScript = document.createElement('script');
+    trackingScript.innerHTML = `
+      fetch("https://assets.mailerlite.com/jsonp/1605566/forms/159584146254988833/takel")
+    `;
+    document.head.appendChild(trackingScript);
+
+    // Add success callback
+    (window as any).ml_webform_success_28257750 = function() {
+      const $ = (window as any).ml_jQuery || (window as any).jQuery;
+      if ($) {
+        $('.ml-subscribe-form-28257750 .row-success').show();
+        $('.ml-subscribe-form-28257750 .row-form').hide();
+      }
+    };
+
+    return () => {
+      document.head.removeChild(script);
+      document.head.removeChild(trackingScript);
+    };
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -253,25 +253,56 @@ export default function ComingSoon() {
               Be the first to know when we launch. Exclusive updates and early bird access.
             </p>
             
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-[#FFB90F] focus:ring-[#FFB90F]"
-                required
-              />
-              <div className="flex justify-center">
-                <Button 
-                  type="submit" 
-                  disabled={signupMutation.isPending}
-                  className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-semibold px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105"
-                >
-                  {signupMutation.isPending ? "Notifying..." : "Notify Me"}
-                </Button>
+            {/* MailerLite Form */}
+            <div id="mlb2-28257750" className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28257750">
+              <div className="ml-form-align-center">
+                <div className="ml-form-embedWrapper embedForm">
+                  <div className="ml-form-embedBody ml-form-embedBodyDefault row-form">
+                    <div className="ml-form-embedContent" style={{marginBottom: '0px'}}>
+                    </div>
+                    <form 
+                      className="ml-block-form" 
+                      action="https://assets.mailerlite.com/jsonp/1605566/forms/159584146254988833/subscribe" 
+                      data-code="" 
+                      method="post" 
+                      target="_blank"
+                    >
+                      <div className="ml-form-formContent">
+                        <div className="ml-form-fieldRow ml-last-item">
+                          <div className="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                            <input 
+                              aria-label="email" 
+                              aria-required="true" 
+                              type="email" 
+                              className="form-control" 
+                              data-inputmask="" 
+                              name="fields[email]" 
+                              placeholder="Enter your email" 
+                              autoComplete="email"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <input type="hidden" name="ml-submit" value="1" />
+                      <div className="ml-form-embedSubmit">
+                        <button type="submit" className="primary">Notify Me</button>
+                        <button disabled style={{display: 'none'}} type="button" className="loading">
+                          <div className="ml-form-embedSubmitLoad"></div>
+                          <span className="sr-only">Loading...</span>
+                        </button>
+                      </div>
+                      <input type="hidden" name="anticsrf" value="true" />
+                    </form>
+                  </div>
+                  <div className="ml-form-successBody row-success" style={{display: 'none'}}>
+                    <div className="ml-form-successContent">
+                      <h4>Thank you!</h4>
+                      <p>You have successfully joined our subscriber list.</p>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </form>
+            </div>
             
             <p className="text-xs text-gray-400 mt-3">
               No spam. Unsubscribe anytime. We respect your privacy.
