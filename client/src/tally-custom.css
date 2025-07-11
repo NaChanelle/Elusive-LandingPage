@@ -1,0 +1,169 @@
+/* Custom Tally Form Styling to match MailerLite brand */
+
+/* Override Tally form container */
+.tally-embed-container,
+iframe[data-tally-src],
+iframe[src*="tally.so"] {
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* Target all elements within Tally iframes */
+iframe[data-tally-src] * {
+  color: #ffffff !important;
+  font-family: inherit !important;
+}
+
+/* Style form fields to match MailerLite */
+.tally-embed-container input[type="text"],
+.tally-embed-container input[type="email"],
+.tally-embed-container textarea,
+.tally-embed-container select {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 8px !important;
+  font-family: inherit !important;
+  font-size: 16px !important;
+  padding: 12px 16px !important;
+  transition: border-color 0.3s, box-shadow 0.3s !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.tally-embed-container input::placeholder,
+.tally-embed-container textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.tally-embed-container input:focus,
+.tally-embed-container textarea:focus,
+.tally-embed-container select:focus {
+  border-color: #FFB90F !important;
+  box-shadow: 0 0 0 3px rgba(255, 185, 15, 0.1) !important;
+  outline: none !important;
+}
+
+/* Style labels */
+.tally-embed-container label {
+  color: #ffffff !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  margin-bottom: 8px !important;
+  display: block !important;
+}
+
+/* Style buttons */
+.tally-embed-container button[type="submit"],
+.tally-embed-container .tally-submit-button {
+  background-color: #FFB90F !important;
+  color: #000000 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-family: inherit !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  padding: 12px 32px !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  box-shadow: none !important;
+  width: auto !important;
+  margin-top: 16px !important;
+}
+
+.tally-embed-container button[type="submit"]:hover,
+.tally-embed-container .tally-submit-button:hover {
+  background-color: rgba(255, 185, 15, 0.9) !important;
+  transform: translateY(-1px) !important;
+}
+
+.tally-embed-container button[type="submit"]:active,
+.tally-embed-container .tally-submit-button:active {
+  transform: translateY(0) !important;
+}
+
+/* Style form container background */
+.tally-embed-container .tally-form {
+  background: transparent !important;
+  color: #ffffff !important;
+  font-family: inherit !important;
+}
+
+/* Style form groups */
+.tally-embed-container .tally-form-group {
+  margin-bottom: 20px !important;
+}
+
+/* Style text content */
+.tally-embed-container p,
+.tally-embed-container div {
+  color: #ffffff !important;
+  font-family: inherit !important;
+}
+
+/* Style success message */
+.tally-embed-container .tally-success {
+  background: rgba(255, 185, 15, 0.1) !important;
+  border: 1px solid #FFB90F !important;
+  border-radius: 8px !important;
+  padding: 20px !important;
+  text-align: center !important;
+}
+
+.tally-embed-container .tally-success h3,
+.tally-embed-container .tally-success h4 {
+  color: #FFB90F !important;
+  font-family: inherit !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+  margin-bottom: 12px !important;
+}
+
+.tally-embed-container .tally-success p {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-family: inherit !important;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+}
+
+/* Hide Tally branding */
+.tally-embed-container .tally-branding {
+  display: none !important;
+}
+
+/* Style radio buttons and checkboxes */
+.tally-embed-container input[type="radio"],
+.tally-embed-container input[type="checkbox"] {
+  accent-color: #FFB90F !important;
+}
+
+.tally-embed-container .tally-radio-label,
+.tally-embed-container .tally-checkbox-label {
+  color: #ffffff !important;
+  font-family: inherit !important;
+}
+
+/* Style dropdown selects */
+.tally-embed-container select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+  background-position: right 12px center !important;
+  background-repeat: no-repeat !important;
+  background-size: 16px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  padding-right: 40px !important;
+}
+
+/* Style required field indicators */
+.tally-embed-container .tally-required {
+  color: #8B0000 !important;
+}
+
+/* Override any iframe styles */
+iframe[data-tally-src] {
+  border: none !important;
+  background: transparent !important;
+}
