@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vessel — Coming Soon</title>
+  <style>
+    body {
+      font-family: 'Helvetica Neue', sans-serif;
+      background: #0F0F0F;
+      color: #FAFAFA;
+      margin: 0;
+      padding: 0;
+    }
+    section {
+      padding: 60px 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1, h2 {
+      text-align: center;
+      font-weight: 600;
+    }
+    button {
+      display: block;
+      margin: 30px auto;
+      padding: 12px 24px;
+      background: #C084FC;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #page2, #page3 {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Page 1 -->
+  <section id="page1">
+    <h1>Welcome to Vessel</h1>
+    <p style="text-align:center;">Something immersive is coming.</p>
+    <button onclick="showPage(2)">Get Early Access</button>
+    <button onclick="showPage(3)">Submit Feedback</button>
+  </section>
+
+  <!-- Page 2 -->
+  <section id="page2">
+    <h2>Get Early Access</h2>
+    <iframe 
+      data-tally-src="https://tally.so/embed/w505EM?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+      loading="lazy" 
+      width="100%" 
+      height="398" 
+      frameborder="0" 
+      marginheight="0" 
+      marginwidth="0" 
+      title="Vessel Early Access">
+    </iframe>
+    <button onclick="showPage(1)">← Back to Home</button>
+  </section>
+
+  <!-- Page 3 -->
+  <section id="page3">
+    <h2>Submit Feedback</h2>
+    <iframe 
+      data-tally-src="https://tally.so/embed/3NNy8G?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+      loading="lazy" 
+      width="100%" 
+      height="228" 
+      frameborder="0" 
+      marginheight="0" 
+      marginwidth="0" 
+      title="Vessel Feedback">
+    </iframe>
+    <button onclick="showPage(1)">← Back to Home</button>
+  </section>
+
+  <!-- Tally Embed Script (Only Once) -->
+  <script>
+    var d = document,
+        w = "https://tally.so/widgets/embed.js",
+        v = function() {
+          if (typeof Tally !== "undefined") {
+            Tally.loadEmbeds();
+          } else {
+            d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach(function(e) {
+              e.src = e.dataset.tallySrc;
+            });
+          }
+        };
+    if (typeof Tally !== "undefined") {
+      v();
+    } else if (d.querySelector('script[src="' + w + '"]') == null) {
+      var s = d.createElement("script");
+      s.src = w;
+      s.onload = v;
+      s.onerror = v;
+      d.body.appendChild(s);
+    }
+
+    // Navigation Logic
+    function showPage(pageNum) {
+      for (let i = 1; i <= 3; i++) {
+        document.getElementById(`page${i}`).style.display = i === pageNum ? 'block' : 'none';
+      }
+    }
+  </script>
+
+</body>
+</html>

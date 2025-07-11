@@ -1,23 +1,10 @@
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { ArrowLeft, Eye, Users, Zap, BookOpen, Lightbulb, MessageSquare, Play, ChevronRight, Mail, Globe, Database, Calendar } from "lucide-react";
 import SwipeableFeatureCarousel from "@/components/swipeable-feature-carousel";
-import { insertReservationSchema, type InsertReservation } from "@shared/schema";
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 
 export default function VesselTeaser() {
-  const { toast } = useToast();
-  const [isSuccess, setIsSuccess] = useState(false);
   const [, setLocation] = useLocation();
   const [scrollY, setScrollY] = useState(0);
 
@@ -28,45 +15,37 @@ export default function VesselTeaser() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const form = useForm<InsertReservation>({
-    resolver: zodResolver(insertReservationSchema.extend({
-      investigationInterests: insertReservationSchema.shape.investigationInterests.default(["vessel-app"])
-    })),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      email: "",
-      investigationInterests: ["vessel-app"],
-      preferredRole: "",
-      interests: "",
-    },
-  });
-
-  const createReservation = useMutation({
-    mutationFn: async (data: InsertReservation) => {
-      const response = await apiRequest("POST", "/api/reservations", data);
-      return response.json();
-    },
-    onSuccess: (data) => {
-      setIsSuccess(true);
-      toast({
-        title: "Vessel Early Access Secured!",
-        description: `Welcome to the future, ${data.reservation.firstName}. You'll be first to enter the Vessel when it launches.`,
+  // Add Tally script
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://tally.so/widgets/embed.js';
+    script.async = true;
+    script.onload = () => {
+      if (typeof (window as any).Tally !== "undefined") {
+        (window as any).Tally.loadEmbeds();
+      } else {
+        document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
+          e.src = e.dataset.tallySrc;
+        });
+      }
+    };
+    script.onerror = () => {
+      document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
+        e.src = e.dataset.tallySrc;
       });
-      form.reset();
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Early Access Failed",
-        description: error.message || "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
+    };
+    
+    if (!document.querySelector('script[src="https://tally.so/widgets/embed.js"]')) {
+      document.body.appendChild(script);
+    }
 
-  const onSubmit = (data: InsertReservation) => {
-    createReservation.mutate(data);
-  };
+    return () => {
+      const existingScript = document.querySelector('script[src="https://tally.so/widgets/embed.js"]');
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, []);
 
   // Core MVP Features - First Iteration Priority
   const mvpFeatures = [
@@ -144,45 +123,6 @@ export default function VesselTeaser() {
       timeline: "On Our Roadmap"
     }
   ];
-
-
-
-
-
-  if (isSuccess) {
-    return (
-      <div className="min-h-screen bg-deep-charcoal text-gray-100">
-        <div className="max-w-4xl mx-auto px-4 py-20">
-          <div className="text-center">
-            <div className="bg-black-mirror border border-neo-gold rounded-2xl p-12">
-              <div className="w-16 h-16 bg-neo-gold rounded-full mx-auto mb-6 flex items-center justify-center">
-                <span className="text-deep-charcoal text-2xl font-bold">✓</span>
-              </div>
-              <h2 className="text-3xl font-serif font-bold mb-4">Vessel Early Access Secured</h2>
-              <p className="text-lg text-gray-300 mb-6">
-                Your place aboard the Vessel has been reserved. Prepare to enter a sacred container 
-                where theories transform into collective truth.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  onClick={() => setIsSuccess(false)}
-                  className="bg-neo-gold text-deep-charcoal hover:bg-neo-gold/90"
-                >
-                  Reserve Another Access
-                </Button>
-                <button 
-                  onClick={() => setLocation("/")}
-                  className="inline-flex items-center justify-center px-6 py-3 border-2 border-social-red text-social-red rounded-lg font-semibold hover:bg-social-red hover:text-white transition-all"
-                >
-                  Return to Investigation Portal
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-deep-charcoal text-gray-100">
@@ -515,161 +455,17 @@ export default function VesselTeaser() {
           </div>
           
           <div className="bg-medium-charcoal border border-neo-gold/30 rounded-2xl p-8 md:p-12">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                {/* Primary Fields Section */}
-                <div className="space-y-6">
-                  {/* Name Fields - Most Prominent */}
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <FormField
-                      control={form.control}
-                      name="firstName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-white text-lg font-semibold">
-                            First Name <span className="text-social-red">*</span>
-                          </FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="Enter your first name"
-                              {...field}
-                              className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold text-lg h-12"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="lastName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel className="text-white text-lg font-semibold">
-                            Last Name <span className="text-social-red">*</span>
-                          </FormLabel>
-                          <FormControl>
-                            <Input 
-                              placeholder="Enter your last name"
-                              {...field}
-                              className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold text-lg h-12"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  {/* Email - Most Prominent */}
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-white text-lg font-semibold">
-                          Email Address <span className="text-social-red">*</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Input 
-                            type="email"
-                            placeholder="your.email@example.com"
-                            {...field}
-                            className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold text-lg h-12"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Optional Fields Section */}
-                <div className="space-y-6 pt-6 border-t border-gray-600/50">
-                  <div className="text-center">
-                    <p className="text-gray-400 text-sm font-medium">
-                      Optional: Help us tailor your Vessel experience
-                    </p>
-                  </div>
-
-                  {/* Role Interest - Optional */}
-                  <FormField
-                    control={form.control}
-                    name="preferredRole"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-300 text-base">
-                          Primary Interest in Vessel <span className="text-gray-500 text-sm">(Optional)</span>
-                        </FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold">
-                              <SelectValue placeholder="Select your primary interest" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent className="bg-medium-charcoal border-gray-600">
-                            <SelectItem value="original-story-creator" className="text-white hover:bg-black-mirror">
-                              Original Story Creator
-                            </SelectItem>
-                            <SelectItem value="theory-board-investigator" className="text-white hover:bg-black-mirror">
-                              Theory Board Investigator
-                            </SelectItem>
-                            <SelectItem value="community-collaborator" className="text-white hover:bg-black-mirror">
-                              Community Collaborator
-                            </SelectItem>
-                            <SelectItem value="reference-library-contributor" className="text-white hover:bg-black-mirror">
-                              Reference Library Contributor
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  {/* MVP Features Feedback - Optional */}
-                  <FormField
-                    control={form.control}
-                    name="interests"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-gray-300 text-base">
-                          Which MVP features excite you most? <span className="text-gray-500 text-sm">(Optional)</span>
-                        </FormLabel>
-                        <FormControl>
-                          <Textarea 
-                            placeholder="Tell us about your interest in Theory Boards, Investigation Log, Character Roster, Cultural Library, or Live Events..."
-                            {...field}
-                            className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold"
-                            rows={3}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <Button 
-                  type="submit" 
-                  disabled={createReservation.isPending}
-                  className="w-full gradient-gold-red text-deep-charcoal py-4 text-lg font-semibold hover:opacity-90 transition-all transform hover:scale-105"
-                >
-                  {createReservation.isPending 
-                    ? "Securing Vessel Access..." 
-                    : "Secure Early Access to Vessel"
-                  }
-                </Button>
-              </form>
-            </Form>
-            
-            <div className="mt-8 text-center">
-              <p className="text-sm text-gray-400">
-                Early access gives you priority entry when Vessel launches, plus opportunities to shape 
-                the Original Story Studio features based on your feedback.
-              </p>
-            </div>
+            <iframe 
+              data-tally-src="https://tally.so/embed/w505EM?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+              loading="lazy" 
+              width="100%" 
+              height="398" 
+              frameBorder="0" 
+              marginHeight="0" 
+              marginWidth="0" 
+              title="Vessel Early Access"
+              className="rounded-lg"
+            ></iframe>
           </div>
         </div>
       </section>
@@ -702,21 +498,17 @@ export default function VesselTeaser() {
               </div>
             </div>
             
-            <form className="space-y-4">
-              <Textarea 
-                placeholder="Describe your ideal cultural investigation platform. What features would transform how communities preserve and share their stories?"
-                className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold min-h-[120px]"
-              />
-              <div className="flex flex-col sm:flex-row gap-4 items-center">
-                <Input 
-                  placeholder="Your email (optional)"
-                  className="bg-deep-charcoal border-gray-600 text-white focus:border-neo-gold"
-                />
-                <Button className="bg-neo-gold text-deep-charcoal hover:bg-neo-gold/90 px-8 py-2 font-semibold whitespace-nowrap">
-                  Submit Feedback
-                </Button>
-              </div>
-            </form>
+            <iframe 
+              data-tally-src="https://tally.so/embed/3NNy8G?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+              loading="lazy" 
+              width="100%" 
+              height="228" 
+              frameBorder="0" 
+              marginHeight="0" 
+              marginWidth="0" 
+              title="Vessel Feedback"
+              className="rounded-lg"
+            ></iframe>
           </div>
         </div>
       </section>
