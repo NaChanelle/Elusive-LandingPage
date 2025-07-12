@@ -3,10 +3,12 @@ import { useLocation } from "wouter";
 import { ArrowLeft, Eye, Users, Zap, BookOpen, Lightbulb, MessageSquare, Play, ChevronRight, Mail, Globe, Database, Calendar } from "lucide-react";
 import SwipeableFeatureCarousel from "@/components/swipeable-feature-carousel";
 import { Button } from "@/components/ui/button";
+import "../tally-custom.css";
 
 export default function VesselTeaser() {
   const [, setLocation] = useLocation();
   const [scrollY, setScrollY] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Parallax effect
   useEffect(() => {
@@ -15,7 +17,7 @@ export default function VesselTeaser() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Add Tally script
+  // Add Tally script with custom styling
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://tally.so/widgets/embed.js';
@@ -28,6 +30,63 @@ export default function VesselTeaser() {
           e.src = e.dataset.tallySrc;
         });
       }
+      
+      // Apply custom styling after a short delay
+      setTimeout(() => {
+        const iframes = document.querySelectorAll('iframe[src*="tally.so"]');
+        iframes.forEach((iframe: any) => {
+          try {
+            // Add custom styles to iframe
+            iframe.style.background = 'transparent';
+            iframe.style.border = 'none';
+            
+            // Try to access iframe content (may fail due to CORS)
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            if (iframeDoc) {
+              const style = iframeDoc.createElement('style');
+              style.textContent = `
+                body { 
+                  background: transparent !important; 
+                  color: #ffffff !important; 
+                  font-family: inherit !important; 
+                }
+                input, textarea, select {
+                  background: rgba(255, 255, 255, 0.1) !important;
+                  color: #ffffff !important;
+                  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                  border-radius: 8px !important;
+                  padding: 12px 16px !important;
+                }
+                input:focus, textarea:focus, select:focus {
+                  border-color: #FFB90F !important;
+                  box-shadow: 0 0 0 3px rgba(255, 185, 15, 0.1) !important;
+                }
+                button[type="submit"] {
+                  background: #FFB90F !important;
+                  color: #000000 !important;
+                  border: none !important;
+                  border-radius: 8px !important;
+                  padding: 12px 32px !important;
+                  font-weight: 600 !important;
+                }
+                button[type="submit"]:hover {
+                  background: rgba(255, 185, 15, 0.9) !important;
+                }
+                label, p, div {
+                  color: #ffffff !important;
+                }
+                ::placeholder {
+                  color: rgba(255, 255, 255, 0.6) !important;
+                }
+              `;
+              iframeDoc.head.appendChild(style);
+            }
+          } catch (e) {
+            // CORS restriction prevents iframe styling
+            console.log('Cannot style iframe due to CORS restrictions');
+          }
+        });
+      }, 2000);
     };
     script.onerror = () => {
       document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
@@ -441,77 +500,124 @@ export default function VesselTeaser() {
         </div>
       </section>
 
-      {/* Early Access Registration */}
+      {/* Multi-Page Form Section */}
       <section id="early-access" className="py-20 bg-black-mirror">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Secure Early Access</h2>
-            <p className="text-xl text-gray-300 mb-4">
-              Be among the first to enter the Vessel. Help us build the future of interactive storytelling.
-            </p>
-            <p className="text-sm text-neo-gold">
-              Your feedback directly shapes Vessel's development and feature roadmap.
-            </p>
-          </div>
-          
-          <div className="bg-medium-charcoal border border-neo-gold/30 rounded-2xl p-8 md:p-12">
-            <iframe 
-              data-tally-src="https://tally.so/embed/w505EM?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
-              loading="lazy" 
-              width="100%" 
-              height="398" 
-              frameBorder="0" 
-              marginHeight="0" 
-              marginWidth="0" 
-              title="Vessel Early Access"
-              className="rounded-lg"
-            ></iframe>
-          </div>
+          {/* Page 1 - Welcome */}
+          {currentPage === 1 && (
+            <div className="text-center">
+              <div className="bg-medium-charcoal border border-neo-gold/30 rounded-2xl p-8 md:p-12">
+                <div className="w-16 h-16 bg-neo-gold/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <div className="w-8 h-8 border-2 border-neo-gold rotate-45 flex items-center justify-center">
+                    <div className="w-2 h-2 bg-neo-gold rounded-full"></div>
+                  </div>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Welcome to Vessel</h2>
+                <p className="text-xl text-gray-300 mb-8">
+                  Something immersive is coming. Be part of the cultural investigation revolution.
+                </p>
+                <div className="space-y-4">
+                  <Button 
+                    onClick={() => setCurrentPage(2)}
+                    className="w-full bg-neo-gold text-deep-charcoal hover:bg-neo-gold/90 py-4 text-lg font-semibold"
+                  >
+                    Get Early Access
+                  </Button>
+                  <Button 
+                    onClick={() => setCurrentPage(3)}
+                    variant="outline"
+                    className="w-full border-social-red text-social-red hover:bg-social-red hover:text-white py-4 text-lg font-semibold"
+                  >
+                    Submit Feedback
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Page 2 - Early Access Form */}
+          {currentPage === 2 && (
+            <div>
+              <div className="text-center mb-8">
+                <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Get Early Access</h2>
+                <p className="text-xl text-gray-300 mb-4">
+                  Be among the first to enter the Vessel. Help us build the future of interactive storytelling.
+                </p>
+              </div>
+              
+              <div className="bg-medium-charcoal border border-neo-gold/30 rounded-2xl p-8 md:p-12">
+                <iframe 
+                  data-tally-src="https://tally.so/embed/w505EM?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+                  loading="lazy" 
+                  width="100%" 
+                  height="398" 
+                  frameBorder="0" 
+                  marginHeight="0" 
+                  marginWidth="0" 
+                  title="Vessel Early Access"
+                  className="rounded-lg"
+                  style={{
+                    background: 'transparent',
+                    border: 'none'
+                  }}
+                ></iframe>
+                
+                <div className="mt-8 text-center">
+                  <Button 
+                    onClick={() => setCurrentPage(1)}
+                    variant="outline"
+                    className="border-gray-600 text-gray-300 hover:bg-gray-600 hover:text-white"
+                  >
+                    ← Back to Home
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Page 3 - Feedback Form */}
+          {currentPage === 3 && (
+            <div>
+              <div className="text-center mb-8">
+                <h2 className="text-4xl md:text-5xl font-serif font-bold mb-6">Submit Feedback</h2>
+                <p className="text-xl text-gray-300 mb-4">
+                  Your vision guides our roadmap. Help us shape the future of Vessel.
+                </p>
+              </div>
+              
+              <div className="bg-medium-charcoal border border-neo-gold/30 rounded-2xl p-8 md:p-12">
+                <iframe 
+                  data-tally-src="https://tally.so/embed/3NNy8G?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
+                  loading="lazy" 
+                  width="100%" 
+                  height="300" 
+                  frameBorder="0" 
+                  marginHeight="0" 
+                  marginWidth="0" 
+                  title="Vessel Feedback"
+                  className="rounded-lg"
+                  style={{
+                    background: 'transparent',
+                    border: 'none'
+                  }}
+                ></iframe>
+                
+                <div className="mt-8 text-center">
+                  <Button 
+                    onClick={() => setCurrentPage(1)}
+                    variant="outline"
+                    className="border-gray-600 text-gray-300 hover:bg-gray-600 hover:text-white"
+                  >
+                    ← Back to Home
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Share Your Vision Section */}
-      <section className="py-16 bg-gradient-to-br from-deep-charcoal via-black-mirror to-deep-charcoal border-t border-gray-800">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-br from-neo-gold/10 to-social-red/10 border border-neo-gold/30 rounded-2xl p-8 md:p-12 backdrop-blur-sm">
-            <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-neo-gold/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Lightbulb className="w-8 h-8 text-neo-gold" />
-              </div>
-              <h3 className="text-3xl font-serif font-bold mb-4">Help Shape the Future of Vessel</h3>
-              <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                Your vision guides our roadmap. Share ideas for future features and tell us what would make Vessel invaluable for cultural investigation.
-              </p>
-            </div>
-            
-            <div className="bg-black-mirror/50 rounded-xl p-6 mb-6">
-              <h4 className="text-lg font-semibold mb-4 text-neo-gold">What are your dream investigation tools?</h4>
-              <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-300">
-                <div>
-                  <p className="mb-2">🔍 <strong>Theory Development:</strong> How should evidence connect across investigations?</p>
-                  <p className="mb-2">📚 <strong>Cultural Archive:</strong> What knowledge should be preserved and shared?</p>
-                </div>
-                <div>
-                  <p className="mb-2">🎭 <strong>Story Creation:</strong> What frameworks would empower authentic narratives?</p>
-                  <p className="mb-2">🌐 <strong>Community Tools:</strong> How should investigators collaborate across distances?</p>
-                </div>
-              </div>
-            </div>
-            
-            <iframe 
-              data-tally-src="https://tally.so/embed/3NNy8G?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
-              loading="lazy" 
-              width="100%" 
-              height="228" 
-              frameBorder="0" 
-              marginHeight="0" 
-              marginWidth="0" 
-              title="Vessel Feedback"
-              className="rounded-lg"
-            ></iframe>
-          </div>
-        </div>
-      </section>
+
     </div>
   );
 }
