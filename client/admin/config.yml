@@ -1,0 +1,68 @@
+backend:
+  name: github
+  repo: https://github.com/NaChanelle/Elusive-LandingPage # Replace with your GitHub username and repository name
+  branch: main # The branch Decap CMS will commit to (usually 'main' or 'master')
+  base_url: https://api.netlify.com/auth # Required for Netlify Identity
+  auth_endpoint: .netlify/identity/
+media_folder: "assets/uploads" # Where images uploaded via CMS will be stored (relative to project root)
+public_folder: "/assets/uploads" # Public path to uploaded images
+
+collections:
+  - name: "pages" # A label for the collection
+    label: "Website Pages" # How it appears in the CMS UI
+    files:
+      - label: "Home Page"
+        name: "home"
+        file: "content/home.json" # Path to your content file
+        fields:
+          - label: "Hero Title"
+            name: "hero_title"
+            widget: "string"
+            hint: "The main title on the landing page hero section."
+          - label: "Hero Subtitle"
+            name: "hero_subtitle"
+            widget: "string"
+            hint: "The subtitle below the main title."
+          - label: "Call to Action Button Text"
+            name: "cta_button_text"
+            widget: "string"
+            hint: "Text for the main call to action button."
+          - label: "Call to Action Button Link"
+            name: "cta_button_link"
+            widget: "string"
+            hint: "URL for the main call to action button."
+          - label: "Hero Image"
+            name: "hero_image"
+            widget: "image"
+            allow_multiple: false
+            required: false
+            hint: "Background image for the hero section."
+          - label: "About Section Title"
+            name: "about_title"
+            widget: "string"
+          - label: "About Section Content"
+            name: "about_content"
+            widget: "markdown" # Allows rich text editing
+          - label: "Feature 1 Title"
+            name: "feature1_title"
+            widget: "string"
+          - label: "Feature 1 Description"
+            name: "feature1_description"
+            widget: "text"
+          - label: "Feature 2 Title"
+            name: "feature2_title"
+            widget: "string"
+          - label: "Feature 2 Description"
+            name: "feature2_description"
+            widget: "text"
+          # Add more fields here for all editable content on your landing page
+          # For your MailerLite and Tally forms, you might add fields for their embed IDs
+          - label: "MailerLite Form 1 ID"
+            name: "mailerlite_form1_id"
+            widget: "string"
+            hint: "Enter the MailerLite form ID for the first form."
+          - label: "Tally Form 1 ID"
+            name: "tally_form1_id"
+            widget: "string"
+            hint: "Enter the Tally.so form ID for the first form."
+          # ... and so on for the other two forms
