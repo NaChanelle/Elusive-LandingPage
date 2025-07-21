@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import ComingSoon from "@/pages/coming-soon";
 import Landing from "@/pages/landing";
 import VesselTeaser from "@/pages/vessel-teaser";
+import DynamicComingSoon from "@/pages/dynamic-coming-soon";
+import ContentAdmin from "@/pages/content-admin";
 import SignUp from "@/pages/signup";
 import SignIn from "@/pages/signin";
 import NotFound from "@/pages/not-found";
@@ -15,6 +17,8 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={ComingSoon} />
+      <Route path="/dynamic" component={DynamicComingSoon} />
+      <Route path="/admin" component={ContentAdmin} />
       <Route path="/platform" component={Landing} />
       <Route path="/vessel" component={VesselTeaser} />
       <Route path="/signup" component={SignUp} />
