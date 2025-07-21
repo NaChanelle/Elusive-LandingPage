@@ -302,7 +302,10 @@ export default function VesselTeaser() {
                 </div>
                 <div className="text-sm text-gray-400">Estimated: 2 weeks</div>
               </div>
-              <Button className="bg-neo-gold text-deep-charcoal hover:bg-neo-gold/90">
+              <Button 
+                onClick={() => document.getElementById('early-access')?.scrollIntoView({ behavior: 'smooth' })}
+                className="bg-neo-gold text-deep-charcoal hover:bg-neo-gold/90"
+              >
                 Notify Me When Ready
                 <Mail className="ml-2 w-4 h-4" />
               </Button>
@@ -406,7 +409,10 @@ export default function VesselTeaser() {
           </div>
           
           <div className="grid md:grid-cols-4 gap-8">
-            <div className="text-center group">
+            <div 
+              onClick={() => document.getElementById('early-access')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-center group cursor-pointer"
+            >
               <div className="w-16 h-16 bg-neo-gold/20 border-2 border-neo-gold rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-neo-gold/30 transition-colors">
                 <span className="text-neo-gold font-bold text-xl">1</span>
               </div>
