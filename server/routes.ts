@@ -1,8 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import fs from "fs/promises";
-import path from "path";
 import { insertReservationSchema } from "@shared/schema";
 import { z } from "zod";
 
@@ -107,26 +105,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Health check endpoint
   app.get("/api/health", (req, res) => {
     res.json({ status: "Investigation Portal is active", timestamp: new Date().toISOString() });
-  });
-
-  // Content management API endpoints
-  app.post('/api/content/:type', async (req, res) => {
-    try {
-      const { type } = req.params;
-      const content = req.body;
-      
-      if (!['home', 'vessel'].includes(type)) {
-        return res.status(400).json({ error: 'Invalid content type' });
-      }
-      
-      const contentPath = path.join(process.cwd(), 'public', 'content', `${type}.json`);
-      await fs.writeFile(contentPath, JSON.stringify(content, null, 2));
-      
-      res.json({ success: true, message: `${type} content updated successfully` });
-    } catch (error) {
-      console.error('Error saving content:', error);
-      res.status(500).json({ error: 'Failed to save content' });
-    }
   });
 
   const httpServer = createServer(app);
