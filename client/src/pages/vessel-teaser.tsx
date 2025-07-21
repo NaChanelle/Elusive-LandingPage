@@ -377,7 +377,7 @@ export default function VesselTeaser() {
               Your feedback shapes our roadmap. Let us know which future features excite you most.
             </p>
             <Button 
-              onClick={() => document.getElementById('early-access')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('share-vision')?.scrollIntoView({ behavior: 'smooth' })}
               variant="outline"
               className="border-neo-gold text-neo-gold hover:bg-neo-gold hover:text-deep-charcoal"
             >
@@ -477,7 +477,7 @@ export default function VesselTeaser() {
       </section>
 
       {/* Share Your Vision Section */}
-      <section className="py-16 bg-gradient-to-br from-deep-charcoal via-black-mirror to-deep-charcoal border-t border-gray-800">
+      <section id="share-vision" className="py-16 bg-gradient-to-br from-deep-charcoal via-black-mirror to-deep-charcoal border-t border-gray-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gradient-to-br from-neo-gold/10 to-social-red/10 border border-neo-gold/30 rounded-2xl p-8 md:p-12 backdrop-blur-sm">
             <div className="text-center mb-8">
