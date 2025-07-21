@@ -135,7 +135,7 @@ export default function VesselTeaser() {
               className="flex items-center space-x-3 text-neo-gold hover:text-neo-gold/80 transition-colors"
             >
               <ArrowLeft size={20} />
-              <span>Back to Investigation Portal</span>
+              <span>Back to Coming Soon</span>
             </button>
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 border-2 border-neo-gold rotate-45 flex items-center justify-center">
