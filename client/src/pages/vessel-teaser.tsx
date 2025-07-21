@@ -17,82 +17,11 @@ export default function VesselTeaser() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Add Tally script with custom styling
+  // Load Tally script for form embeds
   useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://tally.so/widgets/embed.js';
     script.async = true;
-    script.onload = () => {
-      if (typeof (window as any).Tally !== "undefined") {
-        (window as any).Tally.loadEmbeds();
-      } else {
-        document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
-          e.src = e.dataset.tallySrc;
-        });
-      }
-      
-      // Apply custom styling after a short delay
-      setTimeout(() => {
-        const iframes = document.querySelectorAll('iframe[src*="tally.so"]');
-        iframes.forEach((iframe: any) => {
-          try {
-            // Add custom styles to iframe
-            iframe.style.background = 'transparent';
-            iframe.style.border = 'none';
-            
-            // Try to access iframe content (may fail due to CORS)
-            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-            if (iframeDoc) {
-              const style = iframeDoc.createElement('style');
-              style.textContent = `
-                body { 
-                  background: transparent !important; 
-                  color: #ffffff !important; 
-                  font-family: inherit !important; 
-                }
-                input, textarea, select {
-                  background: rgba(255, 255, 255, 0.1) !important;
-                  color: #ffffff !important;
-                  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                  border-radius: 8px !important;
-                  padding: 12px 16px !important;
-                }
-                input:focus, textarea:focus, select:focus {
-                  border-color: #FFB90F !important;
-                  box-shadow: 0 0 0 3px rgba(255, 185, 15, 0.1) !important;
-                }
-                button[type="submit"] {
-                  background: #FFB90F !important;
-                  color: #000000 !important;
-                  border: none !important;
-                  border-radius: 8px !important;
-                  padding: 12px 32px !important;
-                  font-weight: 600 !important;
-                }
-                button[type="submit"]:hover {
-                  background: rgba(255, 185, 15, 0.9) !important;
-                }
-                label, p, div {
-                  color: #ffffff !important;
-                }
-                ::placeholder {
-                  color: rgba(255, 255, 255, 0.6) !important;
-                }
-              `;
-              iframeDoc.head.appendChild(style);
-            }
-          } catch (e) {
-            // CORS restriction prevents iframe styling
-            console.log('Cannot style iframe due to CORS restrictions');
-          }
-        });
-      }, 2000);
-    };
-    script.onerror = () => {
-      document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
-        e.src = e.dataset.tallySrc;
-      });
-    };
     
     if (!document.querySelector('script[src="https://tally.so/widgets/embed.js"]')) {
       document.body.appendChild(script);
@@ -555,12 +484,8 @@ export default function VesselTeaser() {
                   marginHeight="0" 
                   marginWidth="0" 
                   title="Vessel Early Access"
-                  className="rounded-lg"
-                  style={{
-                    background: 'transparent',
-                    border: 'none'
-                  }}
-                ></iframe>
+                  className="tally-iframe"
+                ></iframe></div>
                 
                 <div className="mt-8 text-center">
                   <Button 
@@ -595,12 +520,8 @@ export default function VesselTeaser() {
                   marginHeight="0" 
                   marginWidth="0" 
                   title="Vessel Feedback"
-                  className="rounded-lg"
-                  style={{
-                    background: 'transparent',
-                    border: 'none'
-                  }}
-                ></iframe>
+                  className="tally-iframe"
+                ></iframe></div>
                 
                 <div className="mt-8 text-center">
                   <Button 
