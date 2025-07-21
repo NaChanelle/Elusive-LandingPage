@@ -479,13 +479,13 @@ export default function VesselTeaser() {
                   data-tally-src="https://tally.so/embed/w505EM?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
                   loading="lazy" 
                   width="100%" 
-                  height="398" 
-                  frameBorder="0" 
-                  marginHeight="0" 
-                  marginWidth="0" 
+                  height={398} 
+                  frameBorder={0} 
+                  marginHeight={0} 
+                  marginWidth={0} 
                   title="Vessel Early Access"
                   className="tally-iframe"
-                ></iframe></div>
+                ></iframe>
                 
                 <div className="mt-8 text-center">
                   <Button 
@@ -515,13 +515,13 @@ export default function VesselTeaser() {
                   data-tally-src="https://tally.so/embed/3NNy8G?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
                   loading="lazy" 
                   width="100%" 
-                  height="300" 
-                  frameBorder="0" 
-                  marginHeight="0" 
-                  marginWidth="0" 
+                  height={300} 
+                  frameBorder={0} 
+                  marginHeight={0} 
+                  marginWidth={0} 
                   title="Vessel Feedback"
                   className="tally-iframe"
-                ></iframe></div>
+                ></iframe>
                 
                 <div className="mt-8 text-center">
                   <Button 
