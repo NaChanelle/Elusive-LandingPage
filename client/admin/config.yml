@@ -1,48 +1,64 @@
 backend:
   name: github
-  repo: https://github.com/NaChanelle/Elusive-LandingPage # Replace with your GitHub username and repository name
+  repo: your-github-username/Elusive-LandingPage # Replace with your GitHub username and repository name
   branch: main # The branch Decap CMS will commit to (usually 'main' or 'master')
   base_url: https://api.netlify.com/auth # Required for Netlify Identity
   auth_endpoint: .netlify/identity/
-media_folder: "assets/uploads" # Where images uploaded via CMS will be stored (relative to project root)
+media_folder: "public/assets/uploads" # Where images uploaded via CMS will be stored (relative to project root)
 public_folder: "/assets/uploads" # Public path to uploaded images
 
 collections:
   - name: "pages" # A label for the collection
     label: "Website Pages" # How it appears in the CMS UI
     files:
-      - label: "Home Page"
-        name: "home"
-        file: "content/home.json" # Path to your content file
+      - label: "Landing Page" # Corresponds to /platform
+        name: "landing"
+        file: "content/landing.json" # Path to this page's content file
         fields:
-          - label: "Hero Title"
-            name: "hero_title"
+          - label: "Header Title"
+            name: "header_title"
             widget: "string"
-            hint: "The main title on the landing page hero section."
-          - label: "Hero Subtitle"
-            name: "hero_subtitle"
+            hint: "Text for the header logo/brand."
+          - label: "Back to Coming Soon Link Text"
+            name: "back_to_coming_soon_text"
             widget: "string"
-            hint: "The subtitle below the main title."
-          - label: "Call to Action Button Text"
-            name: "cta_button_text"
+            hint: "Text for the link back to the coming soon page."
+          - label: "Hero Main Headline Part 1"
+            name: "hero_main_headline_part1"
             widget: "string"
-            hint: "Text for the main call to action button."
-          - label: "Call to Action Button Link"
-            name: "cta_button_link"
+            hint: "First part of the main headline (e.g., 'Next')."
+          - label: "Hero Main Headline Part 2"
+            name: "hero_main_headline_part2"
             widget: "string"
-            hint: "URL for the main call to action button."
-          - label: "Hero Image"
-            name: "hero_image"
-            widget: "image"
-            allow_multiple: false
-            required: false
-            hint: "Background image for the hero section."
-          - label: "About Section Title"
-            name: "about_title"
+            hint: "Second, highlighted part of the main headline (e.g., 'Event')."
+          - label: "Hero Sub Headline"
+            name: "hero_sub_headline"
             widget: "string"
-          - label: "About Section Content"
-            name: "about_content"
-            widget: "markdown" # Allows rich text editing
+            hint: "The sub-headline below the main hero title."
+          - label: "Event Date Text"
+            name: "event_date_text"
+            widget: "string"
+            hint: "Text indicating the event date (e.g., 'August 2025 Event')."
+          - label: "Value Proposition Text"
+            name: "value_proposition_text"
+            widget: "markdown"
+            hint: "The main value proposition statement, supports markdown."
+          - label: "Countdown Target Date"
+            name: "countdown_target_date"
+            widget: "datetime"
+            format: "YYYY-MM-DDTHH:mm:ssZ"
+            time_format: true
+            picker_utc: true
+            hint: "The exact date and time for the countdown (e.g., 2025-08-15T00:00:00Z)."
+          - label: "Reserve Spot Button Text"
+            name: "reserve_spot_button_text"
+            widget: "string"
+          - label: "Learn More Button Text"
+            name: "learn_more_button_text"
+            widget: "string"
+          - label: "What's Coming Next Title"
+            name: "whats_coming_next_title"
+            widget: "string"
           - label: "Feature 1 Title"
             name: "feature1_title"
             widget: "string"
@@ -55,14 +71,314 @@ collections:
           - label: "Feature 2 Description"
             name: "feature2_description"
             widget: "text"
-          # Add more fields here for all editable content on your landing page
-          # For your MailerLite and Tally forms, you might add fields for their embed IDs
+          - label: "Feature 3 Title"
+            name: "feature3_title"
+            widget: "string"
+          - label: "Feature 3 Description"
+            name: "feature3_description"
+            widget: "text"
+          - label: "Access Tiers Title"
+            name: "access_tiers_title"
+            widget: "string"
+          - label: "Detective Tier Title"
+            name: "detective_tier_title"
+            widget: "string"
+          - label: "Detective Tier Price"
+            name: "detective_tier_price"
+            widget: "string"
+          - label: "Detective Tier Description"
+            name: "detective_tier_description"
+            widget: "text"
+          - label: "Detective Tier Features"
+            name: "detective_tier_features"
+            widget: "list"
+            fields:
+              - { label: "Feature", name: "feature", widget: "string" }
+          - label: "Curator Tier Tag"
+            name: "curator_tier_tag"
+            widget: "string"
+          - label: "Curator Tier Title"
+            name: "curator_tier_title"
+            widget: "string"
+          - label: "Curator Tier Price"
+            name: "curator_tier_price"
+            widget: "string"
+          - label: "Curator Tier Description"
+            name: "curator_tier_description"
+            widget: "text"
+          - label: "Curator Tier Features"
+            name: "curator_tier_features"
+            widget: "list"
+            fields:
+              - { label: "Feature", name: "feature", widget: "string" }
+          - label: "Accomplice Tier Title"
+            name: "accomplice_tier_title"
+            widget: "string"
+          - label: "Accomplice Tier Price"
+            name: "accomplice_tier_price"
+            widget: "string"
+          - label: "Accomplice Tier Description"
+            name: "accomplice_tier_description"
+            widget: "text"
+          - label: "Accomplice Tier Features"
+            name: "accomplice_tier_features"
+            widget: "list"
+            fields:
+              - { label: "Feature", name: "feature", widget: "string" }
+          - label: "Signup Form Title"
+            name: "signup_form_title"
+            widget: "string"
+          - label: "Signup Form Description"
+            name: "signup_form_description"
+            widget: "text"
+          - label: "First Name Placeholder"
+            name: "firstname_placeholder"
+            widget: "string"
+          - label: "Email Placeholder"
+            name: "email_placeholder"
+            widget: "string"
+          - label: "Signup Button Pending Text"
+            name: "signup_button_pending_text"
+            widget: "string"
+          - label: "Signup Button Text"
+            name: "signup_button_text"
+            widget: "string"
+          - label: "Signup Form Footer Text"
+            name: "signup_form_footer_text"
+            widget: "text"
           - label: "MailerLite Form 1 ID"
             name: "mailerlite_form1_id"
             widget: "string"
-            hint: "Enter the MailerLite form ID for the first form."
+            hint: "MailerLite form ID for the first form on the Landing page."
           - label: "Tally Form 1 ID"
             name: "tally_form1_id"
             widget: "string"
-            hint: "Enter the Tally.so form ID for the first form."
-          # ... and so on for the other two forms
+            hint: "Tally.so form ID for the first form on the Landing page."
+          - label: "FAQ Title"
+            name: "faq_title"
+            widget: "string"
+          - label: "FAQ Items"
+            name: "faq_items"
+            widget: "list"
+            fields:
+              - { label: "Question", name: "question", widget: "string" }
+              - { label: "Answer", name: "answer", widget: "markdown" }
+          - label: "Footer Copyright Text"
+            name: "footer_copyright_text"
+            widget: "string"
+          - label: "Contact Us Link Text"
+            name: "contact_us_link_text"
+            widget: "string"
+
+      - label: "Coming Soon Page" # Corresponds to /
+        name: "coming_soon"
+        file: "content/coming-soon.json" # Path to this page's content file
+        fields:
+          - label: "Header Logo Text"
+            name: "header_logo_text"
+            widget: "string"
+          - label: "Event Updates Button Text"
+            name: "event_updates_button_text"
+            widget: "string"
+          - label: "Event Updates Link"
+            name: "event_updates_link"
+            widget: "string"
+          - label: "Vessel Preview Button Text"
+            name: "vessel_preview_button_text"
+            widget: "string"
+          - label: "Vessel Preview Link"
+            name: "vessel_preview_link"
+            widget: "string"
+          - label: "Main Headline Part 1"
+            name: "main_headline_part1"
+            widget: "string"
+          - label: "Main Headline Part 2"
+            name: "main_headline_part2"
+            widget: "string"
+          - label: "Main Headline Part 3"
+            name: "main_headline_part3"
+            widget: "string"
+          - label: "Hero Description"
+            name: "hero_description"
+            widget: "text"
+          - label: "Countdown Title"
+            name: "countdown_title"
+            widget: "string"
+          - label: "Countdown Days Label"
+            name: "countdown_days_label"
+            widget: "string"
+          - label: "Countdown Hours Label"
+            name: "countdown_hours_label"
+            widget: "string"
+          - label: "Countdown Minutes Label"
+            name: "countdown_minutes_label"
+            widget: "string"
+          - label: "Countdown Seconds Label"
+            name: "countdown_seconds_label"
+            widget: "string"
+          - label: "Countdown Target Date"
+            name: "countdown_date"
+            widget: "datetime"
+            format: "YYYY-MM-DDTHH:mm:ssZ"
+            time_format: true
+            picker_utc: true
+            hint: "The exact date and time for the countdown (e.g., 2025-08-01T00:00:00Z)."
+          - label: "Signup Section Title"
+            name: "signup_section_title"
+            widget: "string"
+          - label: "Signup Section Description"
+            name: "signup_section_description"
+            widget: "text"
+          - label: "MailerLite Form ID"
+            name: "mailerlite_form_id"
+            widget: "string"
+            hint: "MailerLite form ID for the subscription form on the Coming Soon page."
+          - label: "Signup Form Footer Text"
+            name: "signup_form_footer_text"
+            widget: "text"
+          - label: "Share Page Text"
+            name: "share_page_text"
+            widget: "string"
+          - label: "Twitter Share Text"
+            name: "twitter_share_text"
+            widget: "string"
+          - label: "Email Share Subject"
+            name: "email_share_subject"
+            widget: "string"
+          - label: "Email Share Body"
+            name: "email_share_body"
+            widget: "string"
+          - label: "Gallery Items"
+            name: "gallery_items"
+            widget: "list"
+            fields:
+              - { label: "Label", name: "label", widget: "string" }
+              # - { label: "Icon Name", name: "icon_name", widget: "select", options: ["Eye", "Users", "Calendar", "Database", "BookOpen", "MessageSquare", "Play", "Globe", "Zap", "Lightbulb"] } # If you want to make icons dynamic
+          - label: "Testimonials Title"
+            name: "testimonials_title"
+            widget: "string"
+          - label: "Testimonials"
+            name: "testimonials"
+            widget: "list"
+            fields:
+              - { label: "Quote", name: "quote", widget: "text" }
+              - { label: "Initials", name: "initials", widget: "string" }
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+          - label: "Why Join Title"
+            name: "why_join_title"
+            widget: "string"
+          - label: "Why Join Features"
+            name: "why_join_features"
+            widget: "list"
+            fields:
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+          - label: "FAQ Section Title"
+            name: "faq_section_title"
+            widget: "string"
+          - label: "FAQ Items"
+            name: "faq_items"
+            widget: "list"
+            fields:
+              - { label: "Question", name: "question", widget: "string" }
+              - { label: "Answer", name: "answer", widget: "markdown" }
+          - label: "Footer Logo Text"
+            name: "footer_logo_text"
+            widget: "string"
+          - label: "Footer Copyright Text"
+            name: "footer_copyright_text"
+            widget: "string"
+          - label: "Footer Links"
+            name: "footer_links"
+            widget: "list"
+            fields:
+              - { label: "Text", name: "text", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+
+      - label: "Vessel Teaser Page" # Corresponds to /vessel
+        name: "vessel_teaser"
+        file: "content/vessel.json" # Path to this page's content file
+        fields:
+          - label: "Header Logo Text"
+            name: "header_logo_text"
+            widget: "string"
+          - label: "Platform Button Text"
+            name: "platform_button_text"
+            widget: "string"
+          - label: "Hero Background Image"
+            name: "hero_background_image"
+            widget: "image"
+            required: false
+          - label: "Hero Main Headline Part 1"
+            name: "hero_main_headline_part1"
+            widget: "string"
+          - label: "Hero Main Headline Part 2"
+            name: "hero_main_headline_part2"
+            widget: "string"
+          - label: "Hero Sub Headline"
+            name: "hero_sub_headline"
+            widget: "text"
+          - label: "Discover Features Button Text"
+            name: "discover_features_button_text"
+            widget: "string"
+          - label: "Vessel Intro Title Part 1"
+            name: "vessel_intro_title_part1"
+            widget: "string"
+          - label: "Vessel Intro Title Part 2"
+            name: "vessel_intro_title_part2"
+            widget: "string"
+          - label: "Vessel Intro Description"
+            name: "vessel_intro_description"
+            widget: "text"
+          - label: "MVP Features Title"
+            name: "mvp_features_title"
+            widget: "string"
+          - label: "MVP Features"
+            name: "mvp_features"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string", required: true }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Icon Name", name: "icon_name", widget: "select", options: ["Eye", "Users", "Calendar", "Database", "BookOpen", "MessageSquare", "Play", "Globe", "Zap", "Lightbulb"] }
+              - { label: "Visual Placeholder", name: "visualPlaceholder", widget: "string", required: false }
+              - { label: "Gradient Class", name: "gradient", widget: "string", required: false }
+              - { label: "Status", name: "status", widget: "string", required: false }
+          - label: "Roadmap Features Title"
+            name: "roadmap_features_title"
+            widget: "string"
+          - label: "Roadmap Features"
+            name: "roadmap_features"
+            widget: "list"
+            fields:
+              - { label: "ID", name: "id", widget: "string", required: true }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Icon Name", name: "icon_name", widget: "select", options: ["Eye", "Users", "Calendar", "Database", "BookOpen", "MessageSquare", "Play", "Globe", "Zap", "Lightbulb"] }
+              - { label: "Status", name: "status", widget: "string", required: false }
+              - { label: "Timeline", name: "timeline", widget: "string", required: false }
+          - label: "CTA Early Access Title"
+            name: "cta_early_access_title"
+            widget: "string"
+          - label: "CTA Early Access Description"
+            name: "cta_early_access_description"
+            widget: "text"
+          - label: "Tally Form ID"
+            name: "tally_form_id"
+            widget: "string"
+            hint: "Tally.so form ID for the form on the Vessel Teaser page."
+          - label: "Footer Logo Text"
+            name: "footer_logo_text"
+            widget: "string"
+          - label: "Footer Copyright Text"
+            name: "footer_copyright_text"
+            widget: "string"
+          - label: "Footer Links"
+            name: "footer_links"
+            widget: "list"
+            fields:
+              - { label: "Text", name: "text", widget: "string" }
+              - { label: "URL", name: "url", widget: "string" }
+
+

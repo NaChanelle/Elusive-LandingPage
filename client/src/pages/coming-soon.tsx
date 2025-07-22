@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+// src/pages/coming-soon.tsx
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Clock, Mail, Menu, ChevronUp, ChevronDown } from "lucide-react";
+import { Clock, Mail, Menu, ChevronUp } from "lucide-react"; // Removed ChevronDown as it's not used
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import "../mailerlite.css";
+// import "../mailerlite.css"; // Keep if you have custom MailerLite form styling in this file
 
 export default function ComingSoon() {
   const [scrolled, setScrolled] = useState(false);
@@ -15,6 +16,31 @@ export default function ComingSoon() {
     minutes: 0,
     seconds: 0,
   });
+
+  // New state for dynamic content
+  const [content, setContent] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch content specific to the Coming Soon page from JSON
+  useEffect(() => {
+    fetch('/content/coming-soon.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        setContent(data);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Error loading Coming Soon page content:", err);
+        setError(err);
+        setLoading(false);
+      });
+  }, []); // Empty dependency array means this runs once on mount
 
   // Handle scroll effect for menu transformation and back to top button
   useEffect(() => {
@@ -39,9 +65,11 @@ export default function ComingSoon() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [mobileMenuOpen]);
 
-  // Calculate time until August 1, 2025
+  // Countdown timer logic, now using dynamic targetDate from content
   useEffect(() => {
-    const targetDate = new Date("2025-08-01T00:00:00Z");
+    if (!content || !content.countdown_date) return; // Wait for content to load
+
+    const targetDate = new Date(content.countdown_date);
 
     const calculateTimeLeft = () => {
       const now = new Date();
@@ -54,6 +82,10 @@ export default function ComingSoon() {
           minutes: Math.floor((difference / 1000 / 60) % 60),
           seconds: Math.floor((difference / 1000) % 60),
         });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        // Optionally, you might want to hide the countdown or show a "Launched!" message
+        // if the countdown reaches zero.
       }
     };
 
@@ -61,43 +93,40 @@ export default function ComingSoon() {
     const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [content]); // Re-run if content (specifically countdown_date) changes
 
-
-
-  // Add MailerLite scripts
-  useEffect(() => {
-    // Add MailerLite form script
-    const script = document.createElement('script');
-    script.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
-    script.async = true;
-    document.head.appendChild(script);
-
-    // Add tracking script
-    const trackingScript = document.createElement('script');
-    trackingScript.innerHTML = `
-      fetch("https://assets.mailerlite.com/jsonp/1605566/forms/159584146254988833/takel")
-    `;
-    document.head.appendChild(trackingScript);
-
-    // Add success callback
-    (window as any).ml_webform_success_28257750 = function() {
-      const $ = (window as any).ml_jQuery || (window as any).jQuery;
-      if ($) {
-        $('.ml-subscribe-form-28257750 .row-success').show();
-        $('.ml-subscribe-form-28257750 .row-form').hide();
-      }
-    };
-
-    return () => {
-      document.head.removeChild(script);
-      document.head.removeChild(trackingScript);
-    };
-  }, []);
+  // Helper to render MailerLite forms
+  const renderMailerLiteForm = (formId, embedDivId) => {
+    if (!formId) return null;
+    return (
+      <div id={embedDivId}>
+        <div data-ml-form={formId}></div>
+        {useEffect(() => {
+          if (!window.mailerlite && !document.querySelector('script[src*="mailerlite"]')) {
+            (function(m,a,i,l,e,r){ m['MailerLiteObject']=e;function f(){
+            var c={ a:[], q:[]};return function(n){c.a.push(n);return function(){c.q.push(arguments);return c}}()}
+            var x=f(),y=f();e?m[e]=x:m.mailerlite=x;m[e].c=y;m[e].f=r;r.k=e;r.load=f;
+            }(window,document,'script','ml','mailerlite',{"v":"20230801"}));
+          } else if (window.mailerlite && window.mailerlite.load) {
+            window.mailerlite.load();
+          }
+        }, [formId])}
+      </div>
+    );
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
+
+  // Conditional rendering for loading and error states
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">Loading content...</div>;
+  }
+
+  if (error) {
+    return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-red-600">Error loading content: {error.message}</div>;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
@@ -108,22 +137,22 @@ export default function ComingSoon() {
             <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
               <div className="w-2 h-2 bg-[#FFB90F] rounded-full"></div>
             </div>
-            <span className="text-xl font-bold tracking-wider">ELUSIVE</span>
+            <span className="text-xl font-bold tracking-wider">{content.header_logo_text}</span>
           </div>
-          
+
           {/* Desktop Navigation with Animated Buttons */}
           <nav className="hidden md:flex items-center space-x-4">
             <div className={`transition-all duration-700 ${scrolled ? 'opacity-0 transform translate-x-8 scale-0' : 'opacity-100 transform translate-x-0 scale-100'}`}>
-              <Link href="/platform">
+              <Link href={content.event_updates_link}>
                 <Button className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-6 py-2 rounded-full transition-all duration-300 hover:scale-105">
-                  Get Event Updates
+                  {content.event_updates_button_text}
                 </Button>
               </Link>
             </div>
             <div className={`transition-all duration-700 delay-100 ${scrolled ? 'opacity-0 transform translate-x-8 scale-0' : 'opacity-100 transform translate-x-0 scale-100'}`}>
-              <Link href="/vessel">
+              <Link href={content.vessel_preview_link}>
                 <Button className="bg-[#8B0000] hover:bg-[#8B0000]/90 text-white font-medium px-6 py-2 rounded-full transition-all duration-300 hover:scale-105">
-                  Preview Vessel app
+                  {content.vessel_preview_button_text}
                 </Button>
               </Link>
             </div>
@@ -143,14 +172,14 @@ export default function ComingSoon() {
         {/* Mobile Menu Dropdown */}
         {mobileMenuOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 bg-black/95 backdrop-blur-sm border-t border-white/10 p-4 space-y-3">
-            <Link href="/platform" onClick={() => setMobileMenuOpen(false)}>
+            <Link href={content.event_updates_link} onClick={() => setMobileMenuOpen(false)}>
               <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg">
-                Get Event Updates
+                {content.event_updates_button_text}
               </Button>
             </Link>
-            <Link href="/vessel" onClick={() => setMobileMenuOpen(false)}>
+            <Link href={content.vessel_preview_link} onClick={() => setMobileMenuOpen(false)}>
               <Button className="w-full bg-[#8B0000] hover:bg-[#8B0000]/90 text-white font-medium py-3 rounded-lg">
-                Preview Vessel app
+                {content.vessel_preview_button_text}
               </Button>
             </Link>
           </div>
@@ -166,25 +195,25 @@ export default function ComingSoon() {
           >
             <Menu className="w-5 h-5" />
           </Button>
-          
+
           {/* Dropdown Menu for Fixed Hamburger */}
           {mobileMenuOpen && (
             <div className="absolute top-full right-0 mt-2 bg-black/95 backdrop-blur-sm border border-white/20 rounded-lg p-3 space-y-2 min-w-[200px] shadow-xl">
-              <Link href="/platform" onClick={() => setMobileMenuOpen(false)}>
+              <Link href={content.event_updates_link} onClick={() => setMobileMenuOpen(false)}>
                 <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-2 rounded-lg text-sm">
-                  Get Event Updates
+                  {content.event_updates_button_text}
                 </Button>
               </Link>
-              <Link href="/vessel" onClick={() => setMobileMenuOpen(false)}>
+              <Link href={content.vessel_preview_link} onClick={() => setMobileMenuOpen(false)}>
                 <Button className="w-full bg-[#8B0000] hover:bg-[#8B0000]/90 text-white font-medium py-2 rounded-lg text-sm">
-                  Preview Vessel app
+                  {content.vessel_preview_button_text}
                 </Button>
               </Link>
             </div>
           )}
         </div>
       </div>
-      
+
       {/* Hero Section */}
       <section className="relative px-6 py-16">
         <div className="absolute inset-0 opacity-10">
@@ -205,15 +234,14 @@ export default function ComingSoon() {
           {/* Main Headline */}
           <div className="space-y-6">
             <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-              Decode Culture.{" "}
+              {content.main_headline_part1}{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">
-                Create Stories.
+                {content.main_headline_part2}
               </span>{" "}
-              Connect Communities.
+              {content.main_headline_part3}
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              Elusive Origin launches August 2025 with an immersive cultural investigation platform, 
-              companion mobile app, and live mystery events that transform how we explore authentic stories together.
+              {content.hero_description}
             </p>
           </div>
 
@@ -221,24 +249,24 @@ export default function ComingSoon() {
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-2xl mx-auto mb-8">
             <div className="flex items-center justify-center mb-4">
               <Clock className="w-6 h-6 text-[#FFB90F] mr-2" />
-              <h3 className="text-xl font-semibold">First Event Launches In</h3>
+              <h3 className="text-xl font-semibold">{content.countdown_title}</h3>
             </div>
             <div className="grid grid-cols-4 gap-4 text-center">
               <div className="bg-white/10 rounded-lg p-3">
                 <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.days}</div>
-                <div className="text-sm text-gray-400">Days</div>
+                <div className="text-sm text-gray-400">{content.countdown_days_label}</div>
               </div>
               <div className="bg-white/10 rounded-lg p-3">
                 <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.hours}</div>
-                <div className="text-sm text-gray-400">Hours</div>
+                <div className="text-sm text-gray-400">{content.countdown_hours_label}</div>
               </div>
               <div className="bg-white/10 rounded-lg p-3">
                 <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.minutes}</div>
-                <div className="text-sm text-gray-400">Minutes</div>
+                <div className="text-sm text-gray-400">{content.countdown_minutes_label}</div>
               </div>
               <div className="bg-white/10 rounded-lg p-3">
                 <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.seconds}</div>
-                <div className="text-sm text-gray-400">Seconds</div>
+                <div className="text-sm text-gray-400">{content.countdown_seconds_label}</div>
               </div>
             </div>
           </div>
@@ -247,73 +275,25 @@ export default function ComingSoon() {
           <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-lg mx-auto">
             <div className="flex items-center justify-center mb-4">
               <Mail className="w-6 h-6 text-[#FFB90F] mr-2" />
-              <h3 className="text-xl font-semibold">Get Early Access</h3>
+              <h3 className="text-xl font-semibold">{content.signup_section_title}</h3>
             </div>
             <p className="text-gray-300 mb-6 text-sm">
-              Be the first to know when we launch. Exclusive updates and early bird access.
+              {content.signup_section_description}
             </p>
-            
-            {/* MailerLite Form */}
-            <div id="mlb2-28257750" className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28257750">
-              <div className="ml-form-align-center">
-                <div className="ml-form-embedWrapper embedForm">
-                  <div className="ml-form-embedBody ml-form-embedBodyDefault row-form">
-                    <div className="ml-form-embedContent" style={{marginBottom: '0px'}}>
-                    </div>
-                    <form 
-                      className="ml-block-form" 
-                      action="https://assets.mailerlite.com/jsonp/1605566/forms/159584146254988833/subscribe" 
-                      data-code="" 
-                      method="post" 
-                      target="_blank"
-                    >
-                      <div className="ml-form-formContent">
-                        <div className="ml-form-fieldRow ml-last-item">
-                          <div className="ml-field-group ml-field-email ml-validate-email ml-validate-required">
-                            <input 
-                              aria-label="email" 
-                              aria-required="true" 
-                              type="email" 
-                              className="form-control" 
-                              data-inputmask="" 
-                              name="fields[email]" 
-                              placeholder="Enter your email" 
-                              autoComplete="email"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <input type="hidden" name="ml-submit" value="1" />
-                      <div className="ml-form-embedSubmit">
-                        <button type="submit" className="primary">Notify Me</button>
-                        <button disabled style={{display: 'none'}} type="button" className="loading">
-                          <div className="ml-form-embedSubmitLoad"></div>
-                          <span className="sr-only">Loading...</span>
-                        </button>
-                      </div>
-                      <input type="hidden" name="anticsrf" value="true" />
-                    </form>
-                  </div>
-                  <div className="ml-form-successBody row-success" style={{display: 'none'}}>
-                    <div className="ml-form-successContent">
-                      <h4>Thank you!</h4>
-                      <p>You have successfully joined our subscriber list.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            
+
+            {/* MailerLite Form - now dynamically rendered */}
+            {renderMailerLiteForm(content.mailerlite_form_id, 'coming-soon-mailerlite-form')}
+
             <p className="text-xs text-gray-400 mt-3">
-              No spam. Unsubscribe anytime. We respect your privacy.
+              {content.signup_form_footer_text}
             </p>
-            
+
             {/* Share This Page */}
             <div className="mt-6 pt-4 border-t border-white/10">
-              <p className="text-sm text-gray-400 mb-3 text-center">Share with fellow investigators:</p>
+              <p className="text-sm text-gray-400 mb-3 text-center">{content.share_page_text}</p>
               <div className="flex justify-center space-x-4">
                 <a 
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent('Join the cultural investigation at Elusive Origin - August 2025 event coming soon!')}&url=${encodeURIComponent(window.location.href)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(content.twitter_share_text)}&url=${encodeURIComponent(window.location.href)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-10 h-10 bg-white/10 hover:bg-[#1DA1F2] rounded-lg flex items-center justify-center transition-colors"
@@ -343,7 +323,7 @@ export default function ComingSoon() {
                   </svg>
                 </a>
                 <a 
-                  href={`mailto:?subject=${encodeURIComponent('Elusive Origin - Cultural Investigation Platform')}&body=${encodeURIComponent('Check out this upcoming cultural investigation platform launching August 2025: ' + window.location.href)}`}
+                  href={`mailto:?subject=${encodeURIComponent(content.email_share_subject)}&body=${encodeURIComponent(content.email_share_body + window.location.href)}`}
                   className="w-10 h-10 bg-white/10 hover:bg-[#FFB90F] rounded-lg flex items-center justify-center transition-colors"
                 >
                   <Mail className="w-5 h-5" />
@@ -355,15 +335,16 @@ export default function ComingSoon() {
           {/* Auto-scrolling Image Gallery */}
           <div className="mt-16 overflow-hidden">
             <div className="flex animate-scroll space-x-6" style={{width: 'calc(200% + 24px)'}}>
-              {[...Array(16)].map((_, i) => (
+              {content.gallery_items.map((item, i) => (
                 <div key={i} className="flex-shrink-0 w-64 h-64 bg-white/10 rounded-lg border border-white/20 flex items-center justify-center">
                   <div className="text-center">
                     <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                      {/* You can replace this SVG with a dynamic image or different icon based on content.icon */}
                       <svg className="w-8 h-8 text-[#FFB90F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                     </div>
-                    <p className="text-sm text-gray-400">Investigation {(i % 8) + 1}</p>
+                    <p className="text-sm text-gray-400">{item.label}</p>
                   </div>
                 </div>
               ))}
@@ -375,36 +356,24 @@ export default function ComingSoon() {
       {/* Early Tester Testimonials */}
       <section className="py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h3 className="text-xl font-semibold mb-8 text-center text-white">What Early Investigators Are Saying</h3>
+          <h3 className="text-xl font-semibold mb-8 text-center text-white">{content.testimonials_title}</h3>
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <p className="text-lg text-white mb-4 italic">
-                "I've never experienced anything like it! Elusive Origin is truly groundbreaking."
-              </p>
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-white font-semibold text-sm">MR</span>
-                </div>
-                <div>
-                  <p className="font-medium text-sm text-white">Maya Rodriguez</p>
-                  <p className="text-xs text-gray-300">Early Investigator</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <p className="text-lg text-white mb-4 italic">
-                "This platform reveals stories I never knew existed. It's changing how I see culture."
-              </p>
-              <div className="flex items-center">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-white font-semibold text-sm">JK</span>
-                </div>
-                <div>
-                  <p className="font-medium text-sm text-white">Jordan Kim</p>
-                  <p className="text-xs text-gray-300">Beta Participant</p>
+            {content.testimonials.map((testimonial, index) => (
+              <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <p className="text-lg text-white mb-4 italic">
+                  "{testimonial.quote}"
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white font-semibold text-sm">{testimonial.initials}</span>
+                  </div>
+                  <div>
+                    <p className="font-medium text-sm text-white">{testimonial.name}</p>
+                    <p className="text-xs text-gray-300">{testimonial.role}</p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -412,44 +381,19 @@ export default function ComingSoon() {
       {/* Why Join Section */}
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-6">
-          <h3 className="text-2xl font-bold mb-8 text-center text-white">Why You'll Want to Join the Investigation</h3>
+          <h3 className="text-2xl font-bold mb-8 text-center text-white">{content.why_join_title}</h3>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-lg mb-2 text-white">Unravel hidden cultural narratives like never before</h4>
-                  <p className="text-gray-300 text-sm">Dive deep into authentic stories that challenge mainstream perspectives and reveal untold truths.</p>
+            {content.why_join_features.map((feature, index) => (
+              <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <div className="flex items-start space-x-4">
+                  <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-semibold text-lg mb-2 text-white">{feature.title}</h4>
+                    <p className="text-gray-300 text-sm">{feature.description}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-lg mb-2 text-white">Connect with a global community of curious minds</h4>
-                  <p className="text-gray-300 text-sm">Join investigators from around the world who share your passion for cultural discovery and meaningful dialogue.</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-lg mb-2 text-white">Experience immersive mysteries that challenge your perspective</h4>
-                  <p className="text-gray-300 text-sm">Engage in interactive experiences designed to expand your worldview and deepen cultural understanding.</p>
-                </div>
-              </div>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
-              <div className="flex items-start space-x-4">
-                <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
-                <div>
-                  <h4 className="font-semibold text-lg mb-2 text-white">Shape the future of collaborative storytelling</h4>
-                  <p className="text-gray-300 text-sm">Become part of a revolutionary platform where your voice contributes to authentic cultural narratives.</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -457,34 +401,16 @@ export default function ComingSoon() {
       {/* FAQ Section */}
       <section className="py-16">
         <div className="max-w-3xl mx-auto px-6">
-          <h3 className="text-2xl font-bold mb-8 text-center text-white">Frequently Asked Questions</h3>
+          <h3 className="text-2xl font-bold mb-8 text-center text-white">{content.faq_section_title}</h3>
           <Accordion type="single" collapsible className="space-y-4">
-            <AccordionItem value="item-1" className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
-              <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
-                When does the first event launch?
-              </AccordionTrigger>
-              <AccordionContent className="px-6 pb-4 text-gray-300 text-sm">
-                Our inaugural cultural investigation event launches in August 2025. Early access members will receive exclusive previews and first access to tickets.
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="item-2" className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
-              <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
-                What is the Vessel companion app?
-              </AccordionTrigger>
-              <AccordionContent className="px-6 pb-4 text-gray-300 text-sm">
-                Vessel is our mobile companion app that enhances your investigation experience with real-time clue drops, community theories, and cultural code libraries.
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="item-3" className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
-              <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
-                How much does it cost to participate?
-              </AccordionTrigger>
-              <AccordionContent className="px-6 pb-4 text-gray-300 text-sm">
-                We offer three tiers: Detective ($15), Curator ($35), and Accomplice ($75). Each tier provides different levels of access and community features.
-              </AccordionContent>
-            </AccordionItem>
+            {content.faq_items.map((item, index) => (
+              <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
+                <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-300 text-sm" dangerouslySetInnerHTML={{ __html: item.answer }}></AccordionContent>
+              </AccordionItem>
+            ))}
           </Accordion>
         </div>
       </section>
@@ -496,13 +422,15 @@ export default function ComingSoon() {
             <div className="w-6 h-6 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
               <div className="w-1.5 h-1.5 bg-[#FFB90F] rounded-full"></div>
             </div>
-            <span className="text-lg font-bold tracking-wider">ELUSIVE ORIGIN</span>
+            <span className="text-lg font-bold tracking-wider">{content.footer_logo_text}</span>
           </div>
-          <p className="text-gray-400 text-sm mb-4">© 2025 Elusive Origin. All rights reserved.</p>
+          <p className="text-gray-400 text-sm mb-4">{content.footer_copyright_text}</p>
           <div className="flex justify-center space-x-6 text-sm">
-            <a href="#" className="text-gray-400 hover:text-[#FFB90F] transition-colors">Privacy Policy</a>
-            <a href="#" className="text-gray-400 hover:text-[#FFB90F] transition-colors">Terms of Service</a>
-            <a href="#" className="text-gray-400 hover:text-[#FFB90F] transition-colors">Contact</a>
+            {content.footer_links.map((link, index) => (
+              <a key={index} href={link.url} className="text-gray-400 hover:text-[#FFB90F] transition-colors">
+                {link.text}
+              </a>
+            ))}
           </div>
         </div>
       </footer>

@@ -1,0 +1,99 @@
+{
+  "header_logo_text": "ELUSIVE",
+  "event_updates_button_text": "Get Event Updates",
+  "event_updates_link": "/platform",
+  "vessel_preview_button_text": "Preview Vessel app",
+  "vessel_preview_link": "/vessel",
+  "main_headline_part1": "Decode Culture.",
+  "main_headline_part2": "Create Stories.",
+  "main_headline_part3": "Connect Communities.",
+  "hero_description": "Elusive Origin launches August 2025 with an immersive cultural investigation platform, companion mobile app, and live mystery events that transform how we explore authentic stories together.",
+  "countdown_title": "First Event Launches In",
+  "countdown_days_label": "Days",
+  "countdown_hours_label": "Hours",
+  "countdown_minutes_label": "Minutes",
+  "countdown_seconds_label": "Seconds",
+  "countdown_date": "2025-08-01T00:00:00Z",
+  "signup_section_title": "Get Early Access",
+  "signup_section_description": "Be the first to know when we launch. Exclusive updates and early bird access.",
+  "mailerlite_form_id": "YOUR_COMING_SOON_MAILERLITE_FORM_ID",
+  "signup_form_footer_text": "No spam. Unsubscribe anytime. We respect your privacy.",
+  "share_page_text": "Share with fellow investigators:",
+  "twitter_share_text": "Join the cultural investigation at Elusive Origin - August 2025 event coming soon!",
+  "email_share_subject": "Elusive Origin - Cultural Investigation Platform",
+  "email_share_body": "Check out this upcoming cultural investigation platform launching August 2025: ",
+  "gallery_items": [
+    { "label": "Investigation 1" },
+    { "label": "Investigation 2" },
+    { "label": "Investigation 3" },
+    { "label": "Investigation 4" },
+    { "label": "Investigation 5" },
+    { "label": "Investigation 6" },
+    { "label": "Investigation 7" },
+    { "label": "Investigation 8" },
+    { "label": "Investigation 9" },
+    { "label": "Investigation 10" },
+    { "label": "Investigation 11" },
+    { "label": "Investigation 12" },
+    { "label": "Investigation 13" },
+    { "label": "Investigation 14" },
+    { "label": "Investigation 15" },
+    { "label": "Investigation 16" }
+  ],
+  "testimonials_title": "What Early Investigators Are Saying",
+  "testimonials": [
+    {
+      "quote": "I've never experienced anything like it! Elusive Origin is truly groundbreaking.",
+      "initials": "MR",
+      "name": "Maya Rodriguez",
+      "role": "Early Investigator"
+    },
+    {
+      "quote": "This platform reveals stories I never knew existed. It's changing how I see culture.",
+      "initials": "JK",
+      "name": "Jordan Kim",
+      "role": "Beta Participant"
+    }
+  ],
+  "why_join_title": "Why You'll Want to Join the Investigation",
+  "why_join_features": [
+    {
+      "title": "Unravel hidden cultural narratives like never before",
+      "description": "Dive deep into authentic stories that challenge mainstream perspectives and reveal untold truths."
+    },
+    {
+      "title": "Connect with a global community of curious minds",
+      "description": "Join investigators from around the world who share your passion for cultural discovery and meaningful dialogue."
+    },
+    {
+      "title": "Experience immersive mysteries that challenge your perspective",
+      "description": "Engage in interactive experiences designed to expand your worldview and deepen cultural understanding."
+    },
+    {
+      "title": "Shape the future of collaborative storytelling",
+      "description": "Become part of a revolutionary platform where your voice contributes to authentic cultural narratives."
+    }
+  ],
+  "faq_section_title": "Frequently Asked Questions",
+  "faq_items": [
+    {
+      "question": "When does the first event launch?",
+      "answer": "Our inaugural cultural investigation event launches in August 2025. Early access members will receive exclusive previews and first access to tickets."
+    },
+    {
+      "question": "What is the Vessel companion app?",
+      "answer": "Vessel is our mobile companion app that enhances your investigation experience with real-time clue drops, community theories, and cultural code libraries."
+    },
+    {
+      "question": "How much does it cost to participate?",
+      "answer": "We offer three tiers: Detective ($15), Curator ($35), and Accomplice ($75). Each tier provides different levels of access and community features."
+    }
+  ],
+  "footer_logo_text": "ELUSIVE ORIGIN",
+  "footer_copyright_text": "2025 Elusive Origin. All rights reserved.",
+  "footer_links": [
+    { "text": "Privacy Policy", "url": "#" },
+    { "text": "Terms of Service", "url": "#" },
+    { "text": "Contact", "url": "mailto:hello@elusiveorigin.com" }
+  ]
+}
