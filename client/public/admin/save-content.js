@@ -14,23 +14,14 @@ window.addEventListener('load', () => {
 });
 
 function addSaveButton() {
-  // Create container for buttons
-  const buttonContainer = document.createElement('div');
-  buttonContainer.style.cssText = `
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 10000;
-    display: flex;
-    gap: 10px;
-    flex-direction: column;
-  `;
-  
-  // Save button
   const saveButton = document.createElement('button');
   saveButton.innerHTML = '💾 Save to Website';
   saveButton.id = 'cms-save-button';
   saveButton.style.cssText = `
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
     background: #2563eb;
     color: white;
     border: none;
@@ -41,67 +32,17 @@ function addSaveButton() {
     font-weight: bold;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     transition: all 0.2s;
-    margin: 0;
   `;
   
-  // Rollback button
-  const rollbackButton = document.createElement('button');
-  rollbackButton.innerHTML = '↶ Rollback Changes';
-  rollbackButton.id = 'cms-rollback-button';
-  rollbackButton.style.cssText = `
-    background: #dc2626;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    transition: all 0.2s;
-    margin: 0;
-  `;
-  
-  // Manual capture button for debugging
-  const captureButton = document.createElement('button');
-  captureButton.innerHTML = '🔍 Capture Data';
-  captureButton.id = 'cms-capture-button';
-  captureButton.style.cssText = `
-    background: #7c3aed;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 12px;
-    font-weight: bold;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    transition: all 0.2s;
-    margin: 0;
-  `;
-  
-  // Event listeners
   saveButton.addEventListener('click', saveCurrentContent);
-  rollbackButton.addEventListener('click', rollbackChanges);
-  captureButton.addEventListener('click', () => {
-    captureFormData();
-    alert('Data capture attempted - check console for details');
+  saveButton.addEventListener('mouseenter', () => {
+    saveButton.style.background = '#1d4ed8';
+  });
+  saveButton.addEventListener('mouseleave', () => {
+    saveButton.style.background = '#2563eb';
   });
   
-  // Add hover effects
-  [saveButton, rollbackButton, captureButton].forEach(btn => {
-    btn.addEventListener('mouseenter', () => {
-      btn.style.transform = 'scale(1.05)';
-    });
-    btn.addEventListener('mouseleave', () => {
-      btn.style.transform = 'scale(1)';
-    });
-  });
-  
-  buttonContainer.appendChild(saveButton);
-  buttonContainer.appendChild(captureButton);
-  buttonContainer.appendChild(rollbackButton);
-  document.body.appendChild(buttonContainer);
+  document.body.appendChild(saveButton);
 }
 
 function interceptCMSForms() {
@@ -123,52 +64,22 @@ function interceptCMSForms() {
 
 function captureFormData() {
   try {
-    // Look for CMS-specific input patterns
-    const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="url"], input[type="number"], textarea, select');
+    // Find all form inputs in the CMS
+    const inputs = document.querySelectorAll('input, textarea, select');
     const formData = {};
-    let currentPage = 'landing'; // Default to landing
+    let currentPage = 'unknown';
     
-    // Better page detection from CMS breadcrumbs or URL
-    const breadcrumbs = document.querySelector('[class*="breadcrumb"], [class*="nav"]');
-    if (breadcrumbs && breadcrumbs.textContent.includes('Landing')) {
-      currentPage = 'landing';
-    } else if (breadcrumbs && breadcrumbs.textContent.includes('Coming Soon')) {
-      currentPage = 'coming_soon';
-    } else if (breadcrumbs && breadcrumbs.textContent.includes('Vessel')) {
-      currentPage = 'vessel_teaser';
+    // Try to determine current page from URL or breadcrumbs
+    const pathMatch = window.location.hash.match(/\/([^\/]+)$/);
+    if (pathMatch) {
+      currentPage = pathMatch[1];
     }
     
-    // Also check URL hash for page info
-    if (window.location.hash.includes('landing')) currentPage = 'landing';
-    if (window.location.hash.includes('coming_soon')) currentPage = 'coming_soon';
-    if (window.location.hash.includes('vessel_teaser')) currentPage = 'vessel_teaser';
-    
     inputs.forEach(input => {
-      // Skip empty inputs and CMS system fields
-      if (!input.value || input.value.trim() === '') return;
-      if (input.type === 'hidden') return;
-      
-      // Try to get field name from various CMS patterns
-      let fieldName = input.name || input.id || input.getAttribute('data-field-name');
-      
-      // Look for CMS field labels to map to field names
-      const label = input.closest('[class*="field"]')?.querySelector('label');
-      if (label && !fieldName) {
-        // Convert label text to field name format
-        fieldName = label.textContent
-          .toLowerCase()
-          .replace(/[^a-z0-9\s]/g, '')
-          .replace(/\s+/g, '_');
-      }
-      
-      if (fieldName && input.value) {
-        formData[fieldName] = input.value;
+      if (input.name && input.value) {
+        formData[input.name] = input.value;
       }
     });
-    
-    console.log('Detected page:', currentPage);
-    console.log('Found inputs:', inputs.length);
-    console.log('Captured fields:', Object.keys(formData));
     
     // Store the data globally
     if (Object.keys(formData).length > 0) {
@@ -178,9 +89,11 @@ function captureFormData() {
         timestamp: new Date().toISOString()
       };
       
+      console.log('Captured form data:', window.cmsData);
+      
       // Update button to show data is ready
       const button = document.getElementById('cms-save-button');
-      if (button) {
+      if (button && Object.keys(formData).length > 0) {
         button.innerHTML = '💾 Save to Website (' + Object.keys(formData).length + ' fields)';
         button.style.background = '#059669'; // Green when ready
       }
@@ -241,57 +154,6 @@ async function saveCurrentContent() {
     setTimeout(() => {
       button.innerHTML = '💾 Save to Website';
       button.style.background = '#2563eb';
-    }, 3000);
-  }
-}
-
-async function rollbackChanges() {
-  try {
-    const button = document.getElementById('cms-rollback-button');
-    button.innerHTML = '⏳ Rolling back...';
-    button.style.background = '#f59e0b';
-    
-    const confirmed = confirm('Are you sure you want to rollback the last changes? This will restore the previous version of the content.');
-    if (!confirmed) {
-      button.innerHTML = '↶ Rollback Changes';
-      button.style.background = '#dc2626';
-      return;
-    }
-    
-    const response = await fetch('/api/cms/rollback', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ page: window.cmsData?.page || 'landing' })
-    });
-    
-    if (response.ok) {
-      const result = await response.json();
-      button.innerHTML = '✅ Rolled back!';
-      button.style.background = '#16a34a';
-      
-      alert('✅ Changes rolled back successfully! The previous version has been restored.');
-      
-      // Reload the CMS to show reverted content
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-      
-    } else {
-      throw new Error('Failed to rollback changes');
-    }
-  } catch (error) {
-    console.error('Rollback error:', error);
-    const button = document.getElementById('cms-rollback-button');
-    button.innerHTML = '❌ Error';
-    button.style.background = '#dc2626';
-    
-    alert('Failed to rollback changes. Please try again.');
-    
-    setTimeout(() => {
-      button.innerHTML = '↶ Rollback Changes';
-      button.style.background = '#dc2626';
     }, 3000);
   }
 }

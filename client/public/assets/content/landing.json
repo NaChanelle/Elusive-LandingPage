@@ -1,5 +1,5 @@
 {
-  "header_title": "ELUSIVE - TEST",
+  "header_title": "ELUSIVE",
   "back_to_coming_soon_text": "← Coming Soon",
   "hero_main_headline_part1": "Next",
   "hero_main_headline_part2": "Event",
@@ -13,26 +13,10 @@
   "learn_more_button_text": "Learn More",
   "image_carousel_title": "Event Preview Gallery",
   "carousel_images": [
-    {
-      "id": 1,
-      "alt": "Mystery Investigation Setup",
-      "placeholder": "Cultural investigation scene with artifacts and clues"
-    },
-    {
-      "id": 2,
-      "alt": "Community Gathering",
-      "placeholder": "Diverse group of investigators collaborating"
-    },
-    {
-      "id": 3,
-      "alt": "Storytelling Session",
-      "placeholder": "Intimate storytelling circle with cultural elements"
-    },
-    {
-      "id": 4,
-      "alt": "Vessel App Interface",
-      "placeholder": "Mobile app showing investigation tools"
-    }
+    { "id": 1, "alt": "Mystery Investigation Setup", "placeholder": "Cultural investigation scene with artifacts and clues" },
+    { "id": 2, "alt": "Community Gathering", "placeholder": "Diverse group of investigators collaborating" },
+    { "id": 3, "alt": "Storytelling Session", "placeholder": "Intimate storytelling circle with cultural elements" },
+    { "id": 4, "alt": "Vessel App Interface", "placeholder": "Mobile app showing investigation tools" }
   ],
   "whats_coming_next_title": "What's Coming Next",
   "feature1_title": "Cultural Investigation Events",
@@ -47,15 +31,9 @@
   "detective_tier_description": "Perfect for curious investigators ready to explore.",
   "detective_tier_selection": "detective",
   "detective_tier_features": [
-    {
-      "feature": "Event access"
-    },
-    {
-      "feature": "Community discussions"
-    },
-    {
-      "feature": "Basic Vessel app features"
-    }
+    { "feature": "Event access" },
+    { "feature": "Community discussions" },
+    { "feature": "Basic Vessel app features" }
   ],
   "curator_tier_tag": "Most Popular",
   "curator_tier_title": "Curator",
@@ -63,36 +41,20 @@
   "curator_tier_description": "For dedicated cultural enthusiasts and story creators.",
   "curator_tier_selection": "curator",
   "curator_tier_features": [
-    {
-      "feature": "Everything in Detective"
-    },
-    {
-      "feature": "Advanced Vessel features"
-    },
-    {
-      "feature": "Priority event access"
-    },
-    {
-      "feature": "Creator tools access"
-    }
+    { "feature": "Everything in Detective" },
+    { "feature": "Advanced Vessel features" },
+    { "feature": "Priority event access" },
+    { "feature": "Creator tools access" }
   ],
   "accomplice_tier_title": "Accomplice",
   "accomplice_tier_price": "$75",
   "accomplice_tier_description": "For those ready to shape the narrative and lead investigations.",
   "accomplice_tier_selection": "accomplice",
   "accomplice_tier_features": [
-    {
-      "feature": "Everything in Curator"
-    },
-    {
-      "feature": "Investigation leadership roles"
-    },
-    {
-      "feature": "Content creation partnerships"
-    },
-    {
-      "feature": "Direct creator collaboration"
-    }
+    { "feature": "Everything in Curator" },
+    { "feature": "Investigation leadership roles" },
+    { "feature": "Content creation partnerships" },
+    { "feature": "Direct creator collaboration" }
   ],
   "signup_form_title": "Reserve Your Investigation",
   "signup_form_description": "Join the waiting list and be among the first to experience Elusive.",
