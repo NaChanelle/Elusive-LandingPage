@@ -1,6 +1,7 @@
 backend:
-  name: test-repo
-  # Using test-repo for development - changes saved locally
+  name: github
+  repo: NaChanelle/Elusive-LandingPage
+  branch: main
 
 # Global settings to make fields optional by default  
 publish_mode: simple
