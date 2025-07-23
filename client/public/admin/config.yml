@@ -1,9 +1,6 @@
 backend:
-  name: github
-  repo: your-github-username/Elusive-LandingPage # IMPORTANT: Replace with your GitHub username and repository name
-  branch: main # The branch Decap CMS will commit to (usually 'main' or 'master')
-  # Removed base_url and auth_endpoint to prevent URL parsing errors if Netlify Identity is not fully configured.
-  # If you later deploy to Netlify and use Netlify Identity, you may need to add these back.
+  name: test-repo
+  # For development/testing purposes - this will work without GitHub authentication
 
 media_folder: "public/assets/uploads" # Where images uploaded via CMS will be stored (relative to project root)
 public_folder: "/assets/uploads" # Public path to uploaded images
