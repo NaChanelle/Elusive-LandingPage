@@ -1,6 +1,7 @@
 backend:
-  name: test-repo
-  # Using test-repo for development - changes saved locally
+  name: git-gateway
+  # For Netlify deployment with authentication
+  # In development, using test-repo mode with custom save functionality
 
 # Global settings to make fields optional by default  
 publish_mode: simple

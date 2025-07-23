@@ -32,6 +32,12 @@ export function setupCMSIntegration(app: express.Express) {
         existingData = JSON.parse(existingContent);
       }
       
+      // Create backup before making changes
+      const backupPath = path.join(process.cwd(), "client/public/assets/content", `${fileName}.json.backup`);
+      if (fs.existsSync(filePath)) {
+        fs.copyFileSync(filePath, backupPath);
+      }
+      
       // Merge new data with existing data (only update provided fields)
       const updatedData = { ...existingData, ...data };
       
@@ -81,6 +87,46 @@ export function setupCMSIntegration(app: express.Express) {
     } catch (error) {
       console.error("CMS content get error:", error);
       res.status(500).json({ error: "Failed to get content" });
+    }
+  });
+  
+  // Rollback functionality
+  app.post("/api/cms/rollback", async (req, res) => {
+    try {
+      const { page } = req.body;
+      
+      if (!page) {
+        return res.status(400).json({ error: "Page is required" });
+      }
+      
+      const pageFileMap: { [key: string]: string } = {
+        'landing': 'landing',
+        'coming_soon': 'coming-soon', 
+        'vessel_teaser': 'vessel',
+        'unknown': 'landing'
+      };
+      
+      const fileName = pageFileMap[page] || page;
+      const filePath = path.join(process.cwd(), "client/public/assets/content", `${fileName}.json`);
+      const backupPath = path.join(process.cwd(), "client/public/assets/content", `${fileName}.json.backup`);
+      
+      if (fs.existsSync(backupPath)) {
+        // Restore from backup
+        const backupContent = fs.readFileSync(backupPath, "utf8");
+        fs.writeFileSync(filePath, backupContent);
+        
+        res.json({ 
+          success: true, 
+          message: `${fileName} content rolled back successfully`,
+          timestamp: new Date().toISOString()
+        });
+      } else {
+        res.status(404).json({ error: "No backup found to rollback to" });
+      }
+      
+    } catch (error) {
+      console.error("CMS rollback error:", error);
+      res.status(500).json({ error: "Failed to rollback content" });
     }
   });
 }
