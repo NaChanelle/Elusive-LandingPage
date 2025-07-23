@@ -2,60 +2,138 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Debug Netlify Identity</title>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <title>Carousel Debug Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #1a1a1a; color: white; }
+    .carousel-container { max-width: 600px; margin: 20px auto; }
+    .test-image { max-width: 100%; height: 300px; object-fit: cover; border: 2px solid #FFB90F; margin: 10px 0; }
+    .success { color: #4CAF50; }
+    .error { color: #f44336; }
+    .info { color: #2196F3; }
+    .status { padding: 10px; margin: 10px 0; border-radius: 5px; background: rgba(255,255,255,0.1); }
+  </style>
 </head>
 <body>
-  <h1>Netlify Identity Debug</h1>
-  <div id="status"></div>
-  <button onclick="checkStatus()">Check Auth Status</button>
-  <button onclick="openLogin()">Open Login</button>
-  <button onclick="logout()">Logout</button>
-  <button onclick="goToAdmin()">Go to Admin</button>
+  <h1>Elusive Carousel Debug Test</h1>
+  <div id="results"></div>
 
   <script>
-    const statusDiv = document.getElementById('status');
+    const resultsDiv = document.getElementById('results');
     
-    function updateStatus(message) {
-      statusDiv.innerHTML += '<p>' + new Date().toLocaleTimeString() + ': ' + message + '</p>';
+    // Test 1: Content File Loading
+    async function testContentFile() {
+      const statusDiv = document.createElement('div');
+      statusDiv.className = 'status';
+      statusDiv.innerHTML = '<h3>Test 1: Content File Loading</h3>';
+      
+      try {
+        const response = await fetch('/assets/content/landing.json');
+        const data = await response.json();
+        
+        if (data.carousel_images && data.carousel_images.length > 0) {
+          statusDiv.innerHTML += `<p class="success">✅ Content file loaded successfully with ${data.carousel_images.length} carousel images</p>`;
+          
+          // Display each carousel image info
+          data.carousel_images.forEach((img, index) => {
+            statusDiv.innerHTML += `
+              <div style="margin: 10px 0; padding: 10px; background: rgba(255,185,15,0.1); border-radius: 5px;">
+                <p><strong>Image ${index + 1}:</strong> ${img.alt}</p>
+                <p><strong>Path:</strong> ${img.image}</p>
+                <p><strong>Description:</strong> ${img.placeholder}</p>
+              </div>
+            `;
+          });
+        } else {
+          statusDiv.innerHTML += '<p class="error">❌ No carousel images found in content file</p>';
+        }
+      } catch (error) {
+        statusDiv.innerHTML += `<p class="error">❌ Failed to load content file: ${error.message}</p>`;
+      }
+      
+      resultsDiv.appendChild(statusDiv);
     }
-
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", user => {
-        updateStatus(user ? `Initialized - User: ${user.email}` : 'Initialized - No user');
-      });
-
-      window.netlifyIdentity.on("login", user => {
-        updateStatus(`Login successful: ${user.email}`);
-      });
-
-      window.netlifyIdentity.on("logout", () => {
-        updateStatus('Logout successful');
-      });
-
-      window.netlifyIdentity.on("error", err => {
-        updateStatus(`Error: ${err.message}`);
-      });
-
-      window.netlifyIdentity.init();
+    
+    // Test 2: Image Accessibility
+    async function testImages() {
+      const statusDiv = document.createElement('div');
+      statusDiv.className = 'status';
+      statusDiv.innerHTML = '<h3>Test 2: Image Accessibility</h3>';
+      
+      const images = [
+        '/assets/uploads/dsc02299.jpg',
+        '/assets/uploads/dsc02323.jpg',
+        '/assets/uploads/dsc02478.jpg',
+        '/assets/uploads/dsc02513.jpg'
+      ];
+      
+      for (const imagePath of images) {
+        try {
+          const response = await fetch(imagePath, { method: 'HEAD' });
+          if (response.ok) {
+            statusDiv.innerHTML += `<p class="success">✅ ${imagePath} - Accessible</p>`;
+            
+            // Try to load the actual image
+            const img = new Image();
+            img.onload = () => {
+              statusDiv.innerHTML += `<img src="${imagePath}" class="test-image" alt="Test image">`;
+            };
+            img.src = imagePath;
+          } else {
+            statusDiv.innerHTML += `<p class="error">❌ ${imagePath} - HTTP ${response.status}</p>`;
+          }
+        } catch (error) {
+          statusDiv.innerHTML += `<p class="error">❌ ${imagePath} - Failed to load: ${error.message}</p>`;
+        }
+      }
+      
+      resultsDiv.appendChild(statusDiv);
     }
-
-    function checkStatus() {
-      const user = window.netlifyIdentity.currentUser();
-      updateStatus(user ? `Current user: ${user.email}` : 'No user logged in');
+    
+    // Test 3: Carousel Implementation
+    async function testCarousel() {
+      const statusDiv = document.createElement('div');
+      statusDiv.className = 'status';
+      statusDiv.innerHTML = '<h3>Test 3: Carousel Simulation</h3>';
+      
+      try {
+        const response = await fetch('/assets/content/landing.json');
+        const data = await response.json();
+        
+        if (data.carousel_images && data.carousel_images.length > 0) {
+          let currentIndex = 0;
+          const carouselDiv = document.createElement('div');
+          carouselDiv.className = 'carousel-container';
+          
+          function showImage() {
+            const img = data.carousel_images[currentIndex];
+            carouselDiv.innerHTML = `
+              <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; text-align: center;">
+                <h4 style="color: #FFB90F; margin: 0 0 10px 0;">Image ${currentIndex + 1} of ${data.carousel_images.length}</h4>
+                <img src="${img.image}" class="test-image" alt="${img.alt}">
+                <h3 style="color: #FFB90F; margin: 10px 0 5px 0;">${img.alt}</h3>
+                <p style="color: #ccc; margin: 0;">${img.placeholder}</p>
+              </div>
+            `;
+            currentIndex = (currentIndex + 1) % data.carousel_images.length;
+          }
+          
+          showImage();
+          setInterval(showImage, 3000); // Change every 3 seconds
+          
+          statusDiv.appendChild(carouselDiv);
+          statusDiv.innerHTML += '<p class="success">✅ Carousel simulation running (changes every 3 seconds)</p>';
+        }
+      } catch (error) {
+        statusDiv.innerHTML += `<p class="error">❌ Carousel test failed: ${error.message}</p>`;
+      }
+      
+      resultsDiv.appendChild(statusDiv);
     }
-
-    function openLogin() {
-      window.netlifyIdentity.open('login');
-    }
-
-    function logout() {
-      window.netlifyIdentity.logout();
-    }
-
-    function goToAdmin() {
-      window.location.href = '/admin/';
-    }
+    
+    // Run all tests
+    testContentFile();
+    setTimeout(testImages, 1000);
+    setTimeout(testCarousel, 2000);
   </script>
 </body>
 </html>
