@@ -1,9 +1,9 @@
 backend:
   name: github
-  repo: your-github-username/Elusive-LandingPage # Replace with your GitHub username and repository name
+  repo: your-github-username/Elusive-LandingPage # IMPORTANT: Replace with your GitHub username and repository name
   branch: main # The branch Decap CMS will commit to (usually 'main' or 'master')
-  base_url: https://api.netlify.com/auth # Required for Netlify Identity
-  auth_endpoint: .netlify/identity/
+  # Removed base_url and auth_endpoint to prevent URL parsing errors if Netlify Identity is not fully configured.
+  # If you later deploy to Netlify and use Netlify Identity, you may need to add these back.
 media_folder: "public/assets/uploads" # Where images uploaded via CMS will be stored (relative to project root)
 public_folder: "/assets/uploads" # Public path to uploaded images
 
@@ -13,7 +13,7 @@ collections:
     files:
       - label: "Landing Page" # Corresponds to /platform
         name: "landing"
-        file: "public/assets/content/landing.json" # UPDATED PATH FOR CMS
+        file: "public/assets/content/landing.json" # Path to this page's content file
         fields:
           - label: "Header Title"
             name: "header_title"
@@ -172,7 +172,7 @@ collections:
 
       - label: "Coming Soon Page" # Corresponds to /
         name: "coming_soon"
-        file: "public/assets/content/coming-soon.json" # UPDATED PATH FOR CMS
+        file: "public/assets/content/coming-soon.json" # Path to this page's content file
         fields:
           - label: "Header Logo Text"
             name: "header_logo_text"
@@ -298,7 +298,7 @@ collections:
 
       - label: "Vessel Teaser Page" # Corresponds to /vessel
         name: "vessel_teaser"
-        file: "public/assets/content/vessel.json" # UPDATED PATH FOR CMS
+        file: "public/assets/content/vessel.json" # Path to this page's content file
         fields:
           - label: "Header Logo Text"
             name: "header_logo_text"
