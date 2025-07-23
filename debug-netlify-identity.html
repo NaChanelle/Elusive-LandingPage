@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Debug Netlify Identity</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+<body>
+  <h1>Netlify Identity Debug</h1>
+  <div id="status"></div>
+  <button onclick="checkStatus()">Check Auth Status</button>
+  <button onclick="openLogin()">Open Login</button>
+  <button onclick="logout()">Logout</button>
+  <button onclick="goToAdmin()">Go to Admin</button>
+
+  <script>
+    const statusDiv = document.getElementById('status');
+    
+    function updateStatus(message) {
+      statusDiv.innerHTML += '<p>' + new Date().toLocaleTimeString() + ': ' + message + '</p>';
+    }
+
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        updateStatus(user ? `Initialized - User: ${user.email}` : 'Initialized - No user');
+      });
+
+      window.netlifyIdentity.on("login", user => {
+        updateStatus(`Login successful: ${user.email}`);
+      });
+
+      window.netlifyIdentity.on("logout", () => {
+        updateStatus('Logout successful');
+      });
+
+      window.netlifyIdentity.on("error", err => {
+        updateStatus(`Error: ${err.message}`);
+      });
+
+      window.netlifyIdentity.init();
+    }
+
+    function checkStatus() {
+      const user = window.netlifyIdentity.currentUser();
+      updateStatus(user ? `Current user: ${user.email}` : 'No user logged in');
+    }
+
+    function openLogin() {
+      window.netlifyIdentity.open('login');
+    }
+
+    function logout() {
+      window.netlifyIdentity.logout();
+    }
+
+    function goToAdmin() {
+      window.location.href = '/admin/';
+    }
+  </script>
+</body>
+</html>
