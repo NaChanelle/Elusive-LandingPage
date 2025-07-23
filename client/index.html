@@ -14,33 +14,8 @@
     <!-- Netlify Identity Widget -->
     <script>
       if (window.netlifyIdentity) {
-        window.netlifyIdentity.on("init", user => {
-          if (user) {
-            // User is logged in, redirect to admin
-            document.location.href = "/admin/";
-          } else {
-            // Handle login event
-            window.netlifyIdentity.on("login", () => {
-              document.location.href = "/admin/";
-            });
-          }
-        });
-      }
-
-      // Handle email confirmation redirects - redirect to admin after confirmation
-      if (window.location.hash) {
-        const hash = window.location.hash;
-        if (hash.includes('confirmation_token') || hash.includes('recovery_token') || hash.includes('invite_token')) {
-          // Initialize and wait for confirmation
-          if (window.netlifyIdentity) {
-            window.netlifyIdentity.on("login", () => {
-              setTimeout(() => {
-                document.location.href = "/admin/";
-              }, 1000);
-            });
-            window.netlifyIdentity.init();
-          }
-        }
+        // Only initialize, no automatic redirects
+        window.netlifyIdentity.init();
       }
     </script>
   </body>
