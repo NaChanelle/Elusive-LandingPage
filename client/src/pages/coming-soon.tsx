@@ -48,6 +48,7 @@ interface ComingSoonContent {
   countdown_hours_label: string;
   countdown_minutes_label: string;
   countdown_seconds_label: string;
+  countdown_date: string;
   countdown_type: string;
   rsvp_countdown_title: string;
   current_rsvps: number;
