@@ -43,41 +43,41 @@
   "curator_tier_features": [
     { "feature": "Everything in Detective" },
     { "feature": "Advanced Vessel features" },
-    { "feature": "Creator tools access" },
-    { "feature": "Priority event access" }
+    { "feature": "Priority event access" },
+    { "feature": "Creator tools access" }
   ],
   "accomplice_tier_title": "Accomplice",
   "accomplice_tier_price": "$75",
-  "accomplice_tier_description": "For those ready to shape the future of cultural storytelling.",
+  "accomplice_tier_description": "For those ready to shape the narrative and lead investigations.",
   "accomplice_tier_selection": "accomplice",
   "accomplice_tier_features": [
     { "feature": "Everything in Curator" },
-    { "feature": "VIP event experiences" },
-    { "feature": "Direct creator collaboration" },
-    { "feature": "Early feature access" }
+    { "feature": "Investigation leadership roles" },
+    { "feature": "Content creation partnerships" },
+    { "feature": "Direct creator collaboration" }
   ],
-  "signup_form_title": "Reserve Your Spot",
-  "signup_form_description": "Join our community of cultural investigators.",
-  "firstname_placeholder": "First Name (Optional)",
+  "signup_form_title": "Reserve Your Investigation",
+  "signup_form_description": "Join the waiting list and be among the first to experience Elusive.",
+  "firstname_placeholder": "First Name",
   "email_placeholder": "Email Address",
   "signup_button_pending_text": "Reserving...",
-  "signup_button_text": "Reserve Investigation",
-  "signup_form_footer_text": "No spam, just mysteries. Unsubscribe at any time.",
+  "signup_button_text": "Reserve Your Spot",
+  "signup_form_footer_text": "We'll never share your information. Only mystery updates and event invitations.",
   "mailerlite_form1_id": "your-mailerlite-form-id",
   "tally_form1_id": "your-tally-form-id",
-  "faq_title": "Frequently Asked Questions",
+  "faq_title": "Investigation Briefing",
   "faq_items": [
     {
-      "question": "When does the first event launch?",
-      "answer": "Our inaugural investigation event is scheduled for **August 2025**."
+      "question": "When will the first event happen?",
+      "answer": "The inaugural event launches when we reach **500 RSVPs**. We're currently at 127 investigators signed up."
     },
     {
-      "question": "What is the Vessel app?",
-      "answer": "Vessel is our companion mobile app for investigation tracking and community engagement."
+      "question": "What makes Elusive different?",
+      "answer": "We create **authentic cultural experiences** that celebrate heritage through interactive storytelling, not just entertainment."
     },
     {
       "question": "How much does it cost?",
-      "answer": "Pricing starts at $15 for Detective level access."
+      "answer": "Three tiers: **Detective ($15)**, **Curator ($35)**, and **Accomplice ($75)**. Each offers different levels of access and participation."
     }
   ],
   "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",

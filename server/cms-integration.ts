@@ -6,13 +6,34 @@ export function setupCMSIntegration(app: express.Express) {
   // Handle CMS content updates via webhook or API
   app.post("/api/cms/update", async (req, res) => {
     try {
+      console.log("CMS update request:", req.body);
+      
       const { page, data } = req.body;
       
       if (!page || !data) {
         return res.status(400).json({ error: "Page and data are required" });
       }
       
-      const filePath = path.join(process.cwd(), "client/public/assets/content", `${page}.json`);
+      // Map page names to file names
+      const pageFileMap: { [key: string]: string } = {
+        'landing': 'landing',
+        'coming_soon': 'coming-soon', 
+        'vessel_teaser': 'vessel',
+        'unknown': 'landing' // Default fallback
+      };
+      
+      const fileName = pageFileMap[page] || page;
+      const filePath = path.join(process.cwd(), "client/public/assets/content", `${fileName}.json`);
+      
+      // Read existing content first
+      let existingData = {};
+      if (fs.existsSync(filePath)) {
+        const existingContent = fs.readFileSync(filePath, "utf8");
+        existingData = JSON.parse(existingContent);
+      }
+      
+      // Merge new data with existing data (only update provided fields)
+      const updatedData = { ...existingData, ...data };
       
       // Ensure directory exists
       const dir = path.dirname(filePath);
@@ -21,17 +42,20 @@ export function setupCMSIntegration(app: express.Express) {
       }
       
       // Write updated content
-      fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+      fs.writeFileSync(filePath, JSON.stringify(updatedData, null, 2));
+      
+      console.log(`Updated ${fileName}.json with:`, Object.keys(data));
       
       res.json({ 
         success: true, 
-        message: `${page} content updated successfully`,
+        message: `${fileName} content updated successfully`,
+        updatedFields: Object.keys(data),
         timestamp: new Date().toISOString()
       });
       
     } catch (error) {
       console.error("CMS update error:", error);
-      res.status(500).json({ error: "Failed to update content" });
+      res.status(500).json({ error: "Failed to update content", details: error.message });
     }
   });
   

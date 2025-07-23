@@ -1,22 +1,22 @@
-// Simple content saving utility for Decap CMS
-// This script allows manual saving of content changes to actual JSON files
+// Enhanced content saving utility for Decap CMS
+window.cmsData = {}; // Store form data globally
 
 window.addEventListener('load', () => {
-  // Check if we're in the Decap CMS admin interface
   if (window.location.pathname.includes('/admin')) {
     console.log('Decap CMS Save Helper loaded');
     
-    // Add save button to CMS interface
+    // Wait for CMS to fully load
     setTimeout(() => {
       addSaveButton();
-    }, 3000);
+      interceptCMSForms();
+    }, 4000);
   }
 });
 
 function addSaveButton() {
-  // Create save button
   const saveButton = document.createElement('button');
   saveButton.innerHTML = '💾 Save to Website';
+  saveButton.id = 'cms-save-button';
   saveButton.style.cssText = `
     position: fixed;
     top: 20px;
@@ -31,65 +31,129 @@ function addSaveButton() {
     font-size: 14px;
     font-weight: bold;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s;
   `;
   
   saveButton.addEventListener('click', saveCurrentContent);
+  saveButton.addEventListener('mouseenter', () => {
+    saveButton.style.background = '#1d4ed8';
+  });
+  saveButton.addEventListener('mouseleave', () => {
+    saveButton.style.background = '#2563eb';
+  });
+  
   document.body.appendChild(saveButton);
+}
+
+function interceptCMSForms() {
+  // Monitor for form changes in the CMS
+  const observer = new MutationObserver(() => {
+    captureFormData();
+  });
+  
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true,
+    attributes: true
+  });
+  
+  // Also capture on input events
+  document.addEventListener('input', captureFormData);
+  document.addEventListener('change', captureFormData);
+}
+
+function captureFormData() {
+  try {
+    // Find all form inputs in the CMS
+    const inputs = document.querySelectorAll('input, textarea, select');
+    const formData = {};
+    let currentPage = 'unknown';
+    
+    // Try to determine current page from URL or breadcrumbs
+    const pathMatch = window.location.hash.match(/\/([^\/]+)$/);
+    if (pathMatch) {
+      currentPage = pathMatch[1];
+    }
+    
+    inputs.forEach(input => {
+      if (input.name && input.value) {
+        formData[input.name] = input.value;
+      }
+    });
+    
+    // Store the data globally
+    if (Object.keys(formData).length > 0) {
+      window.cmsData = {
+        page: currentPage,
+        data: formData,
+        timestamp: new Date().toISOString()
+      };
+      
+      console.log('Captured form data:', window.cmsData);
+      
+      // Update button to show data is ready
+      const button = document.getElementById('cms-save-button');
+      if (button && Object.keys(formData).length > 0) {
+        button.innerHTML = '💾 Save to Website (' + Object.keys(formData).length + ' fields)';
+        button.style.background = '#059669'; // Green when ready
+      }
+    }
+  } catch (error) {
+    console.log('Form capture error:', error);
+  }
 }
 
 async function saveCurrentContent() {
   try {
-    // Get current page content from CMS
-    const pageData = getCurrentPageData();
-    if (!pageData) {
-      alert('Please edit and save a page first, then click this button');
+    const button = document.getElementById('cms-save-button');
+    button.innerHTML = '⏳ Saving...';
+    button.style.background = '#f59e0b'; // Orange while saving
+    
+    if (!window.cmsData || !window.cmsData.data || Object.keys(window.cmsData.data).length === 0) {
+      alert('No form data found. Please:\n1. Edit some fields in the CMS\n2. The button should turn green showing field count\n3. Then click Save to Website');
+      button.innerHTML = '💾 Save to Website';
+      button.style.background = '#2563eb';
       return;
     }
     
-    // Send to our API
+    console.log('Saving data:', window.cmsData);
+    
     const response = await fetch('/api/cms/update', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(pageData)
+      body: JSON.stringify(window.cmsData)
     });
     
     if (response.ok) {
       const result = await response.json();
-      alert(`✅ Content saved successfully! Changes are now live on your website.`);
+      button.innerHTML = '✅ Saved!';
+      button.style.background = '#16a34a'; // Bright green
       
-      // Refresh the main website to show changes
-      if (window.opener) {
-        window.opener.location.reload();
-      }
+      // Show success message
+      alert('✅ Content saved successfully! Changes are now live on your website.');
+      
+      // Reset button after 3 seconds
+      setTimeout(() => {
+        button.innerHTML = '💾 Save to Website';
+        button.style.background = '#2563eb';
+      }, 3000);
+      
     } else {
       throw new Error('Failed to save content');
     }
   } catch (error) {
     console.error('Save error:', error);
-    alert('❌ Failed to save content. Please try again.');
-  }
-}
-
-function getCurrentPageData() {
-  // Try to extract current page data from CMS interface
-  // This is a simplified approach - in practice you'd need to hook into CMS events
-  
-  // Check localStorage for recent CMS data
-  const cmsData = Object.keys(localStorage)
-    .filter(key => key.includes('netlifycms') || key.includes('decap'))
-    .map(key => {
-      try {
-        return JSON.parse(localStorage[key]);
-      } catch {
-        return null;
-      }
-    })
-    .filter(Boolean);
+    const button = document.getElementById('cms-save-button');
+    button.innerHTML = '❌ Error';
+    button.style.background = '#dc2626'; // Red
     
-  console.log('Found CMS data:', cmsData);
-  
-  // For now, return null to prompt user to use the API directly
-  return null;
+    alert('Failed to save content. Please check the console for details and try again.');
+    
+    setTimeout(() => {
+      button.innerHTML = '💾 Save to Website';
+      button.style.background = '#2563eb';
+    }, 3000);
+  }
 }
