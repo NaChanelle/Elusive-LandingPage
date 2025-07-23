@@ -1,6 +1,6 @@
 [build]
   publish = "dist/public"
-  command = "npm run build"
+  command = "npm run build && cp -r client/public/assets/uploads dist/public/assets/uploads || true"
 
 [build.environment]
   NODE_VERSION = "18"
