@@ -1,0 +1,17 @@
+# Exact Files to Copy to GitHub Repository
+
+## ROOT LEVEL FILES:
+- netlify.toml
+- _redirects
+- debug-netlify-identity.html
+
+## CLIENT FILES:
+- client/index.html (updated with Netlify Identity)
+- client/public/admin/index.html (updated with authentication)
+- client/public/admin/config.yml (already correct)
+- client/public/admin/confirm.html (email confirmation helper)
+
+## NETLIFY FUNCTIONS:
+- netlify/functions/api.js (serverless functions)
+
+Copy these files from your Replit to GitHub, then Netlify will auto-deploy with working CMS authentication.
