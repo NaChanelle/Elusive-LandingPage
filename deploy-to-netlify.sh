@@ -1,34 +1,23 @@
 #!/bin/bash
 
-# Netlify Deployment Script for Elusive
-echo "🚀 Preparing Elusive for Netlify deployment..."
-
-# Clean and build
-echo "📦 Building project..."
+# Deploy script to manually upload critical files to Netlify
+echo "Building project with image copying..."
 npm run build
+cp -r client/public/assets/uploads dist/public/assets/uploads || true
 
-# Ensure _redirects is in the right place
-echo "🔄 Setting up redirects..."
-cp _redirects dist/public/_redirects
+echo "Critical files for GitHub update:"
+echo "1. netlify.toml (contains image copying fix)"
+echo "2. client/public/assets/content/landing.json (updated content)"
+echo "3. client/src/pages/landing.tsx (carousel display code)"
+echo "4. client/public/assets/uploads/ (your images)"
 
-# Verify build output
-echo "✅ Build verification:"
-ls -la dist/public/
+echo ""
+echo "Netlify build command should be:"
+echo "npm run build && cp -r client/public/assets/uploads dist/public/assets/uploads || true"
 
-echo "🎯 Files ready for Netlify deployment!"
 echo ""
-echo "📋 Deployment checklist:"
-echo "1. Push these files to your GitHub repo:"
-echo "   - netlify.toml (updated publish directory)"
-echo "   - _redirects (SPA routing)"
-echo "   - Built files in dist/public/"
-echo ""
-echo "2. In Netlify site settings:"
-echo "   - Build command: npm run build"
-echo "   - Publish directory: dist/public"
-echo ""
-echo "3. Enable in Netlify dashboard:"
-echo "   - Identity (for CMS login)"
-echo "   - Git Gateway (for CMS saves)"
-echo ""
-echo "Your site URL: https://lighthearted-pony-bfe03b.netlify.app"
+echo "After pushing netlify.toml to GitHub, images will appear at:"
+echo "https://lighthearted-pony-bfe03b.netlify.app/assets/uploads/dsc02299.jpg"
+echo "https://lighthearted-pony-bfe03b.netlify.app/assets/uploads/dsc02323.jpg"
+echo "https://lighthearted-pony-bfe03b.netlify.app/assets/uploads/dsc02478.jpg"
+echo "https://lighthearted-pony-bfe03b.netlify.app/assets/uploads/dsc02513.jpg"

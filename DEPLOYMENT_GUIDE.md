@@ -1,83 +1,65 @@
-# Netlify Deployment Guide for Elusive CMS
+# Complete Deployment Guide - Fix Carousel Images
 
-## Prerequisites
-✅ Your project is ready for deployment
-✅ GitHub repository: NaChanelle/Elusive-LandingPage
-✅ CMS configured with git-gateway backend
+## Current Status
+❌ Images still not appearing because the critical fix hasn't been deployed to Netlify yet
 
-## Step-by-Step Deployment
+## The Fix is Ready But Not Deployed
+I've updated your `netlify.toml` file with the correct build command, but this file needs to be in your GitHub repository for Netlify to use it.
 
-### 1. Create Netlify Account & Connect GitHub
-1. Go to [netlify.com](https://netlify.com) and sign up/login
-2. Click "Add new site" → "Import an existing project"
-3. Choose "GitHub" and authorize Netlify to access your repositories
-4. Select your repository: `NaChanelle/Elusive-LandingPage`
-
-### 2. Configure Build Settings
-When prompted, use these settings:
+## What Netlify is Currently Using (Wrong):
 ```
-Build command: npm run build
-Publish directory: dist
+command = "npm run build"
 ```
 
-### 3. Deploy the Site
-1. Click "Deploy site"
-2. Wait for the initial deployment to complete
-3. Note your site URL (something like `https://amazing-site-123456.netlify.app`)
+## What Netlify Should Use (Fixed):
+```
+command = "npm run build && cp -r client/public/assets/uploads dist/public/assets/uploads || true"
+```
 
-### 4. Enable Netlify Identity
-1. In your Netlify site dashboard, go to **Site settings**
-2. Click **Identity** in the left sidebar
-3. Click **Enable Identity**
-4. Under **Registration preferences**, choose "Invite only" (recommended)
-5. Under **External providers**, enable **GitHub** (optional but recommended)
+## Required Files to Update in GitHub:
 
-### 5. Enable Git Gateway
-1. Still in **Identity** settings, scroll down to **Services**
-2. Click **Enable Git Gateway**
-3. This allows your CMS to commit directly to GitHub
+### 1. netlify.toml (CRITICAL - This contains the fix)
+Copy this exact content to your GitHub repository:
+```toml
+[build]
+  publish = "dist/public"
+  command = "npm run build && cp -r client/public/assets/uploads dist/public/assets/uploads || true"
 
-### 6. Add Netlify Identity Widget
-The identity widget is already configured in your project, but verify it's working:
-- Visit your site at `/admin`
-- You should see a login interface
-- Create your admin account or login with GitHub
+[build.environment]
+  NODE_VERSION = "18"
 
-### 7. Invite Admin Users (if needed)
-1. In Netlify Identity settings, click **Invite users**
-2. Enter email addresses for people who should have CMS access
-3. They'll receive invitation emails to set up accounts
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
 
-## Testing Your CMS
+[[redirects]]
+  from = "/admin/*"
+  to = "/admin/index.html"  
+  status = 200
 
-Once deployed:
-1. Go to `https://your-site.netlify.app/admin`
-2. Login with your Netlify Identity account
-3. Edit content in the CMS
-4. Click "Publish" - changes should commit to your GitHub repo
-5. Your live site should update automatically
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
-## Troubleshooting
+[functions]
+  directory = "netlify/functions"
+```
 
-### "Not Found" on /admin
-- Check that the build published the `admin/` folder correctly
-- Verify the site rebuilt after enabling Identity
+### 2. Verification Steps:
+1. Push the updated `netlify.toml` to GitHub
+2. Wait for Netlify to rebuild (2-3 minutes)
+3. Test image URLs directly:
+   - Visit: `https://lighthearted-pony-bfe03b.netlify.app/assets/uploads/dsc02299.jpg`
+   - Should show your image, not 404
 
-### CMS won't save changes
-- Ensure Git Gateway is enabled in Netlify Identity settings
-- Check that your user has the correct permissions
-- Verify the repository branch (should be `main`)
+### 3. Expected Result:
+- Carousel will display your uploaded images
+- Images rotate automatically every 4 seconds
+- Professional overlay with alt text and descriptions
 
-### Login issues
-- Make sure Identity is enabled for your site
-- Try using an incognito window to clear any cached auth issues
-- Check that external providers (GitHub) are configured if you want to use them
+## The Root Issue:
+Your images are in GitHub, your carousel code is correct, but Netlify's build process isn't copying the images to the deployment folder because it's using the old build command.
 
-## Current Project Structure
-Your project is already configured with:
-- ✅ Netlify build configuration (`netlify.toml`)
-- ✅ Serverless functions for API endpoints
-- ✅ CMS config with git-gateway backend
-- ✅ All content fields set to optional for flexibility
-
-After deployment, your CMS will save changes directly to your GitHub repository and automatically rebuild your site!
+Push the `netlify.toml` file and the images will work immediately.
