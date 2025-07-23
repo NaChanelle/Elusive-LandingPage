@@ -1,49 +1,28 @@
-# CMS Login Troubleshooting Steps
+# CMS Content Organization Guide
 
-## Current Issue
-Login to `/admin` is not working despite email confirmation being successful.
+## Current CMS Structure:
 
-## Immediate Actions to Try
+### "Landing Page" Section (/platform page)
+This manages content for: https://lighthearted-pony-bfe03b.netlify.app/platform
+- Contains the carousel images you're looking for
+- Event details and hero sections  
+- Access tiers (Detective, Curator, Accomplice)
+- FAQ section
 
-### 1. Force Deploy Updated Files
-The authentication fixes may not be deployed yet:
-1. Go to your Netlify dashboard
-2. Click "Deploys" tab
-3. Click "Trigger deploy" → "Deploy site"
-4. Wait for deployment to complete
-5. Try accessing `/admin` again
+### "Coming Soon Page" Section (/ homepage) 
+This manages content for: https://lighthearted-pony-bfe03b.netlify.app/
+- Main homepage content
+- Countdown and launch information
 
-### 2. Check Netlify Identity Status
-In your Netlify dashboard:
-1. Go to Site settings → Identity
-2. Verify these settings:
-   - ✅ Identity is enabled
-   - ✅ Registration is set to "Open" or "Invite only"
-   - ✅ Git Gateway is enabled
-   - ✅ Your email appears in the Users list
+## To Update Carousel Images:
 
-### 3. Test Authentication Directly
-1. Go to your main site: `https://lighthearted-pony-bfe03b.netlify.app`
-2. Open developer tools (F12)
-3. In the console, type: `netlifyIdentity.currentUser()`
-4. If it returns your user object, you're logged in
-5. If null, type: `netlifyIdentity.open('login')` to login
+1. **Go to CMS**: https://lighthearted-pony-bfe03b.netlify.app/admin
+2. **Click "Website Pages"**
+3. **Select "Landing Page"** (NOT Coming Soon Page)
+4. **Scroll down to find "Carousel Images"** section
+5. **Update image paths or upload new images**
 
-### 4. Alternative: Enable GitHub Login
-1. In Netlify Identity → External providers
-2. Enable GitHub
-3. Try logging in with GitHub instead of email
+## Current Carousel Images Location:
+The carousel images field is correctly configured under "Landing Page" in the CMS and displays on the /platform URL.
 
-### 5. Check Browser Issues
-- Try incognito/private browsing mode
-- Clear all browser data for your site
-- Try a different browser entirely
-
-## What Should Work
-Once authentication is working, at `/admin` you should see:
-- Decap CMS interface
-- "Website Pages" collection
-- Landing Page, Coming Soon, Vessel entries ready to edit
-
-## Debug Information Needed
-If still not working, check browser console at `/admin` for error messages.
+If you're seeing carousel content under "Coming Soon", there might be a display issue in the CMS interface, but the data structure is correct.
