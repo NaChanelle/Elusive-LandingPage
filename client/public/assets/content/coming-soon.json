@@ -1,40 +1,44 @@
 {
-  "header_logo_text": "ELUSIVE",
   "event_updates_button_text": "Event Updates",
-  "event_updates_link": "/platform",
-  "vessel_preview_button_text": "Vessel Preview",
-  "vessel_preview_link": "/vessel",
-  "main_headline_part1": "The",
-  "main_headline_part2": "Investigation",
-  "main_headline_part3": "Begins",
-  "hero_description": "Join the mystery. Shape the story. Become an accomplice in truth.",
-  "countdown_title": "Event Launches In",
-  "countdown_days_label": "Days",
-  "countdown_hours_label": "Hours",
+  "gallery_images": [
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Mystery Events Preview"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Community Gathering"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Cultural Investigation"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Story Creation Workshop"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Investigation Tools"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Community Discussion"
+    }
+  ],
+  "email_share_body": "Check out Elusive Origin - an immersive cultural investigation platform",
   "countdown_minutes_label": "Minutes",
+  "rsvp_countdown_title": "RSVPs to Launch",
   "countdown_seconds_label": "Seconds",
   "countdown_type": "rsvp_based",
-  "rsvp_countdown_title": "RSVPs to Launch",
-  "current_rsvps": 0,
-  "target_rsvps": 75,
-  "rsvp_progress_text": "Join the investigation when we reach our goal",
-  "signup_section_title": "Reserve Your Investigation",
-  "signup_section_description": "Be the first to know when the investigation begins.",
-  "mailerlite_form_id": "your-mailerlite-form-id",
-  "signup_form_footer_text": "No spam, just mysteries. Unsubscribe at any time.",
-  "share_page_text": "Share this page",
-  "twitter_share_text": "The Investigation Begins - Join the Elusive Origin community",
   "email_share_subject": "The Investigation Begins",
-  "email_share_body": "Check out Elusive Origin - an immersive cultural investigation platform",
-  "gallery_images": [
-    { "url": "/api/placeholder/300/200", "alt": "Mystery Events Preview" },
-    { "url": "/api/placeholder/300/200", "alt": "Community Gathering" },
-    { "url": "/api/placeholder/300/200", "alt": "Cultural Investigation" },
-    { "url": "/api/placeholder/300/200", "alt": "Story Creation Workshop" },
-    { "url": "/api/placeholder/300/200", "alt": "Investigation Tools" },
-    { "url": "/api/placeholder/300/200", "alt": "Community Discussion" }
-  ],
+  "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
+  "mailerlite_form_id": "your-mailerlite-form-id",
+  "countdown_title": "Event Launches In",
+  "target_rsvps": 75,
   "testimonials_title": "Early Investigators",
+  "header_logo_text": "ELUSIVE",
+  "current_rsvps": 0,
   "testimonials": [
     {
       "quote": "This is exactly what the cultural space needs - authentic mystery and community.",
@@ -49,22 +53,23 @@
       "role": "Story Enthusiast"
     }
   ],
-  "why_join_title": "Why Join the Investigation?",
-  "why_join_features": [
+  "event_updates_link": "/platform",
+  "footer_links": [
     {
-      "title": "Authentic Cultural Experiences",
-      "description": "Participate in carefully crafted cultural investigations that celebrate heritage and storytelling."
+      "text": "Contact",
+      "url": "/contact"
     },
     {
-      "title": "Community Connection",
-      "description": "Connect with fellow investigators and creators in a space designed for meaningful engagement."
+      "text": "Privacy",
+      "url": "/privacy"
     },
     {
-      "title": "Early Access",
-      "description": "Get exclusive access to events, tools, and community features before they're public."
+      "text": "Terms",
+      "url": "/terms"
     }
   ],
   "faq_section_title": "Frequently Asked Questions",
+  "countdown_hours_label": "Hours",
   "faq_items": [
     {
       "question": "When does the first event launch?",
@@ -79,11 +84,33 @@
       "answer": "We'll announce pricing details closer to launch. Early subscribers will receive special access and pricing information first."
     }
   ],
+  "signup_section_title": "Reserve Your Investigation",
+  "hero_description": "Join the mystery. Shape the story. Become an accomplice in truth.\nSome truths don’t disappear—they just wait for someone to notice",
+  "twitter_share_text": "The Investigation Begins - Join the Elusive Origin community",
+  "main_headline_part1": "Step",
+  "vessel_preview_button_text": "Vessel Preview",
+  "vessel_preview_link": "/vessel",
+  "main_headline_part2": "Into the",
+  "why_join_title": "Why Join the Investigation?",
+  "countdown_days_label": "Days",
+  "rsvp_progress_text": "Join the investigation when we reach our goal",
+  "why_join_features": [
+    {
+      "title": "Authentic Cultural Experiences",
+      "description": "Participate in carefully crafted cultural investigations that celebrate heritage and storytelling."
+    },
+    {
+      "title": "Community Connection",
+      "description": "Connect with fellow investigators and creators in a space designed for meaningful engagement."
+    },
+    {
+      "title": "Early Access",
+      "description": "Get exclusive access to events, tools, and community features before they're public."
+    }
+  ],
+  "main_headline_part3": "Story",
+  "signup_section_description": "Be the first to know when the investigation begins.",
+  "share_page_text": "Share this page",
   "footer_logo_text": "ELUSIVE",
-  "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
-  "footer_links": [
-    { "text": "Contact", "url": "/contact" },
-    { "text": "Privacy", "url": "/privacy" },
-    { "text": "Terms", "url": "/terms" }
-  ]
+  "signup_form_footer_text": "No spam, just mysteries. Unsubscribe at any time."
 }
