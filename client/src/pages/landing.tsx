@@ -21,14 +21,14 @@ export default function Landing() {
   });
   const { toast } = useToast();
 
-  // New state for dynamic content
+  // State for dynamic content
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   // Fetch content specific to the landing page from JSON
   useEffect(() => {
-    fetch('/content/landing.json')
+    fetch('/assets/content/landing.json')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -44,7 +44,7 @@ export default function Landing() {
         setError(err);
         setLoading(false);
       });
-  }, []); // Empty dependency array means this runs once on mount
+  }, []);
 
   // Countdown timer logic, now using dynamic targetDate from content
   useEffect(() => {
@@ -65,14 +65,84 @@ export default function Landing() {
         });
       } else {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        clearInterval(interval); // Stop countdown when it reaches zero
+        // No need to clear interval here, as it will be cleared by the return cleanup function
       }
     };
 
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // Cleanup interval on unmount or content change
   }, [content]); // Re-run if content (specifically target_date) changes
+
+  // --- START: MailerLite and Tally Script Injection (Moved here) ---
+  useEffect(() => {
+    // Inject MailerLite script
+    const mailerliteScriptId = 'mailerlite-webforms-script';
+    if (!document.getElementById(mailerliteScriptId)) {
+      const script = document.createElement('script');
+      script.id = mailerliteScriptId;
+      script.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
+      script.async = true;
+      document.head.appendChild(script);
+    }
+
+    // Inject MailerLite tracking script (if needed, ensure it's generic)
+    const mailerliteTrackingScriptId = 'mailerlite-tracking-script';
+    if (!document.getElementById(mailerliteTrackingScriptId)) {
+      const trackingScript = document.createElement('script');
+      trackingScript.id = mailerliteTrackingScriptId;
+      trackingScript.innerHTML = `
+        fetch("https://assets.mailerlite.com/jsonp/1605566/forms/159584146254988833/takel")
+      `;
+      document.head.appendChild(trackingScript);
+    }
+
+    // Define MailerLite success callback globally
+    // This needs to be defined once and globally for MailerLite's script to find it.
+    // Ensure the ID matches your MailerLite form ID if it's specific.
+    (window as any).ml_webform_success_28257750 = function() {
+      const $ = (window as any).ml_jQuery || (window as any).jQuery;
+      if ($) {
+        $('.ml-subscribe-form-28257750 .row-success').show();
+        $('.ml-subscribe-form-28257750 .row-form').hide();
+      }
+    };
+
+    // Inject Tally script
+    const tallyScriptId = 'tally-embed-script';
+    if (!document.getElementById(tallyScriptId)) {
+      const script = document.createElement('script');
+      script.id = tallyScriptId;
+      script.src = 'https://tally.so/widgets/embed.js';
+      script.async = true;
+      script.onload = () => {
+        if (typeof (window as any).Tally !== "undefined") {
+          (window as any).Tally.loadEmbeds();
+        } else {
+          document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
+            e.src = e.dataset.tallySrc;
+          });
+        }
+      };
+      document.body.appendChild(script);
+    }
+
+    // Cleanup function for useEffect
+    return () => {
+      // Remove MailerLite scripts
+      const mlScript = document.getElementById(mailerliteScriptId);
+      if (mlScript) mlScript.remove();
+      const mlTrackingScript = document.getElementById(mailerliteTrackingScriptId);
+      if (mlTrackingScript) mlTrackingScript.remove();
+      delete (window as any).ml_webform_success_28257750; // Clean up global callback
+
+      // Remove Tally script
+      const tallyScript = document.getElementById(tallyScriptId);
+      if (tallyScript) tallyScript.remove();
+    };
+  }, []); // Run once on mount
+  // --- END: MailerLite and Tally Script Injection ---
+
 
   const signupMutation = useMutation({
     mutationFn: async (data: { email: string; firstName?: string }) => {
@@ -116,29 +186,54 @@ export default function Landing() {
     signupMutation.mutate({ email, firstName });
   };
 
-  // Helper to render MailerLite forms
+  // Helper to render MailerLite forms (no script injection here)
   const renderMailerLiteForm = (formId, embedDivId) => {
     if (!formId) return null;
+    // The MailerLite script should already be loaded by the useEffect above
+    // We just need to ensure the form itself is rendered and then potentially re-initialized
+    // (though MailerLite's script often handles this if the div is present).
+    useEffect(() => {
+      if (window.ml_webform_success_28257750 && window.mailerlite && window.mailerlite.load) {
+        // Ensure the form is loaded/re-rendered if the component mounts/updates
+        window.mailerlite.load();
+      }
+    }, [formId]); // Re-run if formId changes
+
     return (
-      <div id={embedDivId}>
-        <div data-ml-form={formId}></div>
-        {useEffect(() => {
-          if (!window.mailerlite && !document.querySelector('script[src*="mailerlite"]')) {
-            (function(m,a,i,l,e,r){ m['MailerLiteObject']=e;function f(){
-            var c={ a:[], q:[]};return function(n){c.a.push(n);return function(){c.q.push(arguments);return c}}()}
-            var x=f(),y=f();e?m[e]=x:m.mailerlite=x;m[e].c=y;m[e].f=r;r.k=e;r.load=f;
-            }(window,document,'script','ml','mailerlite',{"v":"20230801"}));
-          } else if (window.mailerlite && window.mailerlite.load) {
-            window.mailerlite.load();
-          }
-        }, [formId])}
+      <div id={embedDivId} className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28257750">
+        {/* The actual MailerLite form HTML will be injected here by their script */}
+        {/* You might need to adjust the class name if your form ID is different */}
+        <div className="ml-form-align-center">
+            <div className="ml-form-embedWrapper embedForm">
+                <div className="ml-form-embedBody ml-form-embedBodyDefault row-form">
+                    <div className="ml-form-embedContent" style={{marginBottom: '0px'}}>
+                    </div>
+                    {/* The form tag itself will be populated by MailerLite's script */}
+                    {/* For now, we'll leave a placeholder or the original structure if it helps MailerLite */}
+                    {/* If MailerLite relies on a specific data-ml-form attribute on a div, use that instead */}
+                    <div data-ml-form={formId}></div>
+                </div>
+                <div className="ml-form-successBody row-success" style={{display: 'none'}}>
+                    <div className="ml-form-successContent">
+                        <h4>Thank you!</h4>
+                        <p>You have successfully joined our subscriber list.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
       </div>
     );
   };
 
-  // Helper to render Tally forms
+  // Helper to render Tally forms (no script injection here)
   const renderTallyForm = (formId, embedDivId) => {
     if (!formId) return null;
+    useEffect(() => {
+      if (window.Tally && window.Tally.loadEmbeds) {
+        window.Tally.loadEmbeds(); // Re-trigger form rendering if script already loaded
+      }
+    }, [formId]); // Re-run if formId changes
+
     return (
       <div id={embedDivId}>
         <iframe
@@ -150,13 +245,6 @@ export default function Landing() {
           className="rounded-lg"
           title="Tally Form"
         ></iframe>
-        {useEffect(() => {
-          if (!window.Tally && !document.querySelector('script[src*="tally.so/widgets/embed.js"]')) {
-            var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};"undefined"!=typeof Tally?v():(d.querySelector('script[src="'+w+'"]')||d.head.appendChild(d.createElement("script")).src=w).addEventListener("load",v);
-          } else if (window.Tally && window.Tally.loadEmbeds) {
-            window.Tally.loadEmbeds();
-          }
-        }, [formId])}
       </div>
     );
   };
@@ -210,9 +298,9 @@ export default function Landing() {
 
             <div className="space-y-6">
               <h1 className="text-6xl md:text-8xl font-bold leading-tight">
-                {content.hero_main_headline.split(' ')[0]}{" "}
+                {content.hero_main_headline_part1}{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">
-                  {content.hero_main_headline.split(' ').slice(1).join(' ')}
+                  {content.hero_main_headline_part2}
                 </span>
               </h1>
               <p className="text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed">

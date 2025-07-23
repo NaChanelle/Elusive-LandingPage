@@ -16,7 +16,7 @@ export default function VesselTeaser() {
 
   // Fetch content specific to the Vessel Teaser page from JSON
   useEffect(() => {
-    fetch('/content/vessel.json')
+    fetch('/assets/content/vessel.json')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -41,9 +41,53 @@ export default function VesselTeaser() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Helper to render Tally forms
+  // --- START: Tally Script Injection (Moved here) ---
+  useEffect(() => {
+    const tallyScriptId = 'tally-embed-script';
+    if (!document.getElementById(tallyScriptId)) {
+      const script = document.createElement('script');
+      script.id = tallyScriptId;
+      script.src = 'https://tally.so/widgets/embed.js';
+      script.async = true;
+      script.onload = () => {
+        if (typeof (window as any).Tally !== "undefined") {
+          (window as any).Tally.loadEmbeds();
+        } else {
+          // Fallback if Tally object isn't immediately available
+          document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
+            e.src = e.dataset.tallySrc;
+          });
+        }
+      };
+      script.onerror = () => {
+        // Fallback on error
+        document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
+          e.src = e.dataset.tallySrc;
+        });
+      };
+      document.body.appendChild(script);
+    }
+
+    return () => {
+      const existingScript = document.getElementById(tallyScriptId);
+      if (existingScript) {
+        existingScript.remove();
+      }
+    };
+  }, []); // Run once on mount
+  // --- END: Tally Script Injection ---
+
+  // Helper to render Tally forms (no script injection here, only re-initialization)
   const renderTallyForm = (formId, embedDivId) => {
     if (!formId) return null;
+    useEffect(() => {
+      // This useEffect runs when formId changes or component mounts/updates.
+      // It ensures Tally embeds are loaded if the main script is already present.
+      if (typeof (window as any).Tally !== "undefined" && (window as any).Tally.loadEmbeds) {
+        (window as any).Tally.loadEmbeds();
+      }
+    }, [formId]); // Re-run if formId changes
+
     return (
       <div id={embedDivId}>
         <iframe
@@ -55,13 +99,6 @@ export default function VesselTeaser() {
           className="rounded-lg"
           title="Tally Form"
         ></iframe>
-        {useEffect(() => {
-          if (!window.Tally && !document.querySelector('script[src*="tally.so/widgets/embed.js"]')) {
-            var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};"undefined"!=typeof Tally?v():(d.querySelector('script[src="'+w+'"]')||d.head.appendChild(d.createElement("script")).src=w).addEventListener("load",v);
-          } else if (window.Tally && window.Tally.loadEmbeds) {
-            window.Tally.loadEmbeds();
-          }
-        }, [formId])}
       </div>
     );
   };

@@ -13,7 +13,7 @@ collections:
     files:
       - label: "Landing Page" # Corresponds to /platform
         name: "landing"
-        file: "content/landing.json" # Path to this page's content file
+        file: "public/assets/content/landing.json" # UPDATED PATH FOR CMS
         fields:
           - label: "Header Title"
             name: "header_title"
@@ -172,7 +172,7 @@ collections:
 
       - label: "Coming Soon Page" # Corresponds to /
         name: "coming_soon"
-        file: "content/coming-soon.json" # Path to this page's content file
+        file: "public/assets/content/coming-soon.json" # UPDATED PATH FOR CMS
         fields:
           - label: "Header Logo Text"
             name: "header_logo_text"
@@ -298,7 +298,7 @@ collections:
 
       - label: "Vessel Teaser Page" # Corresponds to /vessel
         name: "vessel_teaser"
-        file: "content/vessel.json" # Path to this page's content file
+        file: "public/assets/content/vessel.json" # UPDATED PATH FOR CMS
         fields:
           - label: "Header Logo Text"
             name: "header_logo_text"
@@ -380,5 +380,3 @@ collections:
             fields:
               - { label: "Text", name: "text", widget: "string" }
               - { label: "URL", name: "url", widget: "string" }
-
-

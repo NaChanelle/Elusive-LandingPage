@@ -24,7 +24,7 @@ export default function ComingSoon() {
 
   // Fetch content specific to the Coming Soon page from JSON
   useEffect(() => {
-    fetch('/content/coming-soon.json')
+    fetch('/assets/content/coming-soon.json')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
