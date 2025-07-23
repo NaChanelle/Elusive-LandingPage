@@ -19,6 +19,14 @@
           });
         }
       });
+      
+      // Handle login errors
+      window.netlifyIdentity.on("error", err => {
+        console.error("Netlify Identity Error:", err);
+        if (err.message && err.message.includes("email not confirmed")) {
+          alert("Your email needs to be confirmed. Please check your email for a confirmation link, or contact your site administrator to resend the confirmation.");
+        }
+      });
     }
   </script>
 </body>
