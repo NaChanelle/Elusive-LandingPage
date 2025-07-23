@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Elusive CMS</title>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d1810 100%);
+      color: #f5f5f5;
+      margin: 0;
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 600px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    h1 {
+      color: #d4af37;
+      margin-bottom: 20px;
+      font-size: 2.5em;
+    }
+    .status {
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 8px;
+      font-size: 1.1em;
+    }
+    .success { 
+      background-color: rgba(40, 167, 69, 0.2); 
+      border: 1px solid #28a745;
+      color: #90ee90;
+    }
+    .loading { 
+      background-color: rgba(255, 193, 7, 0.2); 
+      border: 1px solid #ffc107;
+      color: #ffd700;
+    }
+    button {
+      background: linear-gradient(135deg, #d4af37 0%, #b8941f 100%);
+      color: #1a1a1a;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+      font-size: 1.1em;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    button:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.3);
+    }
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Elusive CMS</h1>
+    <div id="status" class="status loading pulse">
+      Confirming your access...
+    </div>
+    
+    <div id="actions" style="display: none;">
+      <button onclick="goToAdmin()">Enter Content Manager</button>
+      <button onclick="goToSite()">View Live Site</button>
+    </div>
+  </div>
+
+  <script>
+    const statusDiv = document.getElementById('status');
+    const actionsDiv = document.getElementById('actions');
+    let redirectTimer;
+
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", user => {
+        if (user) {
+          statusDiv.innerHTML = `✨ Welcome, ${user.user_metadata?.full_name || user.email}!<br>Your CMS access is confirmed.`;
+          statusDiv.className = "status success";
+          actionsDiv.style.display = "block";
+          
+          // Auto-redirect to admin after 3 seconds
+          redirectTimer = setTimeout(() => {
+            document.location.href = "/admin/";
+          }, 3000);
+        } else {
+          statusDiv.innerHTML = "⏳ Completing your setup...";
+          
+          window.netlifyIdentity.on("login", (user) => {
+            statusDiv.innerHTML = `🎉 Success! Welcome to Elusive CMS.<br>Redirecting to content manager...`;
+            statusDiv.className = "status success";
+            
+            setTimeout(() => {
+              document.location.href = "/admin/";
+            }, 2000);
+          });
+        }
+      });
+
+      // Initialize
+      window.netlifyIdentity.init();
+    }
+
+    function goToAdmin() {
+      if (redirectTimer) clearTimeout(redirectTimer);
+      window.location.href = "/admin/";
+    }
+
+    function goToSite() {
+      if (redirectTimer) clearTimeout(redirectTimer);
+      window.location.href = "/";
+    }
+  </script>
+</body>
+</html>
