@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
-import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown } from "lucide-react";
+import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, Eye } from "lucide-react";
 import { insertReservationSchema, type InsertReservation } from "@shared/schema";
 
 // Define TypeScript interfaces for the landing page content
@@ -26,10 +26,18 @@ interface LandingContent {
   hero_main_headline_part2: string;
   hero_sub_headline: string;
   event_date_text: string;
+  event_launch_description: string;
+  current_rsvps: number;
+  target_rsvps: number;
   value_proposition_text: string;
-  countdown_target_date: string;
   reserve_spot_button_text: string;
   learn_more_button_text: string;
+  image_carousel_title: string;
+  carousel_images: Array<{
+    id: number;
+    alt: string;
+    placeholder: string;
+  }>;
   whats_coming_next_title: string;
   feature1_title: string;
   feature1_description: string;
@@ -41,15 +49,18 @@ interface LandingContent {
   detective_tier_title: string;
   detective_tier_price: string;
   detective_tier_description: string;
+  detective_tier_selection: string;
   detective_tier_features: TierFeature[];
   curator_tier_tag: string;
   curator_tier_title: string;
   curator_tier_price: string;
   curator_tier_description: string;
+  curator_tier_selection: string;
   curator_tier_features: TierFeature[];
   accomplice_tier_title: string;
   accomplice_tier_price: string;
   accomplice_tier_description: string;
+  accomplice_tier_selection: string;
   accomplice_tier_features: TierFeature[];
   signup_form_title: string;
   signup_form_description: string;
@@ -78,12 +89,8 @@ declare global {
 export default function Landing() {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0
-  });
+  const [selectedTier, setSelectedTier] = useState<string>("");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const { toast } = useToast();
 
   // State for dynamic content with proper typing
@@ -111,32 +118,18 @@ export default function Landing() {
       });
   }, []);
 
-  // Countdown timer logic, now using dynamic targetDate from content
+  // Image carousel auto-rotation
   useEffect(() => {
-    if (!content?.countdown_target_date) return; // Wait for content to load
+    if (!content?.carousel_images?.length) return;
 
-    const targetDate = new Date(content.countdown_target_date);
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => 
+        (prev + 1) % content.carousel_images.length
+      );
+    }, 4000); // Change image every 4 seconds
 
-    const updateCountdown = () => {
-      const now = new Date();
-      const difference = targetDate.getTime() - now.getTime();
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-          minutes: Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60)),
-          seconds: Math.floor((difference % (1000 * 60)) / 1000)
-        });
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      }
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
-  }, [content]);
+  }, [content?.carousel_images]);
 
   // Script injection for external services
   useEffect(() => {
@@ -227,8 +220,8 @@ export default function Landing() {
     const reservationData: InsertReservation = {
       email,
       firstName: firstName || undefined,
-      investigationInterests: [],
-      preferredRole: undefined,
+      investigationInterests: selectedTier ? [selectedTier] : [],
+      preferredRole: selectedTier || undefined,
     };
 
     reservationMutation.mutate(reservationData);
@@ -290,6 +283,7 @@ export default function Landing() {
             </h1>
             <p className="text-xl md:text-2xl text-gray-300">{content.hero_sub_headline}</p>
             <div className="text-[#FFB90F] font-semibold">{content.event_date_text}</div>
+            <div className="text-sm text-gray-400">{content.event_launch_description}</div>
             <div 
               className="text-lg text-gray-300 max-w-2xl mx-auto"
               dangerouslySetInnerHTML={{ 
@@ -298,28 +292,28 @@ export default function Landing() {
             />
           </div>
 
-          {/* Countdown Timer */}
+          {/* RSVP Progress */}
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-2xl mx-auto">
             <div className="flex items-center justify-center mb-4">
-              <Clock className="w-6 h-6 text-[#FFB90F] mr-2" />
-              <h3 className="text-xl font-semibold">Event Launches In</h3>
+              <Users className="w-6 h-6 text-[#FFB90F] mr-2" />
+              <h3 className="text-xl font-semibold">Launch Progress</h3>
             </div>
-            <div className="grid grid-cols-4 gap-4 text-center">
-              <div className="bg-white/10 rounded-lg p-3">
-                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.days}</div>
-                <div className="text-sm text-gray-400">Days</div>
+            <div className="space-y-4">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Current RSVPs</span>
+                <span className="text-[#FFB90F] font-semibold">{content.current_rsvps}</span>
               </div>
-              <div className="bg-white/10 rounded-lg p-3">
-                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.hours}</div>
-                <div className="text-sm text-gray-400">Hours</div>
+              <div className="w-full bg-white/10 rounded-full h-3">
+                <div 
+                  className="bg-gradient-to-r from-[#FFB90F] to-[#FFA500] h-3 rounded-full transition-all duration-1000"
+                  style={{ width: `${Math.min((content.current_rsvps / content.target_rsvps) * 100, 100)}%` }}
+                />
               </div>
-              <div className="bg-white/10 rounded-lg p-3">
-                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.minutes}</div>
-                <div className="text-sm text-gray-400">Minutes</div>
-              </div>
-              <div className="bg-white/10 rounded-lg p-3">
-                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.seconds}</div>
-                <div className="text-sm text-gray-400">Seconds</div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-400">Target: {content.target_rsvps}</span>
+                <span className="text-gray-400">
+                  {content.target_rsvps - content.current_rsvps} RSVPs to launch
+                </span>
               </div>
             </div>
           </div>
@@ -338,6 +332,43 @@ export default function Landing() {
             >
               {content.learn_more_button_text}
             </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Image Carousel Section */}
+      <section id="gallery" className="px-6 py-16">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.image_carousel_title}</h2>
+          <div className="relative">
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 aspect-video flex items-center justify-center">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <Eye className="w-8 h-8 text-[#FFB90F]" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
+                  {content.carousel_images[currentImageIndex]?.alt}
+                </h3>
+                <p className="text-gray-300">
+                  {content.carousel_images[currentImageIndex]?.placeholder}
+                </p>
+              </div>
+            </div>
+            
+            {/* Carousel Indicators */}
+            <div className="flex justify-center mt-6 space-x-2">
+              {content.carousel_images.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentImageIndex 
+                      ? 'bg-[#FFB90F]' 
+                      : 'bg-white/20 hover:bg-white/40'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -378,7 +409,11 @@ export default function Landing() {
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.access_tiers_title}</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {/* Detective Tier */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+            <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
+              selectedTier === content.detective_tier_selection 
+                ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
+                : 'border-white/10 hover:border-white/20'
+            }`}>
               <h3 className="text-xl font-semibold mb-2">{content.detective_tier_title}</h3>
               <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.detective_tier_price}</div>
               <p className="text-gray-300 mb-6">{content.detective_tier_description}</p>
@@ -390,13 +425,27 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <Button className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/20">
-                Choose Detective
+              <Button 
+                onClick={() => {
+                  setSelectedTier(content.detective_tier_selection);
+                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className={`w-full transition-all duration-300 ${
+                  selectedTier === content.detective_tier_selection
+                    ? 'bg-[#FFB90F] text-black'
+                    : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
+                }`}
+              >
+                {selectedTier === content.detective_tier_selection ? '✓ Selected' : 'Choose Detective'}
               </Button>
             </div>
 
             {/* Curator Tier */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border-2 border-[#FFB90F] relative">
+            <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border-2 relative transition-all duration-300 cursor-pointer ${
+              selectedTier === content.curator_tier_selection 
+                ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
+                : 'border-[#FFB90F] hover:bg-[#FFB90F]/5'
+            }`}>
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#FFB90F] text-black px-4 py-1 rounded-full text-sm font-medium">
                 {content.curator_tier_tag}
               </div>
@@ -411,13 +460,27 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black">
-                Choose Curator
+              <Button 
+                onClick={() => {
+                  setSelectedTier(content.curator_tier_selection);
+                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className={`w-full transition-all duration-300 ${
+                  selectedTier === content.curator_tier_selection
+                    ? 'bg-[#FFB90F] text-black ring-2 ring-[#FFB90F]/50'
+                    : 'bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black'
+                }`}
+              >
+                {selectedTier === content.curator_tier_selection ? '✓ Selected' : 'Choose Curator'}
               </Button>
             </div>
 
             {/* Accomplice Tier */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+            <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
+              selectedTier === content.accomplice_tier_selection 
+                ? 'border-[#8B0000] bg-[#8B0000]/10' 
+                : 'border-white/10 hover:border-[#8B0000]/50'
+            }`}>
               <div className="flex items-center mb-2">
                 <Crown className="w-5 h-5 text-[#FFB90F] mr-2" />
                 <h3 className="text-xl font-semibold">{content.accomplice_tier_title}</h3>
@@ -432,8 +495,18 @@ export default function Landing() {
                   </li>
                 ))}
               </ul>
-              <Button className="w-full bg-[#8B0000] hover:bg-[#8B0000]/90 text-white">
-                Choose Accomplice
+              <Button 
+                onClick={() => {
+                  setSelectedTier(content.accomplice_tier_selection);
+                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className={`w-full transition-all duration-300 ${
+                  selectedTier === content.accomplice_tier_selection
+                    ? 'bg-[#8B0000] text-white ring-2 ring-[#8B0000]/50'
+                    : 'bg-[#8B0000] hover:bg-[#8B0000]/90 text-white'
+                }`}
+              >
+                {selectedTier === content.accomplice_tier_selection ? '✓ Selected' : 'Choose Accomplice'}
               </Button>
             </div>
           </div>

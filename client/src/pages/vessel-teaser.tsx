@@ -45,8 +45,13 @@ interface VesselContent {
   mvp_features: MVPFeature[];
   roadmap_features_title: string;
   roadmap_features: RoadmapFeature[];
+  freemium_section_title: string;
+  freemium_description: string;
+  freemium_features: string[];
+  premium_upgrade_text: string;
   cta_early_access_title: string;
   cta_early_access_description: string;
+  feature_voting_description: string;
   tally_form_id: string;
   footer_logo_text: string;
   footer_copyright_text: string;
@@ -217,7 +222,9 @@ export default function VesselTeaser() {
   // Process features with icons
   const mvpFeatures: ProcessedFeature[] = content.mvp_features.map(feature => ({
     ...feature,
-    icon: getIconComponent(feature.icon_name)
+    icon: getIconComponent(feature.icon_name),
+    visualPlaceholder: feature.visualPlaceholder || 'Feature preview',
+    gradient: feature.gradient || 'bg-gradient-to-br from-[#FFB90F] to-[#FFA500]'
   }));
 
   const roadmapFeatures: ProcessedRoadmapFeature[] = content.roadmap_features.map(feature => ({
@@ -338,6 +345,49 @@ export default function VesselTeaser() {
         </div>
       </section>
 
+      {/* Freemium Section */}
+      <section className="px-6 py-16">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.freemium_section_title}</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+              <h3 className="text-xl font-semibold mb-4 text-[#FFB90F]">Free Features</h3>
+              <p className="text-gray-300 mb-6">{content.freemium_description}</p>
+              <ul className="space-y-3 mb-6">
+                {content.freemium_features.map((feature, index) => (
+                  <li key={index} className="flex items-center text-gray-300">
+                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-gradient-to-br from-[#FFB90F]/10 to-[#FFA500]/10 backdrop-blur-sm rounded-xl p-6 border border-[#FFB90F]/20">
+              <h3 className="text-xl font-semibold mb-4 text-[#FFB90F]">Premium Upgrade</h3>
+              <p className="text-gray-300 mb-6">{content.premium_upgrade_text}</p>
+              <div className="space-y-3">
+                <div className="flex items-center text-gray-300">
+                  <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                  Unlimited theory boards
+                </div>
+                <div className="flex items-center text-gray-300">
+                  <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                  Full cultural library access
+                </div>
+                <div className="flex items-center text-gray-300">
+                  <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                  Advanced collaboration tools
+                </div>
+                <div className="flex items-center text-gray-300">
+                  <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                  Priority community features
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="px-6 py-16">
         <div className="max-w-2xl mx-auto text-center">
@@ -346,7 +396,8 @@ export default function VesselTeaser() {
               <Mail className="w-8 h-8 text-[#FFB90F] mr-3" />
               <h2 className="text-2xl font-bold">{content.cta_early_access_title}</h2>
             </div>
-            <p className="text-gray-300 mb-6">{content.cta_early_access_description}</p>
+            <p className="text-gray-300 mb-4">{content.cta_early_access_description}</p>
+            <p className="text-sm text-gray-400 mb-6">{content.feature_voting_description}</p>
 
             {/* Tally Form */}
             {renderTallyForm(content.tally_form_id, 'vessel-early-access-form')}

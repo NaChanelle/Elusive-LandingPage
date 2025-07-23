@@ -156,6 +156,15 @@ Changelog:
   * Added "How Early Access Works" 4-step user journey section
   * Redesigned early access form with prominent Name/Email fields and optional feedback sections
   * Enhanced visual hierarchy and user experience flow
+
+- January 22, 2025. RSVP-based launch system and interactive improvements
+  * Replaced fixed date countdown with RSVP-based launch system (500 target RSVPs)
+  * Added interactive carousel for event preview images on landing page
+  * Made investigation levels clickable with selection state and automatic scroll
+  * Enhanced Vessel app page with freemium feature breakdown
+  * Added feature voting integration via Tally forms
+  * Implemented progress tracking for event launch readiness
+  * Updated all content to support dynamic, user-driven event scheduling
 ```
 
 ## User Preferences

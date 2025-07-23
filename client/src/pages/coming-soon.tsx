@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Clock, Mail, Menu, ChevronUp } from "lucide-react";
+import { Clock, Mail, Menu, ChevronUp, Users } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 // Define TypeScript interfaces for the content
@@ -47,7 +47,11 @@ interface ComingSoonContent {
   countdown_hours_label: string;
   countdown_minutes_label: string;
   countdown_seconds_label: string;
-  countdown_date: string;
+  countdown_type: string;
+  rsvp_countdown_title: string;
+  current_rsvps: number;
+  target_rsvps: number;
+  rsvp_progress_text: string;
   signup_section_title: string;
   signup_section_description: string;
   mailerlite_form_id: string;
@@ -347,25 +351,23 @@ export default function ComingSoon() {
           {/* Countdown Timer */}
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-2xl mx-auto mb-8">
             <div className="flex items-center justify-center mb-4">
-              <Clock className="w-6 h-6 text-[#FFB90F] mr-2" />
-              <h3 className="text-xl font-semibold">{content.countdown_title}</h3>
+              <Users className="w-6 h-6 text-[#FFB90F] mr-2" />
+              <h3 className="text-xl font-semibold">{content.rsvp_countdown_title}</h3>
             </div>
-            <div className="grid grid-cols-4 gap-4 text-center">
-              <div className="bg-white/10 rounded-lg p-3">
-                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.days}</div>
-                <div className="text-sm text-gray-400">{content.countdown_days_label}</div>
-              </div>
-              <div className="bg-white/10 rounded-lg p-3">
-                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.hours}</div>
-                <div className="text-sm text-gray-400">{content.countdown_hours_label}</div>
-              </div>
-              <div className="bg-white/10 rounded-lg p-3">
-                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.minutes}</div>
-                <div className="text-sm text-gray-400">{content.countdown_minutes_label}</div>
-              </div>
-              <div className="bg-white/10 rounded-lg p-3">
-                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.seconds}</div>
-                <div className="text-sm text-gray-400">{content.countdown_seconds_label}</div>
+            <div className="space-y-6">
+              <div className="text-center">
+                <div className="text-5xl font-bold text-[#FFB90F] mb-2">{content.current_rsvps}</div>
+                <div className="text-lg text-gray-300 mb-4">of {content.target_rsvps} RSVPs</div>
+                <div className="w-full bg-white/10 rounded-full h-4 mb-4">
+                  <div 
+                    className="bg-gradient-to-r from-[#FFB90F] to-[#FFA500] h-4 rounded-full transition-all duration-1000"
+                    style={{ width: `${Math.min((content.current_rsvps / content.target_rsvps) * 100, 100)}%` }}
+                  />
+                </div>
+                <p className="text-sm text-gray-400">{content.rsvp_progress_text}</p>
+                <div className="mt-4 text-lg text-[#FFB90F] font-semibold">
+                  {content.target_rsvps - content.current_rsvps} more needed to launch!
+                </div>
               </div>
             </div>
           </div>
