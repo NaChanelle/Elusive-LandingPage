@@ -1,7 +1,7 @@
 backend:
-  name: git-gateway
-  # For Netlify deployment with authentication
-  # In development, using test-repo mode with custom save functionality
+  name: proxy
+  proxy_url: /api/decap
+  # Custom backend that saves directly to JSON files
 
 # Global settings to make fields optional by default  
 publish_mode: simple

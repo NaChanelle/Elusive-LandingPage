@@ -3,6 +3,134 @@ import fs from "fs";
 import path from "path";
 
 export function setupCMSIntegration(app: express.Express) {
+  // Decap CMS Proxy Backend - handles all CMS operations
+  // Get entries for a collection
+  app.get("/api/decap/entries/:collection", async (req, res) => {
+    try {
+      const { collection } = req.params;
+      const contentDir = path.join(process.cwd(), "client/public/assets/content");
+      
+      if (collection === "pages") {
+        const files = ["landing.json", "coming-soon.json", "vessel.json"];
+        const entries = files.map(file => {
+          const filePath = path.join(contentDir, file);
+          if (fs.existsSync(filePath)) {
+            const content = JSON.parse(fs.readFileSync(filePath, "utf8"));
+            const slug = file.replace('.json', '');
+            return {
+              slug,
+              path: file,
+              data: content,
+              file: { path: file }
+            };
+          }
+          return null;
+        }).filter(Boolean);
+        
+        res.json(entries);
+      } else {
+        res.json([]);
+      }
+    } catch (error) {
+      console.error("CMS get entries error:", error);
+      res.status(500).json({ error: "Failed to get entries" });
+    }
+  });
+
+  // Get a specific entry
+  app.get("/api/decap/entries/:collection/:slug", async (req, res) => {
+    try {
+      const { collection, slug } = req.params;
+      
+      if (collection === "pages") {
+        const fileMap: { [key: string]: string } = {
+          'landing': 'landing.json',
+          'coming_soon': 'coming-soon.json',
+          'vessel_teaser': 'vessel.json'
+        };
+        
+        const fileName = fileMap[slug] || `${slug}.json`;
+        const filePath = path.join(process.cwd(), "client/public/assets/content", fileName);
+        
+        if (fs.existsSync(filePath)) {
+          const content = JSON.parse(fs.readFileSync(filePath, "utf8"));
+          res.json({
+            slug,
+            path: fileName,
+            data: content,
+            file: { path: fileName }
+          });
+        } else {
+          res.status(404).json({ error: "Entry not found" });
+        }
+      } else {
+        res.status(404).json({ error: "Collection not found" });
+      }
+    } catch (error) {
+      console.error("CMS get entry error:", error);
+      res.status(500).json({ error: "Failed to get entry" });
+    }
+  });
+
+  // Update/Create an entry (this is called when you publish in Decap CMS)
+  app.put("/api/decap/entries/:collection/:slug", async (req, res) => {
+    try {
+      const { collection, slug } = req.params;
+      const { data } = req.body;
+      
+      console.log(`Decap CMS publishing ${slug} in ${collection}:`, Object.keys(data || {}));
+      
+      if (collection === "pages") {
+        const fileMap: { [key: string]: string } = {
+          'landing': 'landing.json',
+          'coming_soon': 'coming-soon.json',
+          'vessel_teaser': 'vessel.json'
+        };
+        
+        const fileName = fileMap[slug] || `${slug}.json`;
+        const filePath = path.join(process.cwd(), "client/public/assets/content", fileName);
+        
+        // Create backup before updating
+        const backupPath = `${filePath}.backup`;
+        if (fs.existsSync(filePath)) {
+          fs.copyFileSync(filePath, backupPath);
+          console.log(`Backup created: ${fileName}.backup`);
+        }
+        
+        // Ensure directory exists
+        const dir = path.dirname(filePath);
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+        
+        // Write new content (data should be the complete content from CMS)
+        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        
+        console.log(`✅ Successfully updated ${fileName} via Decap CMS publish`);
+        console.log(`Changes will appear immediately on the website frontend`);
+        
+        res.json({
+          slug,
+          path: fileName,  
+          data,
+          file: { path: fileName }
+        });
+      } else {
+        res.status(400).json({ error: "Invalid collection" });
+      }
+    } catch (error) {
+      console.error("CMS update entry error:", error);
+      res.status(500).json({ error: "Failed to update entry", details: error.message });
+    }
+  });
+
+  // POST version for compatibility
+  app.post("/api/decap/entries/:collection/:slug", async (req, res) => {
+    // Redirect to PUT handler
+    req.method = 'PUT';
+    return app._router.handle(req, res);
+  });
+
   // Handle CMS content updates via webhook or API
   app.post("/api/cms/update", async (req, res) => {
     try {
