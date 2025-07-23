@@ -3,8 +3,13 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertReservationSchema, insertRSVPSchema } from "@shared/schema";
 import { z } from "zod";
+import fs from "fs";
+import path from "path";
+import { setupCMSIntegration } from "./cms-integration";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup CMS integration endpoints
+  setupCMSIntegration(app);
   // Create reservation
   app.post("/api/reservations", async (req, res) => {
     try {
@@ -143,6 +148,75 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Error getting RSVP count:', error);
       res.status(500).json({ message: "Failed to get RSVP count" });
+    }
+  });
+
+  // CMS Backend API for Decap CMS
+  // Get file content for editing
+  app.get("/api/cms/:collection/:filename", async (req, res) => {
+    try {
+      const { collection, filename } = req.params;
+      const filePath = path.join(process.cwd(), "client/public/assets/content", `${filename}.json`);
+      
+      if (fs.existsSync(filePath)) {
+        const content = fs.readFileSync(filePath, "utf8");
+        const data = JSON.parse(content);
+        res.json({
+          path: `${filename}.json`,
+          content: data,
+          sha: Date.now().toString() // Simple version tracking
+        });
+      } else {
+        res.status(404).json({ error: "File not found" });
+      }
+    } catch (error) {
+      console.error("CMS GET error:", error);
+      res.status(500).json({ error: "Failed to read file" });
+    }
+  });
+
+  // Update file content
+  app.put("/api/cms/:collection/:filename", async (req, res) => {
+    try {
+      const { collection, filename } = req.params;
+      const { content } = req.body;
+      const filePath = path.join(process.cwd(), "client/public/assets/content", `${filename}.json`);
+      
+      // Ensure directory exists
+      const dir = path.dirname(filePath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      
+      fs.writeFileSync(filePath, JSON.stringify(content, null, 2));
+      
+      res.json({
+        path: `${filename}.json`,
+        sha: Date.now().toString(),
+        message: "File updated successfully"
+      });
+    } catch (error) {
+      console.error("CMS PUT error:", error);
+      res.status(500).json({ error: "Failed to update file" });
+    }
+  });
+
+  // List files in collection (required by CMS)
+  app.get("/api/cms/:collection", async (req, res) => {
+    try {
+      const contentDir = path.join(process.cwd(), "client/public/assets/content");
+      const files = fs.readdirSync(contentDir)
+        .filter(file => file.endsWith('.json'))
+        .map(file => ({
+          name: file,
+          path: file,
+          sha: Date.now().toString()
+        }));
+      
+      res.json(files);
+    } catch (error) {
+      console.error("CMS LIST error:", error);
+      res.status(500).json({ error: "Failed to list files" });
     }
   });
 

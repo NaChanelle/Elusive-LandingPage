@@ -1,9 +1,9 @@
 backend:
   name: test-repo
-  # For development/testing purposes - this will work without GitHub authentication
+  # Using test-repo for development - changes saved locally
 
-# Global settings to make fields optional by default
-publish_mode: editorial_workflow
+# Global settings to make fields optional by default  
+publish_mode: simple
 slug_encoding: "ascii"
 
 media_folder: "client/public/assets/uploads" # Where images uploaded via CMS will be stored
