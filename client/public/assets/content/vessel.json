@@ -1,0 +1,80 @@
+{
+  "header_logo_text": "ELUSIVE",
+  "platform_button_text": "Platform",
+  "hero_background_image": null,
+  "hero_main_headline_part1": "Vessel",
+  "hero_main_headline_part2": "App",
+  "hero_sub_headline": "Your cultural investigation toolkit. Track clues, connect with community, and create authentic stories.",
+  "discover_features_button_text": "Discover Features",
+  "vessel_intro_title_part1": "Original Story",
+  "vessel_intro_title_part2": "Studio",
+  "vessel_intro_description": "Create authentic mystery narratives that celebrate culture and community.",
+  "mvp_features_title": "Core Features",
+  "mvp_features": [
+    {
+      "id": "theory-boards",
+      "title": "Theory Boards",
+      "description": "Collaborative spaces for organizing clues and building theories with your investigation team.",
+      "icon_name": "Eye",
+      "visualPlaceholder": "Interactive board interface",
+      "gradient": "bg-gradient-to-br from-[#FFB90F] to-[#FFA500]",
+      "status": "MVP"
+    },
+    {
+      "id": "cultural-library",
+      "title": "Cultural Code Library",
+      "description": "Curated collection of cultural references, symbols, and historical context for investigations.",
+      "icon_name": "BookOpen",
+      "visualPlaceholder": "Library interface",
+      "gradient": "bg-gradient-to-br from-[#8B0000] to-[#A52A2A]",
+      "status": "MVP"
+    },
+    {
+      "id": "story-studio",
+      "title": "Story Studio",
+      "description": "Tools for creating and sharing mystery narratives with community feedback.",
+      "icon_name": "Play",
+      "visualPlaceholder": "Studio interface",
+      "gradient": "bg-gradient-to-br from-[#4B0082] to-[#6A0DAD]",
+      "status": "MVP"
+    },
+    {
+      "id": "community-hub",
+      "title": "Community Hub",
+      "description": "Connect with fellow investigators and share discoveries in real-time.",
+      "icon_name": "Users",
+      "visualPlaceholder": "Community interface",
+      "gradient": "bg-gradient-to-br from-[#2E8B57] to-[#3CB371]",
+      "status": "MVP"
+    }
+  ],
+  "roadmap_features_title": "Future Features",
+  "roadmap_features": [
+    {
+      "id": "ar-investigations",
+      "title": "AR Investigations",
+      "description": "Augmented reality features for location-based mystery solving.",
+      "icon_name": "Globe",
+      "status": "Roadmap",
+      "timeline": "2026"
+    },
+    {
+      "id": "live-events",
+      "title": "Live Event Integration",
+      "description": "Real-time participation in cultural investigation events.",
+      "icon_name": "Calendar",
+      "status": "Roadmap",
+      "timeline": "Late 2025"
+    }
+  ],
+  "cta_early_access_title": "Get Early Access",
+  "cta_early_access_description": "Be among the first to experience Vessel when it launches.",
+  "tally_form_id": "your-tally-form-id",
+  "footer_logo_text": "ELUSIVE",
+  "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
+  "footer_links": [
+    { "text": "Contact", "url": "/contact" },
+    { "text": "Privacy", "url": "/privacy" },
+    { "text": "Terms", "url": "/terms" }
+  ]
+}

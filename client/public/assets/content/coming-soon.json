@@ -1,0 +1,83 @@
+{
+  "header_logo_text": "ELUSIVE",
+  "event_updates_button_text": "Event Updates",
+  "event_updates_link": "/platform",
+  "vessel_preview_button_text": "Vessel Preview",
+  "vessel_preview_link": "/vessel",
+  "main_headline_part1": "The",
+  "main_headline_part2": "Investigation",
+  "main_headline_part3": "Begins",
+  "hero_description": "Join the mystery. Shape the story. Become an accomplice in truth.",
+  "countdown_title": "Event Launches In",
+  "countdown_days_label": "Days",
+  "countdown_hours_label": "Hours",
+  "countdown_minutes_label": "Minutes",
+  "countdown_seconds_label": "Seconds",
+  "countdown_date": "2025-08-01T00:00:00Z",
+  "signup_section_title": "Reserve Your Investigation",
+  "signup_section_description": "Be the first to know when the investigation begins.",
+  "mailerlite_form_id": "your-mailerlite-form-id",
+  "signup_form_footer_text": "No spam, just mysteries. Unsubscribe at any time.",
+  "share_page_text": "Share this page",
+  "twitter_share_text": "The Investigation Begins - Join the Elusive Origin community",
+  "email_share_subject": "The Investigation Begins",
+  "email_share_body": "Check out Elusive Origin - an immersive cultural investigation platform",
+  "gallery_items": [
+    { "label": "Mystery Events" },
+    { "label": "Community" },
+    { "label": "Cultural Investigation" },
+    { "label": "Story Creation" }
+  ],
+  "testimonials_title": "Early Investigators",
+  "testimonials": [
+    {
+      "quote": "This is exactly what the cultural space needs - authentic mystery and community.",
+      "initials": "A.M.",
+      "name": "Alex Martinez",
+      "role": "Cultural Curator"
+    },
+    {
+      "quote": "The anticipation is building. Can't wait to be part of this investigation.",
+      "initials": "S.J.",
+      "name": "Sam Johnson",
+      "role": "Story Enthusiast"
+    }
+  ],
+  "why_join_title": "Why Join the Investigation?",
+  "why_join_features": [
+    {
+      "title": "Authentic Cultural Experiences",
+      "description": "Participate in carefully crafted cultural investigations that celebrate heritage and storytelling."
+    },
+    {
+      "title": "Community Connection",
+      "description": "Connect with fellow investigators and creators in a space designed for meaningful engagement."
+    },
+    {
+      "title": "Early Access",
+      "description": "Get exclusive access to events, tools, and community features before they're public."
+    }
+  ],
+  "faq_section_title": "Frequently Asked Questions",
+  "faq_items": [
+    {
+      "question": "When does the first event launch?",
+      "answer": "Our inaugural investigation event is scheduled for **August 2025**. Early access begins shortly before the official launch."
+    },
+    {
+      "question": "What is the Vessel app?",
+      "answer": "Vessel is our companion mobile app that will serve as your investigation toolkit - featuring clue tracking, community discussions, and cultural content."
+    },
+    {
+      "question": "How much does it cost?",
+      "answer": "We'll announce pricing details closer to launch. Early subscribers will receive special access and pricing information first."
+    }
+  ],
+  "footer_logo_text": "ELUSIVE",
+  "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
+  "footer_links": [
+    { "text": "Contact", "url": "/contact" },
+    { "text": "Privacy", "url": "/privacy" },
+    { "text": "Terms", "url": "/terms" }
+  ]
+}

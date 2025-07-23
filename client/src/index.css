@@ -72,6 +72,21 @@
 }
 
 @layer utilities {
+  .animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(255, 185, 15, 0.3);
+      transform: rotate(45deg) scale(1);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(255, 185, 15, 0.5);
+      transform: rotate(45deg) scale(1.05);
+    }
+  }
+
   .text-neo-gold {
     color: var(--neo-gold);
   }
