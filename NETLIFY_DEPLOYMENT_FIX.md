@@ -1,47 +1,51 @@
-# Fix for Netlify "Page Not Found" Error
+# Why Images Aren't Appearing - Deployment Issue
 
-## Problem
-Netlify was looking for files in `dist/` but your build outputs to `dist/public/`
+## The Problem
+Your carousel image updates work locally in Replit, but they're not appearing on your live Netlify site because:
 
-## Solution Applied
-✅ **Updated netlify.toml**: Changed publish directory from `dist` to `dist/public`
-✅ **Added _redirects file**: Proper routing for SPA and admin pages
-✅ **Verified build output**: Files are correctly generated in `dist/public/`
+1. **Updated code is only in Replit** (not in your GitHub repository)
+2. **Netlify builds from GitHub** (not from Replit)
+3. **Your GitHub repo has the old carousel code** (that only shows placeholders)
 
-## Updated Netlify Configuration
+## The Solution
+You need to copy the updated files from Replit to your GitHub repository.
 
-Your `netlify.toml` now has:
-```toml
-[build]
-  publish = "dist/public"  # ← Fixed: was "dist"
-  command = "npm run build"
-```
+## Critical Files to Update in GitHub:
 
-## Next Steps
+### 1. `client/src/pages/landing.tsx`
+The updated carousel code that displays real images instead of placeholders.
 
-1. **Push these changes to your GitHub repo**:
-   ```bash
-   git add .
-   git commit -m "Fix Netlify deployment configuration"
-   git push
-   ```
+### 2. `client/public/assets/content/landing.json`
+Your content file that the carousel reads from.
 
-2. **Trigger a new Netlify build**:
-   - Go to your Netlify site dashboard
-   - Click "Deploys" tab
-   - Click "Trigger deploy" → "Deploy site"
-   - Or it should auto-deploy when you push to GitHub
+### 3. Build Configuration Files:
+- `netlify.toml` (correct build settings)
+- `_redirects` (proper routing)
+- `client/index.html` (Netlify Identity widget)
 
-3. **Verify the fix**:
-   - Your site should now load properly
-   - Test the `/admin` route for CMS access
-   - API endpoints should work at `/api/*`
+## Step-by-Step Process:
 
-## What Was Fixed
+### Option A: Manual File Copy (Recommended)
+1. **Download these files from Replit:**
+   - `client/src/pages/landing.tsx`
+   - `client/public/assets/content/landing.json`
+   - `netlify.toml`
+   - `_redirects`
 
-- **Publish directory**: Now points to the correct build output location
-- **Redirects**: Added proper routing for single-page app behavior
-- **Admin routing**: CMS admin panel will load correctly at `/admin`
-- **API routing**: Server functions will work at `/api/*`
+2. **Upload to your GitHub repository** (same file locations)
 
-Your site should now work perfectly on Netlify!
+3. **Netlify will auto-rebuild** with the new carousel code
+
+### Option B: Direct GitHub Edit
+1. Go to your GitHub repository
+2. Navigate to `client/src/pages/landing.tsx`
+3. Edit the file and replace the carousel section with the updated code
+4. Commit changes
+
+## Once Updated:
+✅ Your CMS image uploads will appear on the live site
+✅ Carousel will show real images with professional overlay
+✅ Fallback system works if images fail to load
+✅ Auto-rotation every 4 seconds
+
+The carousel functionality is working perfectly - we just need to get the updated code deployed to Netlify!

@@ -185,11 +185,7 @@ export default function Landing() {
   // Mutation for form submission
   const reservationMutation = useMutation({
     mutationFn: (data: InsertReservation) =>
-      apiRequest("/api/reservations", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      }),
+      apiRequest("/api/reservations", "POST", data),
     onSuccess: () => {
       toast({
         title: "Success!",
@@ -220,9 +216,9 @@ export default function Landing() {
 
     const reservationData: InsertReservation = {
       email,
-      firstName: firstName || undefined,
+      firstName: firstName || null,
       investigationInterests: selectedTier ? [selectedTier] : [],
-      preferredRole: selectedTier || undefined,
+      preferredRole: selectedTier || null,
     };
 
     reservationMutation.mutate(reservationData);
