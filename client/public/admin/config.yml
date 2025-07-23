@@ -2,6 +2,10 @@ backend:
   name: test-repo
   # For development/testing purposes - this will work without GitHub authentication
 
+# Global settings to make fields optional by default
+publish_mode: editorial_workflow
+slug_encoding: "ascii"
+
 media_folder: "client/public/assets/uploads" # Where images uploaded via CMS will be stored
 public_folder: "/assets/uploads" # Public path to uploaded images
 
@@ -68,9 +72,10 @@ collections:
             name: "carousel_images"
             widget: "list"
             fields:
-              - { label: "ID", name: "id", widget: "number" }
-              - { label: "Alt Text", name: "alt", widget: "string" }
-              - { label: "Placeholder", name: "placeholder", widget: "string" }
+              - { label: "ID", name: "id", widget: "number", required: false }
+              - { label: "Image Upload", name: "image", widget: "image", required: false, hint: "Upload actual image file" }
+              - { label: "Alt Text", name: "alt", widget: "string", required: false }
+              - { label: "Placeholder Description", name: "placeholder", widget: "string", required: false, hint: "Description when no image is uploaded" }
           - label: "What's Coming Next Title"
             name: "whats_coming_next_title"
             widget: "string"
@@ -111,7 +116,7 @@ collections:
             name: "detective_tier_features"
             widget: "list"
             fields:
-              - { label: "Feature", name: "feature", widget: "string" }
+              - { label: "Feature", name: "feature", widget: "string", required: false }
           - label: "Curator Tier Tag"
             name: "curator_tier_tag"
             widget: "string"
@@ -131,7 +136,7 @@ collections:
             name: "curator_tier_features"
             widget: "list"
             fields:
-              - { label: "Feature", name: "feature", widget: "string" }
+              - { label: "Feature", name: "feature", widget: "string", required: false }
           - label: "Accomplice Tier Title"
             name: "accomplice_tier_title"
             widget: "string"
@@ -148,7 +153,7 @@ collections:
             name: "accomplice_tier_features"
             widget: "list"
             fields:
-              - { label: "Feature", name: "feature", widget: "string" }
+              - { label: "Feature", name: "feature", widget: "string", required: false }
           - label: "Signup Form Title"
             name: "signup_form_title"
             widget: "string"
@@ -292,8 +297,9 @@ collections:
             name: "gallery_images"
             widget: "list"
             fields:
-              - { label: "Image URL", name: "url", widget: "string" }
-              - { label: "Alt Text", name: "alt", widget: "string" }
+              - { label: "Image Upload", name: "image", widget: "image", required: false, hint: "Upload image file" }
+              - { label: "Image URL (Alternative)", name: "url", widget: "string", required: false, hint: "Or provide URL if not uploading" }
+              - { label: "Alt Text", name: "alt", widget: "string", required: false }
           - label: "Testimonials Title"
             name: "testimonials_title"
             widget: "string"
@@ -346,10 +352,11 @@ collections:
           - label: "Platform Button Text"
             name: "platform_button_text"
             widget: "string"
-          - label: "Hero Background Image"
+          - label: "Hero Background Image (Optional)"
             name: "hero_background_image"
             widget: "image"
             required: false
+            hint: "Upload a background image for the hero section"
           - label: "Hero Main Headline Part 1"
             name: "hero_main_headline_part1"
             widget: "string"
@@ -378,7 +385,7 @@ collections:
             name: "mvp_features"
             widget: "list"
             fields:
-              - { label: "ID", name: "id", widget: "string", required: true }
+              - { label: "ID", name: "id", widget: "string", required: false }
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Description", name: "description", widget: "text" }
               - { label: "Icon Name", name: "icon_name", widget: "select", options: ["Eye", "Users", "Calendar", "Database", "BookOpen", "MessageSquare", "Play", "Globe", "Zap", "Lightbulb"] }
@@ -392,7 +399,7 @@ collections:
             name: "roadmap_features"
             widget: "list"
             fields:
-              - { label: "ID", name: "id", widget: "string", required: true }
+              - { label: "ID", name: "id", widget: "string", required: false }
               - { label: "Title", name: "title", widget: "string" }
               - { label: "Description", name: "description", widget: "text" }
               - { label: "Icon Name", name: "icon_name", widget: "select", options: ["Eye", "Users", "Calendar", "Database", "BookOpen", "MessageSquare", "Play", "Globe", "Zap", "Lightbulb"] }
@@ -407,7 +414,7 @@ collections:
           - label: "Freemium Features"
             name: "freemium_features"
             widget: "list"
-            field: { label: "Feature", name: "feature", widget: "string" }
+            field: { label: "Feature", name: "feature", widget: "string", required: false }
           - label: "Premium Upgrade Text"
             name: "premium_upgrade_text"
             widget: "text"
