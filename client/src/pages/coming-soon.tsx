@@ -445,29 +445,7 @@ export default function ComingSoon() {
             </p>
           </div>
 
-          {/* Countdown Timer */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-2xl mx-auto mb-8">
-            <div className="flex items-center justify-center mb-4">
-              <Users className="w-6 h-6 text-[#FFB90F] mr-2" />
-              <h3 className="text-xl font-semibold">{content.rsvp_countdown_title}</h3>
-            </div>
-            <div className="space-y-6">
-              <div className="text-center">
-                <div className="text-5xl font-bold text-[#FFB90F] mb-2">{currentRSVPs}</div>
-                <div className="text-lg text-gray-300 mb-4">of {content.target_rsvps} RSVPs</div>
-                <div className="w-full bg-white/10 rounded-full h-4 mb-4">
-                  <div 
-                    className="bg-gradient-to-r from-[#FFB90F] to-[#FFA500] h-4 rounded-full transition-all duration-1000"
-                    style={{ width: `${Math.min((currentRSVPs / content.target_rsvps) * 100, 100)}%` }}
-                  />
-                </div>
-                <p className="text-sm text-gray-400">{content.rsvp_progress_text}</p>
-                <div className="mt-4 text-lg text-[#FFB90F] font-semibold">
-                  {Math.max(0, content.target_rsvps - currentRSVPs)} more needed to launch!
-                </div>
-              </div>
-            </div>
-          </div>
+
 
           {/* Email Signup */}
           <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-lg mx-auto">
@@ -479,26 +457,9 @@ export default function ComingSoon() {
               {content.signup_section_description}
             </p>
 
-            {/* Investigation Choice Selection */}
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                What interests you most? (Optional)
-              </label>
-              <select 
-                value={investigationChoice} 
-                onChange={(e) => setInvestigationChoice(e.target.value)}
-                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-[#FFB90F]"
-              >
-                <option value="">Select your interest...</option>
-                <option value="mystery_events">Mystery Events</option>
-                <option value="cultural_investigation">Cultural Investigation</option>
-                <option value="community_building">Community Building</option>
-                <option value="story_creation">Story Creation</option>
-                <option value="vessel_app">Vessel App Features</option>
-              </select>
-            </div>
 
-            {/* Enhanced MailerLite Form with investigation choice */}
+
+            {/* Enhanced MailerLite Form */}
             {renderEnhancedMailerLiteForm()}
 
             <p className="text-xs text-gray-400 mt-3">

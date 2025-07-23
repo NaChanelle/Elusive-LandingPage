@@ -296,24 +296,14 @@ export default function Landing() {
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-2xl mx-auto">
             <div className="flex items-center justify-center mb-4">
               <Users className="w-6 h-6 text-[#FFB90F] mr-2" />
-              <h3 className="text-xl font-semibold">Launch Progress</h3>
+              <h3 className="text-xl font-semibold">Community Interest</h3>
             </div>
             <div className="space-y-4">
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-400">Current RSVPs</span>
-                <span className="text-[#FFB90F] font-semibold">{content.current_rsvps}</span>
-              </div>
-              <div className="w-full bg-white/10 rounded-full h-3">
-                <div 
-                  className="bg-gradient-to-r from-[#FFB90F] to-[#FFA500] h-3 rounded-full transition-all duration-1000"
-                  style={{ width: `${Math.min((content.current_rsvps / content.target_rsvps) * 100, 100)}%` }}
-                />
-              </div>
-              <div className="flex justify-between text-sm">
-                <span className="text-gray-400">Target: {content.target_rsvps}</span>
-                <span className="text-gray-400">
-                  {content.target_rsvps - content.current_rsvps} RSVPs to launch
-                </span>
+              <div className="text-center">
+                <div className="text-2xl font-bold text-[#FFB90F] mb-2">Growing Community</div>
+                <p className="text-gray-300 text-sm">
+                  Investigators are joining the mystery. Reserve your spot to be notified when we launch.
+                </p>
               </div>
             </div>
           </div>
