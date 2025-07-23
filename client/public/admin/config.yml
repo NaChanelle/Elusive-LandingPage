@@ -2,6 +2,8 @@ backend:
   name: github
   repo: NaChanelle/Elusive-LandingPage
   branch: main
+  base_url: https://api.netlify.com
+  auth_endpoint: identity
 
 # Global settings to make fields optional by default  
 publish_mode: simple
