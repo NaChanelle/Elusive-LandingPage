@@ -15,8 +15,8 @@
   "countdown_seconds_label": "Seconds",
   "countdown_type": "rsvp_based",
   "rsvp_countdown_title": "RSVPs to Launch",
-  "current_rsvps": 127,
-  "target_rsvps": 500,
+  "current_rsvps": 0,
+  "target_rsvps": 75,
   "rsvp_progress_text": "Join the investigation when we reach our goal",
   "signup_section_title": "Reserve Your Investigation",
   "signup_section_description": "Be the first to know when the investigation begins.",
@@ -26,11 +26,13 @@
   "twitter_share_text": "The Investigation Begins - Join the Elusive Origin community",
   "email_share_subject": "The Investigation Begins",
   "email_share_body": "Check out Elusive Origin - an immersive cultural investigation platform",
-  "gallery_items": [
-    { "label": "Mystery Events" },
-    { "label": "Community" },
-    { "label": "Cultural Investigation" },
-    { "label": "Story Creation" }
+  "gallery_images": [
+    { "url": "/api/placeholder/300/200", "alt": "Mystery Events Preview" },
+    { "url": "/api/placeholder/300/200", "alt": "Community Gathering" },
+    { "url": "/api/placeholder/300/200", "alt": "Cultural Investigation" },
+    { "url": "/api/placeholder/300/200", "alt": "Story Creation Workshop" },
+    { "url": "/api/placeholder/300/200", "alt": "Investigation Tools" },
+    { "url": "/api/placeholder/300/200", "alt": "Community Discussion" }
   ],
   "testimonials_title": "Early Investigators",
   "testimonials": [

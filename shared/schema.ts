@@ -22,6 +22,15 @@ export const reservations = pgTable("reservations", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+export const rsvps = pgTable("rsvps", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  firstName: text("first_name"),
+  investigationChoice: text("investigation_choice"),
+  source: text("source").default("coming_soon"), // 'coming_soon', 'platform', 'vessel'
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const insertUserSchema = createInsertSchema(users).pick({
   username: true,
   email: true,
@@ -46,7 +55,19 @@ export const insertReservationSchema = createInsertSchema(reservations).omit({
   interests: z.string().optional(),
 });
 
+export const insertRSVPSchema = createInsertSchema(rsvps).omit({
+  id: true,
+  createdAt: true,
+}).extend({
+  email: z.string().email("Valid email is required"),
+  firstName: z.string().optional(),
+  investigationChoice: z.string().optional(),
+  source: z.string().default("coming_soon"),
+});
+
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
 export type InsertReservation = z.infer<typeof insertReservationSchema>;
 export type Reservation = typeof reservations.$inferSelect;
+export type InsertRSVP = z.infer<typeof insertRSVPSchema>;
+export type RSVP = typeof rsvps.$inferSelect;

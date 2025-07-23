@@ -1,4 +1,4 @@
-import { users, reservations, type User, type InsertUser, type Reservation, type InsertReservation } from "@shared/schema";
+import { users, reservations, rsvps, type User, type InsertUser, type Reservation, type InsertReservation, type RSVP, type InsertRSVP } from "@shared/schema";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -10,19 +10,29 @@ export interface IStorage {
   getReservationByEmail(email: string): Promise<Reservation | undefined>;
   createReservation(reservation: InsertReservation): Promise<Reservation>;
   getAllReservations(): Promise<Reservation[]>;
+  
+  getRSVP(id: number): Promise<RSVP | undefined>;
+  getRSVPByEmail(email: string): Promise<RSVP | undefined>;
+  createRSVP(rsvp: InsertRSVP): Promise<RSVP>;
+  getAllRSVPs(): Promise<RSVP[]>;
+  getRSVPCount(): Promise<number>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
   private reservations: Map<number, Reservation>;
+  private rsvps: Map<number, RSVP>;
   private currentUserId: number;
   private currentReservationId: number;
+  private currentRSVPId: number;
 
   constructor() {
     this.users = new Map();
     this.reservations = new Map();
+    this.rsvps = new Map();
     this.currentUserId = 1;
     this.currentReservationId = 1;
+    this.currentRSVPId = 1;
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -72,6 +82,38 @@ export class MemStorage implements IStorage {
 
   async getAllReservations(): Promise<Reservation[]> {
     return Array.from(this.reservations.values());
+  }
+
+  async getRSVP(id: number): Promise<RSVP | undefined> {
+    return this.rsvps.get(id);
+  }
+
+  async getRSVPByEmail(email: string): Promise<RSVP | undefined> {
+    return Array.from(this.rsvps.values()).find(
+      (rsvp) => rsvp.email === email,
+    );
+  }
+
+  async createRSVP(insertRSVP: InsertRSVP): Promise<RSVP> {
+    const id = this.currentRSVPId++;
+    const rsvp: RSVP = {
+      id,
+      email: insertRSVP.email,
+      firstName: insertRSVP.firstName || null,
+      investigationChoice: insertRSVP.investigationChoice || null,
+      source: insertRSVP.source || "coming_soon",
+      createdAt: new Date(),
+    };
+    this.rsvps.set(id, rsvp);
+    return rsvp;
+  }
+
+  async getAllRSVPs(): Promise<RSVP[]> {
+    return Array.from(this.rsvps.values());
+  }
+
+  async getRSVPCount(): Promise<number> {
+    return this.rsvps.size;
   }
 }
 

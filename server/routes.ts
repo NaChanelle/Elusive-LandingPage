@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertReservationSchema } from "@shared/schema";
+import { insertReservationSchema, insertRSVPSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -99,6 +99,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(reservations);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch reservations" });
+    }
+  });
+
+  // RSVP endpoints
+  app.post("/api/rsvps", async (req, res) => {
+    try {
+      const data = insertRSVPSchema.parse(req.body);
+      
+      // Check if RSVP already exists for this email
+      const existingRSVP = await storage.getRSVPByEmail(data.email);
+      if (existingRSVP) {
+        return res.status(400).json({ 
+          message: "You're already registered for updates!" 
+        });
+      }
+
+      const rsvp = await storage.createRSVP(data);
+      res.json({ 
+        message: "RSVP received! You'll be notified when we launch.",
+        rsvp: {
+          id: rsvp.id,
+          email: rsvp.email,
+          createdAt: rsvp.createdAt
+        }
+      });
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ 
+          message: "Please check your information and try again.",
+          errors: error.errors 
+        });
+      }
+      console.error('RSVP error:', error);
+      res.status(500).json({ message: "Failed to process RSVP. Please try again." });
+    }
+  });
+
+  app.get("/api/rsvps/count", async (req, res) => {
+    try {
+      const count = await storage.getRSVPCount();
+      res.json({ count });
+    } catch (error) {
+      console.error('Error getting RSVP count:', error);
+      res.status(500).json({ message: "Failed to get RSVP count" });
     }
   });
 

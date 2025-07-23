@@ -55,6 +55,20 @@
   --radius: 0.5rem;
 }
 
+/* Horizontal scrolling animation */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(calc(-300px * 6 - 5rem * 5));
+  }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 20s linear infinite;
+}
+
 @layer base {
   * {
     @apply border-border;

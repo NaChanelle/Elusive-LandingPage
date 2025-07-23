@@ -11,8 +11,9 @@ interface FooterLink {
   url: string;
 }
 
-interface GalleryItem {
-  label: string;
+interface GalleryImage {
+  url: string;
+  alt: string;
 }
 
 interface Testimonial {
@@ -60,7 +61,7 @@ interface ComingSoonContent {
   twitter_share_text: string;
   email_share_subject: string;
   email_share_body: string;
-  gallery_items: GalleryItem[];
+  gallery_images: GalleryImage[];
   testimonials_title: string;
   testimonials: Testimonial[];
   why_join_title: string;
@@ -93,22 +94,26 @@ export default function ComingSoon() {
   const [content, setContent] = useState<ComingSoonContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [currentRSVPs, setCurrentRSVPs] = useState(0);
+  const [investigationChoice, setInvestigationChoice] = useState<string>("");
+  const [email, setEmail] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
 
-  // Fetch content specific to the Coming Soon page from JSON
+  // Fetch content and current RSVP count
   useEffect(() => {
-    fetch('/assets/content/coming-soon.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data: ComingSoonContent) => {
-        setContent(data);
+    Promise.all([
+      fetch('/assets/content/coming-soon.json').then(res => res.json()),
+      fetch('/api/rsvps/count').then(res => res.json())
+    ])
+      .then(([contentData, rsvpData]) => {
+        setContent(contentData);
+        setCurrentRSVPs(rsvpData.count);
         setLoading(false);
       })
       .catch((err: Error) => {
-        console.error("Error loading Coming Soon page content:", err);
+        console.error("Error loading page data:", err);
         setError(err);
         setLoading(false);
       });
@@ -187,6 +192,98 @@ export default function ComingSoon() {
       <div id={embedDivId}>
         <div data-ml-form={formId}></div>
       </div>
+    );
+  };
+
+  // Handle RSVP submission with investigation choice
+  const handleRSVPSubmit = async (email: string, firstName: string = '') => {
+    try {
+      const response = await fetch('/api/rsvps', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          firstName,
+          investigationChoice,
+          source: 'coming_soon'
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to submit RSVP');
+      }
+
+      // Update RSVP count immediately
+      setCurrentRSVPs(prev => prev + 1);
+      
+      return data;
+    } catch (error) {
+      console.error('RSVP submission error:', error);
+      throw error;
+    }
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setMessage('');
+
+    try {
+      // Submit RSVP to our backend first
+      await handleRSVPSubmit(email, firstName);
+      
+      setMessage('Success! You\'ll be notified when we launch.');
+      setEmail('');
+      setFirstName('');
+      
+    } catch (error: any) {
+      setMessage(error.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Enhanced form with RSVP tracking and investigation choice
+  const renderEnhancedMailerLiteForm = () => {
+    return (
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <input 
+            type="text"
+            placeholder="First name (optional)"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#FFB90F]"
+          />
+          <input 
+            type="email" 
+            placeholder="Email address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#FFB90F]"
+          />
+        </div>
+        
+        <button 
+          type="submit"
+          disabled={isSubmitting || !email}
+          className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 disabled:opacity-50 disabled:cursor-not-allowed text-black font-medium py-3 rounded-lg transition-colors"
+        >
+          {isSubmitting ? 'Joining...' : 'Join the Investigation'}
+        </button>
+        
+        {message && (
+          <p className={`text-sm text-center ${message.includes('Success') ? 'text-green-400' : 'text-red-400'}`}>
+            {message}
+          </p>
+        )}
+      </form>
     );
   };
 
@@ -356,17 +453,17 @@ export default function ComingSoon() {
             </div>
             <div className="space-y-6">
               <div className="text-center">
-                <div className="text-5xl font-bold text-[#FFB90F] mb-2">{content.current_rsvps}</div>
+                <div className="text-5xl font-bold text-[#FFB90F] mb-2">{currentRSVPs}</div>
                 <div className="text-lg text-gray-300 mb-4">of {content.target_rsvps} RSVPs</div>
                 <div className="w-full bg-white/10 rounded-full h-4 mb-4">
                   <div 
                     className="bg-gradient-to-r from-[#FFB90F] to-[#FFA500] h-4 rounded-full transition-all duration-1000"
-                    style={{ width: `${Math.min((content.current_rsvps / content.target_rsvps) * 100, 100)}%` }}
+                    style={{ width: `${Math.min((currentRSVPs / content.target_rsvps) * 100, 100)}%` }}
                   />
                 </div>
                 <p className="text-sm text-gray-400">{content.rsvp_progress_text}</p>
                 <div className="mt-4 text-lg text-[#FFB90F] font-semibold">
-                  {content.target_rsvps - content.current_rsvps} more needed to launch!
+                  {Math.max(0, content.target_rsvps - currentRSVPs)} more needed to launch!
                 </div>
               </div>
             </div>
@@ -382,8 +479,27 @@ export default function ComingSoon() {
               {content.signup_section_description}
             </p>
 
-            {/* MailerLite Form - now dynamically rendered */}
-            {renderMailerLiteForm(content.mailerlite_form_id, 'coming-soon-mailerlite-form')}
+            {/* Investigation Choice Selection */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                What interests you most? (Optional)
+              </label>
+              <select 
+                value={investigationChoice} 
+                onChange={(e) => setInvestigationChoice(e.target.value)}
+                className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:border-[#FFB90F]"
+              >
+                <option value="">Select your interest...</option>
+                <option value="mystery_events">Mystery Events</option>
+                <option value="cultural_investigation">Cultural Investigation</option>
+                <option value="community_building">Community Building</option>
+                <option value="story_creation">Story Creation</option>
+                <option value="vessel_app">Vessel App Features</option>
+              </select>
+            </div>
+
+            {/* Enhanced MailerLite Form with investigation choice */}
+            {renderEnhancedMailerLiteForm()}
 
             <p className="text-xs text-gray-400 mt-3">
               {content.signup_form_footer_text}
@@ -435,13 +551,18 @@ export default function ComingSoon() {
         </div>
       </section>
 
-      {/* Gallery Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
-            {content.gallery_items.map((item, i) => (
-              <div key={i} className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10 text-center">
-                <div className="text-sm font-medium">{item.label}</div>
+      {/* Gallery Section - Horizontal Scrolling Carousel */}
+      <section className="py-16 overflow-hidden">
+        <div className="relative">
+          <div className="flex animate-scroll-left space-x-6" style={{ width: 'calc(300px * 12 + 5rem * 11)' }}>
+            {/* Duplicate images for seamless loop */}
+            {[...content.gallery_images, ...content.gallery_images].map((image, i) => (
+              <div key={i} className="min-w-[300px] h-[200px] bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 overflow-hidden">
+                <img 
+                  src={image.url} 
+                  alt={image.alt}
+                  className="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-300"
+                />
               </div>
             ))}
           </div>
