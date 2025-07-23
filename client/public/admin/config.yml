@@ -2,7 +2,7 @@ backend:
   name: test-repo
   # For development/testing purposes - this will work without GitHub authentication
 
-media_folder: "public/assets/uploads" # Where images uploaded via CMS will be stored (relative to project root)
+media_folder: "client/public/assets/uploads" # Where images uploaded via CMS will be stored
 public_folder: "/assets/uploads" # Public path to uploaded images
 
 collections:
@@ -11,7 +11,7 @@ collections:
     files:
       - label: "Landing Page" # Corresponds to /platform
         name: "landing"
-        file: "public/assets/content/landing.json" # Path to this page's content file
+        file: "client/public/assets/content/landing.json" # Path to this page's content file
         fields:
           - label: "Header Title"
             name: "header_title"
@@ -196,7 +196,7 @@ collections:
 
       - label: "Coming Soon Page" # Corresponds to /
         name: "coming_soon"
-        file: "public/assets/content/coming-soon.json" # Path to this page's content file
+        file: "client/public/assets/content/coming-soon.json" # Path to this page's content file
         fields:
           - label: "Header Logo Text"
             name: "header_logo_text"
@@ -225,6 +225,34 @@ collections:
           - label: "Hero Description"
             name: "hero_description"
             widget: "text"
+          - label: "Countdown Title"
+            name: "countdown_title"
+            widget: "string"
+          - label: "Countdown Days Label"
+            name: "countdown_days_label"
+            widget: "string"
+          - label: "Countdown Hours Label"
+            name: "countdown_hours_label"
+            widget: "string"
+          - label: "Countdown Minutes Label"
+            name: "countdown_minutes_label"
+            widget: "string"
+          - label: "Countdown Seconds Label"
+            name: "countdown_seconds_label"
+            widget: "string"
+          - label: "Countdown Date"
+            name: "countdown_date"
+            widget: "datetime"
+            required: false
+          - label: "Countdown Type"
+            name: "countdown_type"
+            widget: "select"
+            options: ["date_based", "rsvp_based"]
+            default: "rsvp_based"
+          - label: "Current RSVPs"
+            name: "current_rsvps"
+            widget: "number"
+            default: 0
           - label: "RSVP Countdown Title"
             name: "rsvp_countdown_title"
             widget: "string"
@@ -260,11 +288,12 @@ collections:
           - label: "Email Share Body"
             name: "email_share_body"
             widget: "string"
-          - label: "Gallery Items"
-            name: "gallery_items"
+          - label: "Gallery Images"
+            name: "gallery_images"
             widget: "list"
             fields:
-              - { label: "Label", name: "label", widget: "string" }
+              - { label: "Image URL", name: "url", widget: "string" }
+              - { label: "Alt Text", name: "alt", widget: "string" }
           - label: "Testimonials Title"
             name: "testimonials_title"
             widget: "string"
@@ -309,7 +338,7 @@ collections:
 
       - label: "Vessel Teaser Page" # Corresponds to /vessel
         name: "vessel_teaser"
-        file: "public/assets/content/vessel.json" # Path to this page's content file
+        file: "client/public/assets/content/vessel.json" # Path to this page's content file
         fields:
           - label: "Header Logo Text"
             name: "header_logo_text"
@@ -369,6 +398,22 @@ collections:
               - { label: "Icon Name", name: "icon_name", widget: "select", options: ["Eye", "Users", "Calendar", "Database", "BookOpen", "MessageSquare", "Play", "Globe", "Zap", "Lightbulb"] }
               - { label: "Status", name: "status", widget: "string", required: false }
               - { label: "Timeline", name: "timeline", widget: "string", required: false }
+          - label: "Freemium Section Title"
+            name: "freemium_section_title"
+            widget: "string"
+          - label: "Freemium Description"
+            name: "freemium_description"
+            widget: "text"
+          - label: "Freemium Features"
+            name: "freemium_features"
+            widget: "list"
+            field: { label: "Feature", name: "feature", widget: "string" }
+          - label: "Premium Upgrade Text"
+            name: "premium_upgrade_text"
+            widget: "text"
+          - label: "Feature Voting Description"
+            name: "feature_voting_description"
+            widget: "text"
           - label: "CTA Early Access Title"
             name: "cta_early_access_title"
             widget: "string"
