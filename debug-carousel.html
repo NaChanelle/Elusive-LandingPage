@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Debug Carousel Images</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .test-image { max-width: 300px; margin: 10px; border: 1px solid #ccc; }
+    .error { color: red; }
+    .success { color: green; }
+  </style>
+</head>
+<body>
+  <h1>Carousel Image Test</h1>
+  <div id="results"></div>
+
+  <script>
+    const images = [
+      '/assets/uploads/dsc02299.jpg',
+      '/assets/uploads/dsc02323.jpg', 
+      '/assets/uploads/dsc02478.jpg',
+      '/assets/uploads/dsc02513.jpg'
+    ];
+
+    const resultsDiv = document.getElementById('results');
+
+    images.forEach((imagePath, index) => {
+      const img = new Image();
+      const testDiv = document.createElement('div');
+      testDiv.innerHTML = `<h3>Image ${index + 1}: ${imagePath}</h3>`;
+      
+      img.onload = () => {
+        testDiv.innerHTML += `<p class="success">✅ Image loads successfully</p>`;
+        testDiv.innerHTML += `<img src="${imagePath}" class="test-image" alt="Test image ${index + 1}">`;
+      };
+      
+      img.onerror = () => {
+        testDiv.innerHTML += `<p class="error">❌ Image failed to load - Check if file exists</p>`;
+      };
+      
+      resultsDiv.appendChild(testDiv);
+      img.src = imagePath;
+    });
+
+    // Test content loading
+    fetch('/assets/content/landing.json')
+      .then(response => response.json())
+      .then(data => {
+        const contentDiv = document.createElement('div');
+        contentDiv.innerHTML = '<h3>Content File Test</h3>';
+        
+        if (data.carousel_images) {
+          contentDiv.innerHTML += '<p class="success">✅ Content file loads with carousel_images</p>';
+          contentDiv.innerHTML += `<pre>${JSON.stringify(data.carousel_images, null, 2)}</pre>`;
+        } else {
+          contentDiv.innerHTML += '<p class="error">❌ No carousel_images found in content file</p>';
+        }
+        
+        resultsDiv.appendChild(contentDiv);
+      })
+      .catch(error => {
+        const contentDiv = document.createElement('div');
+        contentDiv.innerHTML = `<h3>Content File Test</h3><p class="error">❌ Failed to load content file: ${error.message}</p>`;
+        resultsDiv.appendChild(contentDiv);
+      });
+  </script>
+</body>
+</html>

@@ -1,60 +1,45 @@
-# Quick Fix for Your Netlify Deployment
+# Quick Fix for Carousel Images Not Appearing
 
-## The Issue
-Your Netlify site shows "Published" but displays a 404 because the configuration files aren't in your GitHub repository yet.
+## Current Status
+✅ Images uploaded to CMS: `dsc02299.jpg`, `dsc02323.jpg`, `dsc02478.jpg`, `dsc02513.jpg`
+✅ Content file updated with correct image paths
+✅ Carousel code supports image display
+❌ Images not appearing on live site
 
-## Immediate Solution
+## Most Likely Issues:
 
-### Step 1: Update Your GitHub Repository
-You need to manually add these files to your GitHub repo:
+### 1. GitHub Repository Missing Updated Files
+Your GitHub repo might be missing:
+- **Updated `client/public/assets/content/landing.json`** (with image paths)
+- **Uploaded images in `client/public/assets/uploads/`** directory
+- **Updated `client/src/pages/landing.tsx`** (carousel display code)
 
-1. **Copy the updated `netlify.toml`** (with `publish = "dist/public"`)
-2. **Copy the `_redirects`** file 
-3. **Commit and push to GitHub**
+### 2. Cache Issues
+Netlify or browser cache might be showing old version.
 
-### Step 2: Files to Add/Update in GitHub
+## Quick Solutions:
 
-**netlify.toml:**
-```toml
-[build]
-  publish = "dist/public"
-  command = "npm run build"
+### Solution A: Verify GitHub Repository
+1. Check your GitHub repo has:
+   - `client/public/assets/uploads/dsc02299.jpg` (and other images)
+   - Updated `landing.json` with image paths
+   - Updated `landing.tsx` with image display code
 
-[build.environment]
-  NODE_VERSION = "18"
+### Solution B: Force Netlify Rebuild
+1. Go to Netlify dashboard → Deploys
+2. Click "Trigger deploy" → "Clear cache and deploy site"
+3. Wait for deployment to complete
 
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/api/:splat"
-  status = 200
+### Solution C: Test Image URLs Directly
+Visit these URLs to verify images are accessible:
+- `https://your-site.netlify.app/assets/uploads/dsc02299.jpg`
+- `https://your-site.netlify.app/assets/uploads/dsc02323.jpg`
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+If images return 404, they weren't deployed to Netlify.
 
-[functions]
-  directory = "netlify/functions"
-```
+## Debug Steps:
+1. **Check browser console** on your live site for any image loading errors
+2. **Inspect carousel element** to see if image URLs are being generated
+3. **Clear browser cache** and reload your site
 
-**_redirects:**
-```
-/api/*  /.netlify/functions/api/:splat  200
-/admin/*  /admin/index.html  200
-/*  /index.html  200
-```
-
-### Step 3: Force a New Deploy
-1. Go to your Netlify dashboard
-2. Click "Deploys" tab
-3. Click "Trigger deploy" → "Deploy site"
-
-## Why This Happened
-Netlify builds from your GitHub repository, not from your Replit environment. The updated configuration files need to be in GitHub for Netlify to use them.
-
-## Your Site Will Work After:
-- ✅ GitHub has the updated netlify.toml
-- ✅ GitHub has the _redirects file  
-- ✅ Netlify rebuilds with the new config
-- ✅ Your site loads at: https://lighthearted-pony-bfe03b.netlify.app
-- ✅ CMS works at: https://lighthearted-pony-bfe03b.netlify.app/admin
+The most common issue is that the images and updated content file haven't been pushed to GitHub yet.
