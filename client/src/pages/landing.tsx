@@ -37,6 +37,7 @@ interface LandingContent {
     id: number;
     alt: string;
     placeholder: string;
+    image?: string; // Optional actual image URL
   }>;
   whats_coming_next_title: string;
   feature1_title: string;
@@ -331,18 +332,59 @@ export default function Landing() {
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.image_carousel_title}</h2>
           <div className="relative">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 aspect-video flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <Eye className="w-8 h-8 text-[#FFB90F]" />
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-2 border border-white/10 aspect-video flex items-center justify-center overflow-hidden">
+              {content.carousel_images[currentImageIndex]?.image ? (
+                <div className="relative w-full h-full">
+                  <img 
+                    src={content.carousel_images[currentImageIndex].image}
+                    alt={content.carousel_images[currentImageIndex].alt}
+                    className="w-full h-full object-cover rounded-lg"
+                    onError={(e) => {
+                      // Fallback to placeholder if image fails to load
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = target.nextElementSibling as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/20 rounded-lg flex items-end">
+                    <div className="p-6 text-white">
+                      <h3 className="text-xl font-semibold mb-1 text-[#FFB90F]">
+                        {content.carousel_images[currentImageIndex]?.alt}
+                      </h3>
+                      <p className="text-gray-200 text-sm">
+                        {content.carousel_images[currentImageIndex]?.placeholder}
+                      </p>
+                    </div>
+                  </div>
+                  {/* Fallback content (hidden by default) */}
+                  <div className="absolute inset-0 bg-white/5 backdrop-blur-sm rounded-lg flex items-center justify-center" style={{display: 'none'}}>
+                    <div className="text-center p-8">
+                      <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                        <Eye className="w-8 h-8 text-[#FFB90F]" />
+                      </div>
+                      <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
+                        {content.carousel_images[currentImageIndex]?.alt}
+                      </h3>
+                      <p className="text-gray-300">
+                        {content.carousel_images[currentImageIndex]?.placeholder}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
-                  {content.carousel_images[currentImageIndex]?.alt}
-                </h3>
-                <p className="text-gray-300">
-                  {content.carousel_images[currentImageIndex]?.placeholder}
-                </p>
-              </div>
+              ) : (
+                <div className="text-center p-8">
+                  <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Eye className="w-8 h-8 text-[#FFB90F]" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
+                    {content.carousel_images[currentImageIndex]?.alt}
+                  </h3>
+                  <p className="text-gray-300">
+                    {content.carousel_images[currentImageIndex]?.placeholder}
+                  </p>
+                </div>
+              )}
             </div>
             
             {/* Carousel Indicators */}
