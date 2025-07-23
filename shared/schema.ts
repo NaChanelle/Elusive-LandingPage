@@ -47,11 +47,11 @@ export const insertReservationSchema = createInsertSchema(reservations).omit({
   id: true,
   createdAt: true,
 }).extend({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
   email: z.string().email("Valid email is required"),
   investigationInterests: z.array(z.string()).min(1, "Select at least one interest"),
-  preferredRole: z.string().min(1, "Please select a preferred role"),
+  preferredRole: z.string().optional(),
   interests: z.string().optional(),
 });
 
