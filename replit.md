@@ -131,13 +131,15 @@ The ecosystem now features a complete user journey from first visit to community
 
 ## Deployment
 
-The project is configured for Netlify deployment with:
-- Netlify build configuration (`netlify.toml`)
-- Serverless functions for API endpoints
-- Git Gateway integration for CMS functionality
-- Automatic site rebuilds when content changes
+The project is successfully deployed to Netlify with:
+- ✅ Live site: https://lighthearted-pony-bfe03b.netlify.app
+- ✅ Netlify build configuration (`netlify.toml`)
+- ✅ Serverless functions for API endpoints  
+- ✅ Git Gateway integration for CMS functionality
+- ✅ Automatic site rebuilds when content changes
+- → Pending: Netlify Identity setup for CMS authentication
 
-See `DEPLOYMENT_GUIDE.md` for complete deployment instructions.
+See `NETLIFY_CMS_SETUP.md` for enabling CMS login functionality.
 
 ## Changelog
 
