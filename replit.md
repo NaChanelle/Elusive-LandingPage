@@ -129,6 +129,16 @@ The ecosystem now features a complete user journey from first visit to community
 - **Connect Ecosystem**: Serialized video production and community involvement
 - **Creator Portal**: Extended tools for story development and publication
 
+## Deployment
+
+The project is configured for Netlify deployment with:
+- Netlify build configuration (`netlify.toml`)
+- Serverless functions for API endpoints
+- Git Gateway integration for CMS functionality
+- Automatic site rebuilds when content changes
+
+See `DEPLOYMENT_GUIDE.md` for complete deployment instructions.
+
 ## Changelog
 
 ```

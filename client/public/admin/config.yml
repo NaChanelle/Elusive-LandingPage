@@ -1,5 +1,6 @@
 backend:
-  name: test-repo
+  name: git-gateway
+  branch: main
 
 # Global settings to make fields optional by default  
 publish_mode: simple
