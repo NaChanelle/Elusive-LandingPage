@@ -47,16 +47,16 @@
   "current_rsvps": 0,
   "testimonials": [
     {
-      "quote": "This is exactly what the cultural space needs - authentic mystery and community.",
-      "initials": "A.M.",
-      "name": "Alex Martinez",
-      "role": "Cultural Curator"
+      "quote": "#Buglary30 was so fun! It's exactly the type of event I like to attend these days. I love celebrating birthdays AND participating in a little mystery and drama!",
+      "initials": "C.J.",
+      "name": "Candice Johnson",
+      "role": ""
     },
     {
-      "quote": "The anticipation is building. Can't wait to be part of this investigation.",
-      "initials": "S.J.",
-      "name": "Sam Johnson",
-      "role": "Story Enthusiast"
+      "quote": "Ahhhhh! I’m too excited",
+      "initials": "K.G.",
+      "name": "Kershawn Gibbs",
+      "role": ""
     }
   ],
   "event_updates_link": "/platform",
@@ -78,16 +78,16 @@
   "countdown_hours_label": "Hours",
   "faq_items": [
     {
+      "question": "What makes Elusive different?",
+      "answer": "We create authentic cultural experiences that celebrate heritage through interactive storytelling, not just entertainment or aesthetics."
+    },
+    {
       "question": "When does the first event launch?",
-      "answer": "Our inaugural investigation event is scheduled for **August 2025**. Early access begins shortly before the official launch."
+      "answer": "Our inaugural investigation event is scheduled for **August 2025** but could take place as late as **Fall 2025**. Early access begins shortly before the official launch."
     },
     {
       "question": "What is the Vessel app?",
-      "answer": "Vessel is our companion mobile app that will serve as your investigation toolkit - featuring clue tracking, community discussions, and cultural content."
-    },
-    {
-      "question": "How much does it cost?",
-      "answer": "We'll announce pricing details closer to launch. Early subscribers will receive special access and pricing information first."
+      "answer": "Vessel is our companion mobile app that will serve as your investigation toolkit - featuring clue tracking, character rosters, and community discussions."
     }
   ],
   "signup_section_title": "Reserve Your Investigation",
@@ -103,11 +103,11 @@
   "why_join_features": [
     {
       "title": "Authentic Cultural Experiences",
-      "description": "Participate in carefully crafted cultural investigations that celebrate heritage and storytelling."
+      "description": "Participate in carefully crafted culturally-resonant investigations that celebrate heritage and storytelling."
     },
     {
       "title": "Community Connection",
-      "description": "Connect with fellow investigators and creators in a space designed for meaningful engagement."
+      "description": "Connect with fellow truth-seekers and creators in a space designed for meaningful engagement."
     },
     {
       "title": "Early Access",
