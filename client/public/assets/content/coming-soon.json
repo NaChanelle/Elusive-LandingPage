@@ -3,27 +3,33 @@
   "gallery_images": [
     {
       "url": "/api/placeholder/300/200",
-      "alt": "Mystery Events Preview"
+      "alt": "Mystery Events Preview",
+      "image": "/assets/uploads/elusive-full-5-.png"
     },
     {
       "url": "/api/placeholder/300/200",
-      "alt": "Community Gathering"
+      "alt": "Community Gathering",
+      "image": "/assets/uploads/elusive-name-3-.png"
     },
     {
       "url": "/api/placeholder/300/200",
-      "alt": "Cultural Investigation"
+      "alt": "Cultural Investigation",
+      "image": "/assets/uploads/elusive-name-12-.png"
     },
     {
       "url": "/api/placeholder/300/200",
-      "alt": "Story Creation Workshop"
+      "alt": "Story Creation Workshop",
+      "image": "/assets/uploads/elusive-symbol-transparentbg-7-.png"
     },
     {
       "url": "/api/placeholder/300/200",
-      "alt": "Investigation Tools"
+      "alt": "Investigation Tools",
+      "image": "/assets/uploads/elusive-full-3-.png"
     },
     {
       "url": "/api/placeholder/300/200",
-      "alt": "Community Discussion"
+      "alt": "Community Discussion",
+      "image": "/assets/uploads/elusive-name-15-.png"
     }
   ],
   "email_share_body": "Check out Elusive Origin - an immersive cultural investigation platform",
