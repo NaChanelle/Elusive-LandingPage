@@ -42,7 +42,7 @@
   "mailerlite_form_id": "your-mailerlite-form-id",
   "countdown_title": "Event Launches In",
   "target_rsvps": 75,
-  "testimonials_title": "Early Investigators",
+  "testimonials_title": "What Is Elusive?",
   "header_logo_text": "ELUSIVE",
   "current_rsvps": 0,
   "testimonials": [
@@ -78,44 +78,56 @@
   "countdown_hours_label": "Hours",
   "faq_items": [
     {
+      "question": " What is Elusive, exactly?",
+      "answer": "Our first chapter begins **August**. Early Investigators will get sneak previews, puzzle drops, and priority invites before the public."
+    },
+    {
       "question": "What makes Elusive different?",
       "answer": "We create authentic cultural experiences that celebrate heritage through interactive storytelling, not just entertainment or aesthetics."
     },
     {
-      "question": "When does the first event launch?",
-      "answer": "Our inaugural investigation event is scheduled for **August 2025** but could take place as late as **Fall 2025**. Early access begins shortly before the official launch."
+      "question": "Is this a game or a show?",
+      "answer": "Imagine a world where mysteries don’t just entertain but also spark conversations about identity and truth.  Elusive is a hybrid mystery-meets-meaning storyworld that combines immersive films, live events, and interactive tools to create premium, multi-city experiences where your decisions and theories help uncover deeper narratives. Think \"Black Mirror\" meets scavenger hunt meets cultural archive."
     },
     {
-      "question": "What is the Vessel app?",
-      "answer": "Vessel is our companion mobile app that will serve as your investigation toolkit - featuring clue tracking, character rosters, and community discussions."
+      "question": "When does it launch?",
+      "answer": "Both—and neither. It’s a living storyworld. You can watch it unfold, participate in real-world mysteries, or join the Investigator Circle to influence what happens next"
+    },
+    {
+      "question": " Do I need to be in a certain city to participate?",
+      "answer": "No! While we host IRL events, much of Elusive lives online. Investigators from anywhere in the world can explore, decode, and contribute."
+    },
+    {
+      "question": "Is it free?",
+      "answer": " Yes for a limited time to explore, decode, and join the Circle. Paid experiences, mystery boxes, and limited event tickets may be available later for those who want to dive deeper."
     }
   ],
-  "signup_section_title": "Reserve Your Investigation",
-  "hero_description": "Imagine a world where mysteries don’t just entertain but also spark conversations about identity and truth. Elusive combines live events, serialized microfilms, and interactive storytelling to create premium, multi-city experiences where your decisions and theories help uncover deeper narratives.",
+  "signup_section_title": "Join the First Wave of Truth-Seekers",
+  "hero_description": "Elusive is an immersive storytelling experience and cultural mystery platform where truth is pieced together by those bold enough to look closer. \n\nNot everything lost should stay hidden.",
   "twitter_share_text": "The Investigation Begins - Join the Elusive Origin community",
-  "main_headline_part1": "Step",
+  "main_headline_part1": "Mystery",
   "vessel_preview_button_text": "Vessel Preview",
   "vessel_preview_link": "/vessel",
-  "main_headline_part2": "Into the",
+  "main_headline_part2": "Worth",
   "why_join_title": "Why Join the Investigation?",
   "countdown_days_label": "Days",
   "rsvp_progress_text": "Join the investigation when we reach our goal",
   "why_join_features": [
     {
-      "title": "Authentic Cultural Experiences",
-      "description": "Participate in carefully crafted culturally-resonant investigations that celebrate heritage and storytelling."
+      "title": "Insider Access",
+      "description": "Be the first to decode clues, test prototypes, and attend secret events."
     },
     {
-      "title": "Community Connection",
-      "description": "Connect with fellow truth-seekers and creators in a space designed for meaningful engagement."
+      "title": "Influence the Story",
+      "description": "Your theories and choices help shape how the narrative unfolds across digital and live chapters."
     },
     {
-      "title": "Early Access",
-      "description": "Get exclusive access to events, tools, and community features before they're public."
+      "title": "Exclusive Rewards",
+      "description": "Get early access to drops, surprise merch, and first-in-line access to limited events and missions."
     }
   ],
-  "main_headline_part3": "Story",
-  "signup_section_description": "Be the first to know when the investigation begins.",
+  "main_headline_part3": "Remembering",
+  "signup_section_description": "Get early access, behind-the-scenes clues, and a front-row seat to the story before it unfolds.",
   "share_page_text": "Share this page",
   "footer_logo_text": "ELUSIVE",
   "signup_form_footer_text": "No spam, just mysteries. Unsubscribe at any time."
