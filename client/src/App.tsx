@@ -1,5 +1,5 @@
 // src/App.tsx
-import React, { useEffect } from 'react'; // Added useEffect
+import React, { useEffect } from 'react';
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -27,57 +27,91 @@ function Router() {
 }
 
 function App() {
-  // Global useEffect for MailerLite script injection
-  // This ensures the MailerLite base script is loaded once for the entire application.
+  // Global useEffect for MailerLite script and style injection
   useEffect(() => {
-    const mailerliteScriptId = 'mailerlite-webforms-script';
-    // Check if the main MailerLite script is already present to avoid multiple injections
-    if (!document.getElementById(mailerliteScriptId)) {
-      const script = document.createElement('script');
-      script.id = mailerliteScriptId;
-      // IMPORTANT: Use the exact MailerLite script URL provided by MailerLite.
-      // The version 'v176e10baa5e7ed80d35ae235be3d5024' might change.
-      script.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
-      script.async = true;
-      document.head.appendChild(script);
+    // Declare variables in a scope accessible by the cleanup function
+    let styleLink: HTMLLinkElement | null = null;
+    let script: HTMLScriptElement | null = null;
+    let trackingScript: HTMLScriptElement | null = null;
 
-      // Optional: Add the MailerLite tracking snippet if provided by MailerLite.
-      // This is usually a small fetch call. Place it here if it needs to be global.
-      const mailerliteTrackingScriptId = 'mailerlite-tracking-script';
-      if (!document.getElementById(mailerliteTrackingScriptId)) {
-        const trackingScript = document.createElement('script');
-        trackingScript.id = mailerliteTrackingScriptId;
-        trackingScript.innerHTML = `
-          // Your MailerLite tracking snippet here, e.g.:
-          // fetch("https://assets.mailerlite.com/jsonp/YOUR_ACCOUNT_ID/forms/YOUR_FORM_ID/takel")
-          // You might need to get this from your MailerLite account if it's specific.
-        `;
-        document.head.appendChild(trackingScript);
-      }
+    // 1. Inject MailerLite fonts.css link into the <head>
+    const mailerliteFontsLinkHref = 'https://assets.mlcdn.com/fonts.css?version=1752130';
+    if (!document.querySelector(`link[href="${mailerliteFontsLinkHref}"]`)) {
+      styleLink = document.createElement('link');
+      styleLink.href = mailerliteFontsLinkHref;
+      styleLink.rel = 'stylesheet';
+      styleLink.type = 'text/css';
+      document.head.appendChild(styleLink);
     }
 
-    // Define the global success callback for MailerLite forms.
-    // This function needs to be globally accessible by MailerLite's script.
-    // Replace '28257750' with the actual MailerLite form ID if your forms
-    // use a specific success callback function name.
-    (window as any).ml_webform_success_28257750 = function() { // Adjust ID if needed
+    // 2. Inject MailerLite webforms.min.js script into the <body>
+    const mailerliteScriptSrc = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
+    if (!document.querySelector(`script[src="${mailerliteScriptSrc}"]`)) {
+      script = document.createElement('script');
+      script.src = mailerliteScriptSrc;
+      script.type = 'text/javascript';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    // 3. Define global success callbacks for MailerLite forms
+    // This is crucial for MailerLite to show success messages after submission.
+    // Ensure these IDs match the data-v2-id in your MailerLite embed HTML.
+
+    // For Landing Page form (ID 28257750)
+    (window as any).ml_webform_success_28257750 = function() {
       const $ = (window as any).ml_jQuery || (window as any).jQuery;
       if ($) {
-        // These selectors are examples. You might need to inspect your MailerLite
-        // form's HTML to get the correct class names for its success/form elements.
         $('.ml-subscribe-form-28257750 .row-success').show();
         $('.ml-subscribe-form-28257750 .row-form').hide();
       }
-      console.log('MailerLite form submitted successfully!');
+      console.log('MailerLite Landing form submitted successfully!');
     };
 
-    // Cleanup function: remove scripts and global callback when App component unmounts
+    // For Coming Soon and Vessel Page forms (ID 28314007)
+    (window as any).ml_webform_success_28314007 = function() {
+      const $ = (window as any).ml_jQuery || (window as any).jQuery;
+      if ($) {
+        $('.ml-subscribe-form-28314007 .row-success').show();
+        $('.ml-subscribe-form-28314007 .row-form').hide();
+      }
+      console.log('MailerLite Coming Soon/Vessel form submitted successfully!');
+    };
+
+    // Optional: Add the MailerLite tracking snippet if provided by MailerLite.
+    // This is usually a small fetch call. Place it here if it needs to be global.
+    // If you have a specific tracking snippet from MailerLite, replace the content below.
+    const mailerliteTrackingScriptId = 'mailerlite-tracking-script'; // Define ID here
+    if (!document.getElementById(mailerliteTrackingScriptId)) {
+      trackingScript = document.createElement('script'); // Assign to trackingScript
+      trackingScript.id = mailerliteTrackingScriptId;
+      trackingScript.innerHTML = `
+        // Example: fetch("https://assets.mailerlite.com/jsonp/YOUR_ACCOUNT_ID/forms/YOUR_FORM_ID/takel");
+        // Replace with your actual MailerLite tracking snippet if any.
+      `;
+      document.head.appendChild(trackingScript);
+    }
+
+    // Cleanup function: remove scripts and global callbacks when App component unmounts
     return () => {
-      const mlScript = document.getElementById(mailerliteScriptId);
-      if (mlScript) mlScript.remove();
-      const mlTrackingScript = document.getElementById(mailerliteTrackingScriptId);
-      if (mlTrackingScript) mlTrackingScript.remove();
-      delete (window as any).ml_webform_success_28257750; // Clean up global callback
+      // Remove MailerLite fonts link if it was added by this effect
+      if (styleLink && styleLink.parentNode) {
+        styleLink.parentNode.removeChild(styleLink);
+      }
+
+      // Remove MailerLite webforms script if it was added by this effect
+      if (script && script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+
+      // Remove tracking script if it was added by this effect
+      if (trackingScript && trackingScript.parentNode) {
+        trackingScript.parentNode.removeChild(trackingScript);
+      }
+      
+      // Clean up global callbacks
+      delete (window as any).ml_webform_success_28257750;
+      delete (window as any).ml_webform_success_28314007;
     };
   }, []); // Empty dependency array means this runs once on mount and cleans up on unmount
 
