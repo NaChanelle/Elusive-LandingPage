@@ -24,7 +24,7 @@ interface ComingSoonContent {
   countdown_date: string;
   signup_section_title: string;
   signup_section_description: string;
-  mailerlite_form_id: string; // MailerLite form ID for this page
+  mailerlite_form_id: string;
   signup_form_footer_text: string;
   share_page_text: string;
   twitter_share_text: string;
@@ -129,11 +129,8 @@ export default function ComingSoon() {
   }, [content]);
 
   // MailerLite embed rendering helper (simplified)
-  // This function now directly renders the MailerLite HTML embed code.
-  // The MailerLite script (loaded globally in App.tsx) will find and initialize this div.
   const renderMailerLiteForm = (formId: string, embedDivId: string) => {
     if (!formId) return null;
-    // This is the HTML embed code for the Coming Soon Page form (ID 28314007)
     return (
       <div id={embedDivId} className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28314007">
         <div className="ml-form-embedWrapper embedForm">
@@ -179,13 +176,32 @@ export default function ComingSoon() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // --- Start of Robust Content Handling ---
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">Loading content...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
+        Loading content...
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-red-600">Error loading content: {error.message}</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-red-600">
+        Error loading content: {error.message}
+      </div>
+    );
   }
+
+  // Crucial check: only render the main content if 'content' is not null
+  if (!content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
+        Content not available. Please check your JSON file.
+      </div>
+    );
+  }
+  // --- End of Robust Content Handling ---
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
@@ -198,7 +214,7 @@ export default function ComingSoon() {
             </div>
             <span className="text-xl font-bold tracking-wider">{content.header_logo_text}</span>
           </div>
-          
+
           {/* Desktop Navigation with Animated Buttons */}
           <nav className="hidden md:flex items-center space-x-4">
             <div className={`transition-all duration-700 ${scrolled ? 'opacity-0 transform translate-x-8 scale-0' : 'opacity-100 transform translate-x-0 scale-100'}`}>
@@ -219,7 +235,7 @@ export default function ComingSoon() {
 
           {/* Mobile Menu Button (always visible on mobile) */}
           <div className="md:hidden">
-            <Button 
+            <Button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg backdrop-blur-sm border border-white/20"
             >
@@ -248,13 +264,13 @@ export default function ComingSoon() {
       {/* Fixed Hamburger Menu (appears on desktop scroll) */}
       <div className={`fixed top-6 right-6 z-50 hidden md:block transition-all duration-700 delay-300 ${scrolled ? 'opacity-100 transform translate-x-0 scale-100' : 'opacity-0 transform translate-x-8 scale-0 pointer-events-none'}`}>
         <div className="relative">
-          <Button 
+          <Button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="bg-black/90 hover:bg-black text-white p-3 rounded-lg backdrop-blur-sm border border-white/20 shadow-lg"
           >
             <Menu className="w-5 h-5" />
           </Button>
-          
+
           {/* Dropdown Menu for Fixed Hamburger */}
           {mobileMenuOpen && (
             <div className="absolute top-full right-0 mt-2 bg-black/95 backdrop-blur-sm border border-white/20 rounded-lg p-3 space-y-2 min-w-[200px] shadow-xl">
@@ -272,7 +288,7 @@ export default function ComingSoon() {
           )}
         </div>
       </div>
-      
+
       {/* Hero Section */}
       <section className="relative px-6 py-16">
         <div className="absolute inset-0 opacity-10">
@@ -339,19 +355,19 @@ export default function ComingSoon() {
             <p className="text-gray-300 mb-6 text-sm">
               {content.signup_section_description}
             </p>
-            
+
             {/* MailerLite Form - now dynamically rendered */}
             {renderMailerLiteForm(content.mailerlite_form_id, 'mlb2-28314007')}
-            
+
             <p className="text-xs text-gray-400 mt-3">
               {content.signup_form_footer_text}
             </p>
-            
+
             {/* Share This Page */}
             <div className="mt-6 pt-4 border-t border-white/10">
               <p className="text-sm text-gray-400 mb-3 text-center">{content.share_page_text}</p>
               <div className="flex justify-center space-x-4">
-                <a 
+                <a
                   href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(content.twitter_share_text)}&url=${encodeURIComponent(window.location.href)}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -361,7 +377,7 @@ export default function ComingSoon() {
                     <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
                   </svg>
                 </a>
-                <a 
+                <a
                   href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -371,7 +387,7 @@ export default function ComingSoon() {
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                   </svg>
                 </a>
-                <a 
+                <a
                   href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -381,7 +397,7 @@ export default function ComingSoon() {
                     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
                   </svg>
                 </a>
-                <a 
+                <a
                   href={`mailto:?subject=${encodeURIComponent(content.email_share_subject)}&body=${encodeURIComponent(content.email_share_body + window.location.href)}`}
                   className="w-10 h-10 bg-white/10 hover:bg-[#FFB90F] rounded-lg flex items-center justify-center transition-colors"
                 >
