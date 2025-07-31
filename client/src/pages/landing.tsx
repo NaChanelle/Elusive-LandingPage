@@ -1,15 +1,11 @@
 // src/pages/landing.tsx
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
-import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, Eye } from "lucide-react";
-import { insertReservationSchema, type InsertReservation } from "@shared/schema";
+import { Clock, Users, BookOpen, Calendar, Eye, Zap, Lightbulb, MessageSquare, Play, Globe, Database } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-// Define TypeScript interfaces for the landing page content
+// Define the type for the content structure
 interface TierFeature {
   feature: string;
 }
@@ -26,14 +22,15 @@ interface LandingContent {
   hero_main_headline_part2: string;
   hero_sub_headline: string;
   event_date_text: string;
-  event_launch_description: string;
-  current_rsvps: number;
-  target_rsvps: number;
+  event_launch_description: string; // Kept from your original
+  current_rsvps: number; // Kept from your original, though UI part removed
+  target_rsvps: number; // Kept from your original, though UI part removed
   value_proposition_text: string;
+  countdown_target_date: string;
   reserve_spot_button_text: string;
   learn_more_button_text: string;
-  image_carousel_title: string;
-  carousel_images: Array<{
+  image_carousel_title: string; // Kept from your original
+  carousel_images: Array<{ // Kept from your original
     id: number;
     alt: string;
     placeholder: string;
@@ -50,18 +47,18 @@ interface LandingContent {
   detective_tier_title: string;
   detective_tier_price: string;
   detective_tier_description: string;
-  detective_tier_selection: string;
+  detective_tier_selection: string; // Kept from your original, though UI part removed
   detective_tier_features: TierFeature[];
   curator_tier_tag: string;
   curator_tier_title: string;
   curator_tier_price: string;
   curator_tier_description: string;
-  curator_tier_selection: string;
+  curator_tier_selection: string; // Kept from your original, though UI part removed
   curator_tier_features: TierFeature[];
   accomplice_tier_title: string;
   accomplice_tier_price: string;
   accomplice_tier_description: string;
-  accomplice_tier_selection: string;
+  accomplice_tier_selection: string; // Kept from your original, though UI part removed
   accomplice_tier_features: TierFeature[];
   signup_form_title: string;
   signup_form_description: string;
@@ -70,36 +67,36 @@ interface LandingContent {
   signup_button_pending_text: string;
   signup_button_text: string;
   signup_form_footer_text: string;
-  mailerlite_form1_id: string;
-  tally_form1_id: string;
+  mailerlite_form1_id: string; // MailerLite form ID for this page
+  tally_form1_id: string; // Tally form ID (will be replaced with MailerLite)
   faq_title: string;
   faq_items: FAQItem[];
   footer_copyright_text: string;
   contact_us_link_text: string;
 }
 
-declare global {
-  interface Window {
-    ml_webform_success_28257750?: () => void;
-    ml_jQuery?: any;
-    jQuery?: any;
-    Tally?: any;
-  }
-}
+// Helper Check icon for features list (kept from your original)
+const Check = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"></path>
+  </svg>
+);
 
 export default function Landing() {
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [selectedTier, setSelectedTier] = useState<string>("");
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const { toast } = useToast();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Kept from your original
 
   // State for dynamic content with proper typing
   const [content, setContent] = useState<LandingContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
-  // Fetch content specific to the landing page from JSON
+  // Fetch content specific to the landing page from JSON (kept from your original)
   useEffect(() => {
     fetch('/assets/content/landing.json')
       .then(response => {
@@ -119,7 +116,7 @@ export default function Landing() {
       });
   }, []);
 
-  // Image carousel auto-rotation
+  // Image carousel auto-rotation (kept from your original)
   useEffect(() => {
     if (!content?.carousel_images?.length) return;
 
@@ -132,99 +129,85 @@ export default function Landing() {
     return () => clearInterval(interval);
   }, [content?.carousel_images]);
 
-  // Script injection for external services
+  // Countdown timer logic (kept from your original)
   useEffect(() => {
-    // Inject MailerLite script
-    const mailerliteScriptId = 'mailerlite-webforms-script';
-    if (!document.getElementById(mailerliteScriptId)) {
-      const script = document.createElement('script');
-      script.id = mailerliteScriptId;
-      script.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
-      script.async = true;
-      document.head.appendChild(script);
-    }
+    if (!content || !content.countdown_target_date) return;
 
-    // Define MailerLite success callback globally
-    window.ml_webform_success_28257750 = function() {
-      const $ = window.ml_jQuery || window.jQuery;
-      if ($) {
-        $('.ml-subscribe-form-28257750 .row-success').show();
-        $('.ml-subscribe-form-28257750 .row-form').hide();
+    const targetDate = new Date(content.countdown_target_date);
+
+    const calculateTimeLeft = () => {
+      const now = new Date();
+      const difference = targetDate.getTime() - now.getTime();
+
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
+        });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
     };
 
-    // Inject Tally script
-    const tallyScriptId = 'tally-embed-script';
-    if (!document.getElementById(tallyScriptId)) {
-      const script = document.createElement('script');
-      script.id = tallyScriptId;
-      script.src = 'https://tally.so/widgets/embed.js';
-      script.async = true;
-      script.onload = () => {
-        if (typeof window.Tally !== "undefined") {
-          window.Tally.loadEmbeds();
-        } else {
-          document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
-            e.src = e.dataset.tallySrc;
-          });
-        }
-      };
-      document.body.appendChild(script);
-    }
+    calculateTimeLeft();
+    const timer = setInterval(calculateTimeLeft, 1000);
 
-    return () => {
-      const mlScript = document.getElementById(mailerliteScriptId);
-      if (mlScript) mlScript.remove();
-      delete window.ml_webform_success_28257750;
+    return () => clearInterval(timer);
+  }, [content]);
 
-      const tallyScript = document.getElementById(tallyScriptId);
-      if (tallyScript) tallyScript.remove();
-    };
-  }, []);
-
-  // Mutation for form submission
-  const reservationMutation = useMutation({
-    mutationFn: (data: InsertReservation) =>
-      apiRequest("/api/reservations", "POST", data),
-    onSuccess: () => {
-      toast({
-        title: "Success!",
-        description: "Your reservation has been submitted successfully.",
-      });
-      setEmail("");
-      setFirstName("");
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) {
-      toast({
-        title: "Error",
-        description: "Email is required",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const reservationData: InsertReservation = {
-      email,
-      firstName: firstName || null,
-      investigationInterests: selectedTier ? [selectedTier] : [],
-      preferredRole: selectedTier || null,
-    };
-
-    reservationMutation.mutate(reservationData);
+  // MailerLite embed rendering helper
+  // This function now directly renders the MailerLite HTML embed code.
+  // The MailerLite script (loaded globally in App.tsx) will find and initialize this div.
+  const renderMailerLiteForm = (formId: string, embedDivId: string) => {
+    if (!formId) return null;
+    // This is the HTML embed code for the Landing Page form (ID 28257750)
+    return (
+      <div id={embedDivId} className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28257750">
+        <div className="ml-form-embedWrapper embedForm">
+          <div className="ml-form-embedBody ml-form-embedBodyHorizontal row-form">
+            <div className="ml-form-embedContent" style={{ marginBottom: 0 }}>
+              <h4>Join Our Waitlist</h4>
+              <p>Be the first to know when we launch and get exclusive updates.</p>
+            </div>
+            <form className="ml-block-form" action="https://assets.mailerlite.com/jsonp/204279/forms/28257750/subscribe" data-v2-id="28257750" method="post" target="_blank">
+              <div style={{ display: 'none' }}>
+                <input type="text" name="b_204279_28257750" tabIndex={-1} value="" />
+              </div>
+              <div className="ml-form-formContent">
+                <div className="ml-form-fieldRow ml-last-item">
+                  <div className="ml-field-group ml-field-name ml-validate-required">
+                    <input type="text" className="form-control" data-inputmask="" name="fields[name]" placeholder="First Name" autoComplete="name" />
+                  </div>
+                  <div className="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                    <input type="email" className="form-control" data-inputmask="" name="fields[email]" placeholder="Email" autoComplete="email" />
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" name="ml-submit" value="1" />
+              <div className="ml-form-embedSubmit">
+                <button type="submit" className="primary">Join Waitlist</button>
+                <button disabled={true} style={{ display: 'none' }} type="button" className="loading">
+                  <div className="ml-form-embedSubmitLoad"></div>
+                  <span className="sr-only">Loading...</span>
+                </button>
+              </div>
+              <input type="hidden" name="anticsrf" value="true" />
+            </form>
+          </div>
+          <div className="ml-form-successBody row-success" style={{ display: 'none' }}>
+            <div className="ml-form-successContent">
+              <h4>Thank you!</h4>
+              <p>You have successfully joined our subscriber list.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   };
 
-  // Conditional rendering for loading and error states
+  // Conditional rendering for loading and error states (kept from your original)
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
@@ -250,7 +233,7 @@ export default function Landing() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white font-inter">
       {/* Header */}
       <header className="p-6">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
@@ -289,7 +272,7 @@ export default function Landing() {
             />
           </div>
 
-          {/* RSVP Progress */}
+          {/* RSVP Progress - Simplified as per previous request */}
           <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-2xl mx-auto">
             <div className="flex items-center justify-center mb-4">
               <Users className="w-6 h-6 text-[#FFB90F] mr-2" />
@@ -323,7 +306,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Image Carousel Section */}
+      {/* Image Carousel Section (kept from your original) */}
       <section id="gallery" className="px-6 py-16">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.image_carousel_title}</h2>
@@ -332,24 +315,24 @@ export default function Landing() {
               {content.carousel_images[currentImageIndex]?.image ? (
                 <div className="relative w-full h-full">
                   <img 
-                    src={content.carousel_images[currentImageIndex].image}
-                    alt={content.carousel_images[currentImageIndex].alt}
-                    className="w-full h-full object-cover rounded-lg"
-                    onError={(e) => {
+                    src={content.carousel_images[currentImageIndex].image} 
+                    alt={content.carousel_images[currentImageIndex].alt} 
+                    className="w-full h-full object-cover rounded-lg" 
+                    onError={(e) => { 
                       // Fallback to placeholder if image fails to load
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const fallback = target.nextElementSibling as HTMLElement;
-                      if (fallback) fallback.style.display = 'flex';
-                    }}
+                      const target = e.target as HTMLImageElement; 
+                      target.style.display = 'none'; 
+                      const fallback = target.nextElementSibling as HTMLElement; 
+                      if (fallback) fallback.style.display = 'flex'; 
+                    }} 
                   />
                   <div className="absolute inset-0 bg-black/20 rounded-lg flex items-end">
                     <div className="p-6 text-white">
-                      <h3 className="text-xl font-semibold mb-1 text-[#FFB90F]">
-                        {content.carousel_images[currentImageIndex]?.alt}
+                      <h3 className="text-xl font-semibold mb-1 text-[#FFB90F]"> 
+                        {content.carousel_images[currentImageIndex]?.alt} 
                       </h3>
-                      <p className="text-gray-200 text-sm">
-                        {content.carousel_images[currentImageIndex]?.placeholder}
+                      <p className="text-gray-200 text-sm"> 
+                        {content.carousel_images[currentImageIndex]?.placeholder} 
                       </p>
                     </div>
                   </div>
@@ -359,11 +342,11 @@ export default function Landing() {
                       <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                         <Eye className="w-8 h-8 text-[#FFB90F]" />
                       </div>
-                      <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
-                        {content.carousel_images[currentImageIndex]?.alt}
+                      <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]"> 
+                        {content.carousel_images[currentImageIndex]?.alt} 
                       </h3>
-                      <p className="text-gray-300">
-                        {content.carousel_images[currentImageIndex]?.placeholder}
+                      <p className="text-gray-300"> 
+                        {content.carousel_images[currentImageIndex]?.placeholder} 
                       </p>
                     </div>
                   </div>
@@ -373,247 +356,166 @@ export default function Landing() {
                   <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                     <Eye className="w-8 h-8 text-[#FFB90F]" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
-                    {content.carousel_images[currentImageIndex]?.alt}
+                  <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]"> 
+                    {content.carousel_images[currentImageIndex]?.alt} 
                   </h3>
-                  <p className="text-gray-300">
-                    {content.carousel_images[currentImageIndex]?.placeholder}
+                  <p className="text-gray-300"> 
+                    {content.carousel_images[currentImageIndex]?.placeholder} 
                   </p>
                 </div>
               )}
             </div>
-            
             {/* Carousel Indicators */}
             <div className="flex justify-center mt-6 space-x-2">
               {content.carousel_images.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentImageIndex 
-                      ? 'bg-[#FFB90F]' 
-                      : 'bg-white/20 hover:bg-white/40'
+                <button 
+                  key={index} 
+                  onClick={() => setCurrentImageIndex(index)} 
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${ 
+                    index === currentImageIndex ? 'bg-[#FFB90F]' : 'bg-gray-600 hover:bg-gray-400' 
                   }`}
-                />
+                ></button>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="px-6 py-16">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.whats_coming_next_title}</h2>
+      {/* What's Coming Next */}
+      <section id="features" className="py-16 px-6">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.whats_coming_next_title}</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-center">
-              <div className="w-12 h-12 bg-[#FFB90F] rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Users className="w-6 h-6 text-black" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20 text-center">
+              <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Calendar className="w-8 h-8 text-[#FFB90F]" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">{content.feature1_title}</h3>
-              <p className="text-gray-300">{content.feature1_description}</p>
+              <h3 className="text-xl font-semibold mb-2 text-white">{content.feature1_title}</h3>
+              <p className="text-gray-300 text-sm">{content.feature1_description}</p>
             </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-center">
-              <div className="w-12 h-12 bg-[#8B0000] rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-6 h-6 text-white" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20 text-center">
+              <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <BookOpen className="w-8 h-8 text-[#FFB90F]" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">{content.feature2_title}</h3>
-              <p className="text-gray-300">{content.feature2_description}</p>
+              <h3 className="text-xl font-semibold mb-2 text-white">{content.feature2_title}</h3>
+              <p className="text-gray-300 text-sm">{content.feature2_description}</p>
             </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-center">
-              <div className="w-12 h-12 bg-[#4B0082] rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Search className="w-6 h-6 text-white" />
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20 text-center">
+              <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Users className="w-8 h-8 text-[#FFB90F]" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">{content.feature3_title}</h3>
-              <p className="text-gray-300">{content.feature3_description}</p>
+              <h3 className="text-xl font-semibold mb-2 text-white">{content.feature3_title}</h3>
+              <p className="text-gray-300 text-sm">{content.feature3_description}</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Access Tiers Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.access_tiers_title}</h2>
+      {/* Access Tiers */}
+      <section className="py-16 px-6">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.access_tiers_title}</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {/* Detective Tier */}
-            <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
-              selectedTier === content.detective_tier_selection 
-                ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
-                : 'border-white/10 hover:border-white/20'
-            }`}>
-              <h3 className="text-xl font-semibold mb-2">{content.detective_tier_title}</h3>
-              <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.detective_tier_price}</div>
-              <p className="text-gray-300 mb-6">{content.detective_tier_description}</p>
-              <ul className="space-y-2 mb-6">
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 flex flex-col items-center text-center">
+              <h3 className="text-2xl font-bold mb-2 text-white">{content.detective_tier_title}</h3>
+              <p className="text-4xl font-extrabold text-[#FFB90F] mb-4">{content.detective_tier_price}</p>
+              <p className="text-gray-300 text-sm mb-6">{content.detective_tier_description}</p>
+              <ul className="text-gray-300 text-sm space-y-2 mb-8 text-left w-full">
                 {content.detective_tier_features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                  <li key={index} className="flex items-center">
+                    <Check className="w-4 h-4 text-[#FFB90F] mr-2" />
                     {feature.feature}
                   </li>
                 ))}
               </ul>
-              <Button 
-                onClick={() => {
-                  setSelectedTier(content.detective_tier_selection);
-                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className={`w-full transition-all duration-300 ${
-                  selectedTier === content.detective_tier_selection
-                    ? 'bg-[#FFB90F] text-black'
-                    : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
-                }`}
-              >
-                {selectedTier === content.detective_tier_selection ? '✓ Selected' : 'Choose Detective'}
+              <Button className="mt-auto bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 w-full">
+                Select {content.detective_tier_title}
               </Button>
             </div>
 
             {/* Curator Tier */}
-            <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border-2 relative transition-all duration-300 cursor-pointer ${
-              selectedTier === content.curator_tier_selection 
-                ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
-                : 'border-[#FFB90F] hover:bg-[#FFB90F]/5'
-            }`}>
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#FFB90F] text-black px-4 py-1 rounded-full text-sm font-medium">
-                {content.curator_tier_tag}
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{content.curator_tier_title}</h3>
-              <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.curator_tier_price}</div>
-              <p className="text-gray-300 mb-6">{content.curator_tier_description}</p>
-              <ul className="space-y-2 mb-6">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-[#FFB90F] relative flex flex-col items-center text-center shadow-lg">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#FFB90F] text-black text-xs font-bold px-3 py-1 rounded-full">{content.curator_tier_tag}</span>
+              <h3 className="text-2xl font-bold mb-2 text-white">{content.curator_tier_title}</h3>
+              <p className="text-4xl font-extrabold text-[#FFB90F] mb-4">{content.curator_tier_price}</p>
+              <p className="text-gray-300 text-sm mb-6">{content.curator_tier_description}</p>
+              <ul className="text-gray-300 text-sm space-y-2 mb-8 text-left w-full">
                 {content.curator_tier_features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                  <li key={index} className="flex items-center">
+                    <Check className="w-4 h-4 text-[#FFB90F] mr-2" />
                     {feature.feature}
                   </li>
                 ))}
               </ul>
-              <Button 
-                onClick={() => {
-                  setSelectedTier(content.curator_tier_selection);
-                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className={`w-full transition-all duration-300 ${
-                  selectedTier === content.curator_tier_selection
-                    ? 'bg-[#FFB90F] text-black ring-2 ring-[#FFB90F]/50'
-                    : 'bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black'
-                }`}
-              >
-                {selectedTier === content.curator_tier_selection ? '✓ Selected' : 'Choose Curator'}
+              <Button className="mt-auto bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 w-full">
+                Select {content.curator_tier_title}
               </Button>
             </div>
 
             {/* Accomplice Tier */}
-            <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
-              selectedTier === content.accomplice_tier_selection 
-                ? 'border-[#8B0000] bg-[#8B0000]/10' 
-                : 'border-white/10 hover:border-[#8B0000]/50'
-            }`}>
-              <div className="flex items-center mb-2">
-                <Crown className="w-5 h-5 text-[#FFB90F] mr-2" />
-                <h3 className="text-xl font-semibold">{content.accomplice_tier_title}</h3>
-              </div>
-              <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.accomplice_tier_price}</div>
-              <p className="text-gray-300 mb-6">{content.accomplice_tier_description}</p>
-              <ul className="space-y-2 mb-6">
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 flex flex-col items-center text-center">
+              <h3 className="text-2xl font-bold mb-2 text-white">{content.accomplice_tier_title}</h3>
+              <p className="text-4xl font-extrabold text-[#FFB90F] mb-4">{content.accomplice_tier_price}</p>
+              <p className="text-gray-300 text-sm mb-6">{content.accomplice_tier_description}</p>
+              <ul className="text-gray-300 text-sm space-y-2 mb-8 text-left w-full">
                 {content.accomplice_tier_features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                  <li key={index} className="flex items-center">
+                    <Check className="w-4 h-4 text-[#FFB90F] mr-2" />
                     {feature.feature}
                   </li>
                 ))}
               </ul>
-              <Button 
-                onClick={() => {
-                  setSelectedTier(content.accomplice_tier_selection);
-                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className={`w-full transition-all duration-300 ${
-                  selectedTier === content.accomplice_tier_selection
-                    ? 'bg-[#8B0000] text-white ring-2 ring-[#8B0000]/50'
-                    : 'bg-[#8B0000] hover:bg-[#8B0000]/90 text-white'
-                }`}
-              >
-                {selectedTier === content.accomplice_tier_selection ? '✓ Selected' : 'Choose Accomplice'}
+              <Button className="mt-auto bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 w-full">
+                Select {content.accomplice_tier_title}
               </Button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Signup Section */}
-      <section id="signup" className="px-6 py-16">
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold mb-2">{content.signup_form_title}</h2>
-              <p className="text-gray-300">{content.signup_form_description}</p>
-            </div>
+      {/* Email Signup - MailerLite Form */}
+      <section id="signup" className="py-16 px-6"> {/* Added id="signup" for scrollIntoView */}
+        <div className="max-w-lg mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 text-center">
+          <h2 className="text-2xl font-bold mb-4 text-white">{content.signup_form_title}</h2>
+          <p className="text-gray-300 mb-6">{content.signup_form_description}</p>
+          
+          {/* MailerLite Form Embed for Landing Page */}
+          {renderMailerLiteForm(content.mailerlite_form1_id, 'mlb2-28257750')}
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                type="text"
-                placeholder={content.firstname_placeholder}
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-              />
-              <Input
-                type="email"
-                placeholder={content.email_placeholder}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-              />
-              <Button
-                type="submit"
-                disabled={reservationMutation.isPending}
-                className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3"
-              >
-                {reservationMutation.isPending ? content.signup_button_pending_text : content.signup_button_text}
-              </Button>
-            </form>
-
-            <p className="text-xs text-gray-400 text-center mt-4">
-              {content.signup_form_footer_text}
-            </p>
-          </div>
+          <p className="text-xs text-gray-400 mt-3">{content.signup_form_footer_text}</p>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.faq_title}</h2>
-          <div className="space-y-6">
+      <section className="py-16 px-6">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.faq_title}</h2>
+          <Accordion type="single" collapsible className="space-y-4">
             {content.faq_items.map((item, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10">
-                <h3 className="text-lg font-semibold mb-3 text-[#FFB90F]">{item.question}</h3>
-                <div 
-                  className="text-gray-300"
-                  dangerouslySetInnerHTML={{ 
-                    __html: item.answer.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
-                  }}
-                />
-              </div>
+              <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
+                <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="px-6 pb-4 text-gray-300 text-sm" dangerouslySetInnerHTML={{ __html: item.answer }}></AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="px-6 py-12 border-t border-white/10">
+      <footer className="py-8 border-t border-white/10 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
-              <div className="w-2 h-2 bg-[#FFB90F] rounded-full"></div>
+            <div className="w-6 h-6 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
+              <div className="w-1.5 h-1.5 bg-[#FFB90F] rounded-full"></div>
             </div>
-            <span className="text-xl font-bold tracking-wider">{content.header_title}</span>
+            <span className="text-lg font-bold tracking-wider">{content.header_title}</span>
           </div>
-          <div className="text-sm text-gray-400 space-x-4">
-            <span>{content.footer_copyright_text}</span>
-            <a href="/contact" className="hover:text-[#FFB90F] transition-colors">
+          <p className="text-gray-400 text-sm mb-4">{content.footer_copyright_text}</p>
+          <div className="flex justify-center space-x-6 text-sm">
+            <a href="#" className="text-gray-400 hover:text-[#FFB90F] transition-colors">
               {content.contact_us_link_text}
             </a>
           </div>
