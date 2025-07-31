@@ -37,8 +37,8 @@ interface VesselTeaserContent {
   }[];
   cta_early_access_title: string;
   cta_early_access_description: string;
-  tally_form_id: string; // Will be replaced by mailerlite_form_id
-  mailerlite_form_id: string; // New field for MailerLite form ID
+  tally_form_id: string;
+  mailerlite_form_id: string;
   footer_logo_text: string;
   footer_copyright_text: string;
   footer_links: { text: string; url: string }[];
@@ -98,11 +98,8 @@ export default function VesselTeaser() {
   }, []);
 
   // MailerLite embed rendering helper (simplified)
-  // This function now directly renders the MailerLite HTML embed code.
-  // The MailerLite script (loaded globally in App.tsx) will find and initialize this div.
   const renderMailerLiteForm = (formId: string, embedDivId: string) => {
     if (!formId) return null;
-    // This is the HTML embed code for the Vessel Page form (ID 28314007)
     return (
       <div id={embedDivId} className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28314007">
         <div className="ml-form-embedWrapper embedForm">
@@ -148,13 +145,32 @@ export default function VesselTeaser() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // --- Start of Robust Content Handling ---
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">Loading content...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
+        Loading content...
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-red-600">Error loading content: {error.message}</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-red-600">
+        Error loading content: {error.message}
+      </div>
+    );
   }
+
+  // Crucial check: only render the main content if 'content' is not null
+  if (!content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
+        Content not available. Please check your JSON file.
+      </div>
+    );
+  }
+  // --- End of Robust Content Handling ---
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white font-inter">
@@ -274,7 +290,7 @@ export default function VesselTeaser() {
         <div className="max-w-lg mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 text-center">
           <h2 className="text-2xl font-bold mb-4 text-white">{content.cta_early_access_title}</h2>
           <p className="text-gray-300 mb-6">{content.cta_early_access_description}</p>
-          
+
           {/* MailerLite Form Embed for Vessel Page */}
           {renderMailerLiteForm(content.mailerlite_form_id, 'mlb2-28314007')}
 
@@ -299,7 +315,7 @@ export default function VesselTeaser() {
             ))}
           </div>
         </div>
-      </footer>
+      </section>
 
       {/* Back to Top Button */}
       {showBackToTop && (
