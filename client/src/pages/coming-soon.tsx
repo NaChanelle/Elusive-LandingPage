@@ -2,37 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Clock, Mail, Menu, ChevronUp, Users } from "lucide-react";
+import { Clock, Mail, Menu, ChevronUp } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-// Define TypeScript interfaces for the content
-interface FooterLink {
-  text: string;
-  url: string;
-}
-
-interface GalleryImage {
-  url: string;
-  alt: string;
-}
-
-interface Testimonial {
-  quote: string;
-  initials: string;
-  name: string;
-  role: string;
-}
-
-interface WhyJoinFeature {
-  title: string;
-  description: string;
-}
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
+// Define the type for the content structure
 interface ComingSoonContent {
   header_logo_text: string;
   event_updates_button_text: string;
@@ -49,35 +22,24 @@ interface ComingSoonContent {
   countdown_minutes_label: string;
   countdown_seconds_label: string;
   countdown_date: string;
-  countdown_type: string;
-  rsvp_countdown_title: string;
-  current_rsvps: number;
-  target_rsvps: number;
-  rsvp_progress_text: string;
   signup_section_title: string;
   signup_section_description: string;
-  mailerlite_form_id: string;
+  mailerlite_form_id: string; // MailerLite form ID for this page
   signup_form_footer_text: string;
   share_page_text: string;
   twitter_share_text: string;
   email_share_subject: string;
   email_share_body: string;
-  gallery_images: GalleryImage[];
+  gallery_items: { label: string }[];
   testimonials_title: string;
-  testimonials: Testimonial[];
+  testimonials: { quote: string; initials: string; name: string; role: string }[];
   why_join_title: string;
-  why_join_features: WhyJoinFeature[];
+  why_join_features: { title: string; description: string }[];
   faq_section_title: string;
-  faq_items: FAQItem[];
+  faq_items: { question: string; answer: string }[];
   footer_logo_text: string;
   footer_copyright_text: string;
-  footer_links: FooterLink[];
-}
-
-declare global {
-  interface Window {
-    mailerlite?: any;
-  }
+  footer_links: { text: string; url: string }[];
 }
 
 export default function ComingSoon() {
@@ -91,30 +53,25 @@ export default function ComingSoon() {
     seconds: 0,
   });
 
-  // State for dynamic content with proper typing
   const [content, setContent] = useState<ComingSoonContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const [currentRSVPs, setCurrentRSVPs] = useState(0);
-  const [investigationChoice, setInvestigationChoice] = useState<string>("");
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState('');
 
-  // Fetch content and current RSVP count
+  // Fetch content specific to the Coming Soon page from JSON
   useEffect(() => {
-    Promise.all([
-      fetch('/assets/content/coming-soon.json').then(res => res.json()),
-      fetch('/api/rsvps/count').then(res => res.json())
-    ])
-      .then(([contentData, rsvpData]) => {
-        setContent(contentData);
-        setCurrentRSVPs(rsvpData.count);
+    fetch('/assets/content/coming-soon.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data: ComingSoonContent) => {
+        setContent(data);
         setLoading(false);
       })
-      .catch((err: Error) => {
-        console.error("Error loading page data:", err);
+      .catch(err => {
+        console.error("Error loading Coming Soon page content:", err);
         setError(err);
         setLoading(false);
       });
@@ -145,7 +102,7 @@ export default function ComingSoon() {
 
   // Countdown timer logic, now using dynamic targetDate from content
   useEffect(() => {
-    if (!content?.countdown_date) return; // Wait for content to load
+    if (!content || !content.countdown_date) return;
 
     const targetDate = new Date(content.countdown_date);
 
@@ -171,162 +128,63 @@ export default function ComingSoon() {
     return () => clearInterval(timer);
   }, [content]);
 
-  // Helper to render MailerLite forms with proper typing
+  // MailerLite embed rendering helper (simplified)
+  // This function now directly renders the MailerLite HTML embed code.
+  // The MailerLite script (loaded globally in App.tsx) will find and initialize this div.
   const renderMailerLiteForm = (formId: string, embedDivId: string) => {
-    if (!formId || formId === 'your-mailerlite-form-id') {
-      // Return a simple fallback form if no MailerLite ID is configured
-      return (
-        <div className="space-y-4">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F]"
-          />
-          <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg">
-            Reserve Your Spot
-          </Button>
-        </div>
-      );
-    }
-
+    if (!formId) return null;
+    // This is the HTML embed code for the Coming Soon Page form (ID 28314007)
     return (
-      <div id={embedDivId}>
-        <div data-ml-form={formId}></div>
+      <div id={embedDivId} className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28314007">
+        <div className="ml-form-embedWrapper embedForm">
+          <div className="ml-form-embedBody ml-form-embedBodyHorizontal row-form">
+            <div className="ml-form-embedContent" style={{ marginBottom: 0 }}>
+              <h4>Get Early Access</h4>
+              <p>Be the first to know when we launch. Exclusive updates and early bird access.</p>
+            </div>
+            <form className="ml-block-form" action="https://assets.mailerlite.com/jsonp/204279/forms/28314007/subscribe" data-v2-id="28314007" method="post" target="_blank">
+              <div style={{ display: 'none' }}>
+                <input type="text" name="b_204279_28314007" tabIndex={-1} value="" />
+              </div>
+              <div className="ml-form-formContent">
+                <div className="ml-form-fieldRow ml-last-item">
+                  <div className="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                    <input type="email" className="form-control" data-inputmask="" name="fields[email]" placeholder="Email" autoComplete="email" />
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" name="ml-submit" value="1" />
+              <div className="ml-form-embedSubmit">
+                <button type="submit" className="primary">Get Early Access</button>
+                <button disabled={true} style={{ display: 'none' }} type="button" className="loading">
+                  <div className="ml-form-embedSubmitLoad"></div>
+                  <span className="sr-only">Loading...</span>
+                </button>
+              </div>
+              <input type="hidden" name="anticsrf" value="true" />
+            </form>
+          </div>
+          <div className="ml-form-successBody row-success" style={{ display: 'none' }}>
+            <div className="ml-form-successContent">
+              <h4>Thank you!</h4>
+              <p>You have successfully joined our subscriber list.</p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
-
-  // Handle RSVP submission with investigation choice
-  const handleRSVPSubmit = async (email: string, firstName: string = '') => {
-    try {
-      const response = await fetch('/api/rsvps', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          firstName,
-          investigationChoice,
-          source: 'coming_soon'
-        }),
-      });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to submit RSVP');
-      }
-
-      // Update RSVP count immediately
-      setCurrentRSVPs(prev => prev + 1);
-      
-      return data;
-    } catch (error) {
-      console.error('RSVP submission error:', error);
-      throw error;
-    }
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setMessage('');
-
-    try {
-      // Submit RSVP to our backend first
-      await handleRSVPSubmit(email, firstName);
-      
-      setMessage('Success! You\'ll be notified when we launch.');
-      setEmail('');
-      setFirstName('');
-      
-    } catch (error: any) {
-      setMessage(error.message || 'Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  // Enhanced form with RSVP tracking and investigation choice
-  const renderEnhancedMailerLiteForm = () => {
-    return (
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <input 
-            type="text"
-            placeholder="First name (optional)"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#FFB90F]"
-          />
-          <input 
-            type="email" 
-            placeholder="Email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#FFB90F]"
-          />
-        </div>
-        
-        <button 
-          type="submit"
-          disabled={isSubmitting || !email}
-          className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 disabled:opacity-50 disabled:cursor-not-allowed text-black font-medium py-3 rounded-lg transition-colors"
-        >
-          {isSubmitting ? 'Joining...' : 'Join the Investigation'}
-        </button>
-        
-        {message && (
-          <p className={`text-sm text-center ${message.includes('Success') ? 'text-green-400' : 'text-red-400'}`}>
-            {message}
-          </p>
-        )}
-      </form>
-    );
-  };
-
-  // MailerLite script loading effect
-  useEffect(() => {
-    if (content?.mailerlite_form_id && content.mailerlite_form_id !== 'your-mailerlite-form-id') {
-      if (!window.mailerlite && !document.querySelector('script[src*="mailerlite"]')) {
-        const script = document.createElement('script');
-        script.src = 'https://static.mailerlite.com/js/universal.js';
-        script.async = true;
-        document.head.appendChild(script);
-      }
-    }
-  }, [content?.mailerlite_form_id]);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Conditional rendering for loading and error states
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
-        Loading content...
-      </div>
-    );
+    return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">Loading content...</div>;
   }
 
   if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-red-600">
-        Error loading content: {error.message}
-      </div>
-    );
-  }
-
-  if (!content) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
-        No content available
-      </div>
-    );
+    return <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-red-600">Error loading content: {error.message}</div>;
   }
 
   return (
@@ -340,7 +198,7 @@ export default function ComingSoon() {
             </div>
             <span className="text-xl font-bold tracking-wider">{content.header_logo_text}</span>
           </div>
-
+          
           {/* Desktop Navigation with Animated Buttons */}
           <nav className="hidden md:flex items-center space-x-4">
             <div className={`transition-all duration-700 ${scrolled ? 'opacity-0 transform translate-x-8 scale-0' : 'opacity-100 transform translate-x-0 scale-100'}`}>
@@ -396,7 +254,7 @@ export default function ComingSoon() {
           >
             <Menu className="w-5 h-5" />
           </Button>
-
+          
           {/* Dropdown Menu for Fixed Hamburger */}
           {mobileMenuOpen && (
             <div className="absolute top-full right-0 mt-2 bg-black/95 backdrop-blur-sm border border-white/20 rounded-lg p-3 space-y-2 min-w-[200px] shadow-xl">
@@ -414,7 +272,7 @@ export default function ComingSoon() {
           )}
         </div>
       </div>
-
+      
       {/* Hero Section */}
       <section className="relative px-6 py-16">
         <div className="absolute inset-0 opacity-10">
@@ -446,7 +304,31 @@ export default function ComingSoon() {
             </p>
           </div>
 
-
+          {/* Countdown Timer - Black Background */}
+          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-2xl mx-auto mb-8">
+            <div className="flex items-center justify-center mb-4">
+              <Clock className="w-6 h-6 text-[#FFB90F] mr-2" />
+              <h3 className="text-xl font-semibold">{content.countdown_title}</h3>
+            </div>
+            <div className="grid grid-cols-4 gap-4 text-center">
+              <div className="bg-white/10 rounded-lg p-3">
+                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.days}</div>
+                <div className="text-sm text-gray-400">{content.countdown_days_label}</div>
+              </div>
+              <div className="bg-white/10 rounded-lg p-3">
+                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.hours}</div>
+                <div className="text-sm text-gray-400">{content.countdown_hours_label}</div>
+              </div>
+              <div className="bg-white/10 rounded-lg p-3">
+                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.minutes}</div>
+                <div className="text-sm text-gray-400">{content.countdown_minutes_label}</div>
+              </div>
+              <div className="bg-white/10 rounded-lg p-3">
+                <div className="text-2xl font-bold text-[#FFB90F]">{timeLeft.seconds}</div>
+                <div className="text-sm text-gray-400">{content.countdown_seconds_label}</div>
+              </div>
+            </div>
+          </div>
 
           {/* Email Signup */}
           <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-lg mx-auto">
@@ -457,16 +339,14 @@ export default function ComingSoon() {
             <p className="text-gray-300 mb-6 text-sm">
               {content.signup_section_description}
             </p>
-
-
-
-            {/* Enhanced MailerLite Form */}
-            {renderEnhancedMailerLiteForm()}
-
+            
+            {/* MailerLite Form - now dynamically rendered */}
+            {renderMailerLiteForm(content.mailerlite_form_id, 'mlb2-28314007')}
+            
             <p className="text-xs text-gray-400 mt-3">
               {content.signup_form_footer_text}
             </p>
-
+            
             {/* Share This Page */}
             <div className="mt-6 pt-4 border-t border-white/10">
               <p className="text-sm text-gray-400 mb-3 text-center">{content.share_page_text}</p>
@@ -502,50 +382,53 @@ export default function ComingSoon() {
                   </svg>
                 </a>
                 <a 
-                  href={`mailto:?subject=${encodeURIComponent(content.email_share_subject)}&body=${encodeURIComponent(content.email_share_body + ' ' + window.location.href)}`}
-                  className="w-10 h-10 bg-white/10 hover:bg-gray-600 rounded-lg flex items-center justify-center transition-colors"
+                  href={`mailto:?subject=${encodeURIComponent(content.email_share_subject)}&body=${encodeURIComponent(content.email_share_body + window.location.href)}`}
+                  className="w-10 h-10 bg-white/10 hover:bg-[#FFB90F] rounded-lg flex items-center justify-center transition-colors"
                 >
                   <Mail className="w-5 h-5" />
                 </a>
               </div>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Gallery Section - Horizontal Scrolling Carousel */}
-      <section className="py-16 overflow-hidden">
-        <div className="relative">
-          <div className="flex animate-scroll-left space-x-6" style={{ width: 'calc(300px * 12 + 5rem * 11)' }}>
-            {/* Duplicate images for seamless loop */}
-            {[...content.gallery_images, ...content.gallery_images].map((image, i) => (
-              <div key={i} className="min-w-[300px] h-[200px] bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 overflow-hidden">
-                <img 
-                  src={image.image} 
-                  alt={image.alt}
-                  className="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-300"
-                />
-              </div>
-            ))}
+          {/* Auto-scrolling Image Gallery */}
+          <div className="mt-16 overflow-hidden">
+            <div className="flex animate-scroll space-x-6" style={{width: 'calc(200% + 24px)'}}>
+              {content.gallery_items.map((item, i) => (
+                <div key={i} className="flex-shrink-0 w-64 h-64 bg-white/10 rounded-lg border border-white/20 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-3">
+                      {/* You can replace this SVG with a dynamic image or different icon based on content.icon */}
+                      <svg className="w-8 h-8 text-[#FFB90F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-400">{item.label}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12">{content.testimonials_title}</h2>
+      {/* Early Tester Testimonials */}
+      <section className="py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h3 className="text-xl font-semibold mb-8 text-center text-white">{content.testimonials_title}</h3>
           <div className="grid md:grid-cols-2 gap-8">
             {content.testimonials.map((testimonial, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                <p className="text-gray-300 mb-4 italic">"{testimonial.quote}"</p>
-                <div className="flex items-center justify-center space-x-3">
-                  <div className="w-10 h-10 bg-[#FFB90F] rounded-full flex items-center justify-center text-black font-bold">
-                    {testimonial.initials}
+              <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <p className="text-lg text-white mb-4 italic">
+                  "{testimonial.quote}"
+                </p>
+                <div className="flex items-center">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                    <span className="text-white font-semibold text-sm">{testimonial.initials}</span>
                   </div>
-                  <div className="text-left">
-                    <div className="font-semibold">{testimonial.name}</div>
-                    <div className="text-sm text-gray-400">{testimonial.role}</div>
+                  <div>
+                    <p className="font-medium text-sm text-white">{testimonial.name}</p>
+                    <p className="text-xs text-gray-300">{testimonial.role}</p>
                   </div>
                 </div>
               </div>
@@ -555,14 +438,19 @@ export default function ComingSoon() {
       </section>
 
       {/* Why Join Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.why_join_title}</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-6">
+          <h3 className="text-2xl font-bold mb-8 text-center text-white">{content.why_join_title}</h3>
+          <div className="grid md:grid-cols-2 gap-6">
             {content.why_join_features.map((feature, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-center">
-                <h3 className="text-xl font-semibold mb-4 text-[#FFB90F]">{feature.title}</h3>
-                <p className="text-gray-300">{feature.description}</p>
+              <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
+                <div className="flex items-start space-x-4">
+                  <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
+                  <div>
+                    <h4 className="font-semibold text-lg mb-2 text-white">{feature.title}</h4>
+                    <p className="text-gray-300 text-sm">{feature.description}</p>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -570,18 +458,16 @@ export default function ComingSoon() {
       </section>
 
       {/* FAQ Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.faq_section_title}</h2>
+      <section className="py-16">
+        <div className="max-w-3xl mx-auto px-6">
+          <h3 className="text-2xl font-bold mb-8 text-center text-white">{content.faq_section_title}</h3>
           <Accordion type="single" collapsible className="space-y-4">
             {content.faq_items.map((item, index) => (
-              <AccordionItem key={index} value={`item-${index}`} className="bg-white/5 backdrop-blur-sm rounded-lg border border-white/10">
-                <AccordionTrigger className="px-6 py-4 text-left hover:no-underline">
+              <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
+                <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
                   {item.question}
                 </AccordionTrigger>
-                <AccordionContent className="px-6 pb-4 text-gray-300">
-                  <div dangerouslySetInnerHTML={{ __html: item.answer.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
-                </AccordionContent>
+                <AccordionContent className="px-6 pb-4 text-gray-300 text-sm" dangerouslySetInnerHTML={{ __html: item.answer }}></AccordionContent>
               </AccordionItem>
             ))}
           </Accordion>
@@ -589,37 +475,36 @@ export default function ComingSoon() {
       </section>
 
       {/* Footer */}
-      <footer className="px-6 py-12 border-t border-white/10">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
-                <div className="w-2 h-2 bg-[#FFB90F] rounded-full"></div>
-              </div>
-              <span className="text-xl font-bold tracking-wider">{content.footer_logo_text}</span>
+      <footer className="py-8 border-t border-white/10">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <div className="w-6 h-6 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
+              <div className="w-1.5 h-1.5 bg-[#FFB90F] rounded-full"></div>
             </div>
-            <div className="text-center md:text-right">
-              <p className="text-sm text-gray-400 mb-2">{content.footer_copyright_text}</p>
-              <div className="flex flex-wrap justify-center md:justify-end space-x-4">
-                {content.footer_links.map((link, index) => (
-                  <a key={index} href={link.url} className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
-                    {link.text}
-                  </a>
-                ))}
-              </div>
-            </div>
+            <span className="text-lg font-bold tracking-wider">{content.footer_logo_text}</span>
+          </div>
+          <p className="text-gray-400 text-sm mb-4">{content.footer_copyright_text}</p>
+          <div className="flex justify-center space-x-6 text-sm">
+            {content.footer_links.map((link, index) => (
+              <a key={index} href={link.url} className="text-gray-400 hover:text-[#FFB90F] transition-colors">
+                {link.text}
+              </a>
+            ))}
           </div>
         </div>
       </footer>
 
       {/* Back to Top Button */}
       {showBackToTop && (
-        <Button
-          onClick={scrollToTop}
-          className="fixed bottom-6 right-6 z-50 bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
-        >
-          <ChevronUp className="w-5 h-5" />
-        </Button>
+        <div className="fixed bottom-6 right-6 z-50">
+          <Button
+            onClick={scrollToTop}
+            className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+            size="icon"
+          >
+            <ChevronUp className="w-5 h-5" />
+          </Button>
+        </div>
       )}
     </div>
   );
