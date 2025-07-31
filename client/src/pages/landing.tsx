@@ -22,19 +22,19 @@ interface LandingContent {
   hero_main_headline_part2: string;
   hero_sub_headline: string;
   event_date_text: string;
-  event_launch_description: string; // Kept from your original
-  current_rsvps: number; // Kept from your original, though UI part removed
-  target_rsvps: number; // Kept from your original, though UI part removed
+  event_launch_description: string;
+  current_rsvps: number;
+  target_rsvps: number;
   value_proposition_text: string;
   countdown_target_date: string;
   reserve_spot_button_text: string;
   learn_more_button_text: string;
-  image_carousel_title: string; // Kept from your original
-  carousel_images: Array<{ // Kept from your original
+  image_carousel_title: string;
+  carousel_images: Array<{
     id: number;
     alt: string;
     placeholder: string;
-    image?: string; // Optional actual image URL
+    image?: string;
   }>;
   whats_coming_next_title: string;
   feature1_title: string;
@@ -46,19 +46,19 @@ interface LandingContent {
   access_tiers_title: string;
   detective_tier_title: string;
   detective_tier_price: string;
+  detective_tier_selection: string;
   detective_tier_description: string;
-  detective_tier_selection: string; // Kept from your original, though UI part removed
   detective_tier_features: TierFeature[];
   curator_tier_tag: string;
   curator_tier_title: string;
   curator_tier_price: string;
   curator_tier_description: string;
-  curator_tier_selection: string; // Kept from your original, though UI part removed
+  curator_tier_selection: string;
   curator_tier_features: TierFeature[];
   accomplice_tier_title: string;
   accomplice_tier_price: string;
   accomplice_tier_description: string;
-  accomplice_tier_selection: string; // Kept from your original, though UI part removed
+  accomplice_tier_selection: string;
   accomplice_tier_features: TierFeature[];
   signup_form_title: string;
   signup_form_description: string;
@@ -67,15 +67,15 @@ interface LandingContent {
   signup_button_pending_text: string;
   signup_button_text: string;
   signup_form_footer_text: string;
-  mailerlite_form1_id: string; // MailerLite form ID for this page
-  tally_form1_id: string; // Tally form ID (will be replaced with MailerLite)
+  mailerlite_form1_id: string;
+  tally_form1_id: string;
   faq_title: string;
   faq_items: FAQItem[];
   footer_copyright_text: string;
   contact_us_link_text: string;
 }
 
-// Helper Check icon for features list (kept from your original)
+// Helper Check icon for features list
 const Check = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"></path>
@@ -83,9 +83,8 @@ const Check = ({ className }: { className?: string }) => (
 );
 
 export default function Landing() {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // Kept from your original
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  // State for dynamic content with proper typing
   const [content, setContent] = useState<LandingContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -96,7 +95,7 @@ export default function Landing() {
     seconds: 0,
   });
 
-  // Fetch content specific to the landing page from JSON (kept from your original)
+  // Fetch content specific to the landing page from JSON
   useEffect(() => {
     fetch('/assets/content/landing.json')
       .then(response => {
@@ -116,20 +115,20 @@ export default function Landing() {
       });
   }, []);
 
-  // Image carousel auto-rotation (kept from your original)
+  // Image carousel auto-rotation
   useEffect(() => {
     if (!content?.carousel_images?.length) return;
 
     const interval = setInterval(() => {
-      setCurrentImageIndex((prev) => 
+      setCurrentImageIndex((prev) =>
         (prev + 1) % content.carousel_images.length
       );
-    }, 4000); // Change image every 4 seconds
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [content?.carousel_images]);
 
-  // Countdown timer logic (kept from your original)
+  // Countdown timer logic
   useEffect(() => {
     if (!content || !content.countdown_target_date) return;
 
@@ -158,11 +157,8 @@ export default function Landing() {
   }, [content]);
 
   // MailerLite embed rendering helper
-  // This function now directly renders the MailerLite HTML embed code.
-  // The MailerLite script (loaded globally in App.tsx) will find and initialize this div.
   const renderMailerLiteForm = (formId: string, embedDivId: string) => {
     if (!formId) return null;
-    // This is the HTML embed code for the Landing Page form (ID 28257750)
     return (
       <div id={embedDivId} className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28257750">
         <div className="ml-form-embedWrapper embedForm">
@@ -207,7 +203,7 @@ export default function Landing() {
     );
   };
 
-  // Conditional rendering for loading and error states (kept from your original)
+  // --- Start of Robust Content Handling ---
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
@@ -224,13 +220,15 @@ export default function Landing() {
     );
   }
 
+  // Crucial check: only render the main content if 'content' is not null
   if (!content) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
-        No content available
+        Content not available. Please check your JSON file.
       </div>
     );
   }
+  // --- End of Robust Content Handling ---
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white font-inter">
@@ -264,10 +262,10 @@ export default function Landing() {
             <p className="text-xl md:text-2xl text-gray-300">{content.hero_sub_headline}</p>
             <div className="text-[#FFB90F] font-semibold">{content.event_date_text}</div>
             <div className="text-sm text-gray-400">{content.event_launch_description}</div>
-            <div 
+            <div
               className="text-lg text-gray-300 max-w-2xl mx-auto"
-              dangerouslySetInnerHTML={{ 
-                __html: content.value_proposition_text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
+              dangerouslySetInnerHTML={{
+                __html: content.value_proposition_text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
               }}
             />
           </div>
@@ -289,15 +287,15 @@ export default function Landing() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Button 
+            <Button
               onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
               className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-8 py-3 rounded-full"
             >
               {content.reserve_spot_button_text}
             </Button>
-            <Button 
+            <Button
               onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-              variant="outline" 
+              variant="outline"
               className="border-white/20 text-white hover:bg-white/10 px-8 py-3 rounded-full"
             >
               {content.learn_more_button_text}
@@ -306,7 +304,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Image Carousel Section (kept from your original) */}
+      {/* Image Carousel Section */}
       <section id="gallery" className="px-6 py-16">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.image_carousel_title}</h2>
@@ -314,25 +312,25 @@ export default function Landing() {
             <div className="bg-white/5 backdrop-blur-sm rounded-xl p-2 border border-white/10 aspect-video flex items-center justify-center overflow-hidden">
               {content.carousel_images[currentImageIndex]?.image ? (
                 <div className="relative w-full h-full">
-                  <img 
-                    src={content.carousel_images[currentImageIndex].image} 
-                    alt={content.carousel_images[currentImageIndex].alt} 
-                    className="w-full h-full object-cover rounded-lg" 
-                    onError={(e) => { 
+                  <img
+                    src={content.carousel_images[currentImageIndex].image}
+                    alt={content.carousel_images[currentImageIndex].alt}
+                    className="w-full h-full object-cover rounded-lg"
+                    onError={(e) => {
                       // Fallback to placeholder if image fails to load
-                      const target = e.target as HTMLImageElement; 
-                      target.style.display = 'none'; 
-                      const fallback = target.nextElementSibling as HTMLElement; 
-                      if (fallback) fallback.style.display = 'flex'; 
-                    }} 
+                      const target = e.target as HTMLImageElement;
+                      target.style.display = 'none';
+                      const fallback = target.nextElementSibling as HTMLElement;
+                      if (fallback) fallback.style.display = 'flex';
+                    }}
                   />
                   <div className="absolute inset-0 bg-black/20 rounded-lg flex items-end">
                     <div className="p-6 text-white">
-                      <h3 className="text-xl font-semibold mb-1 text-[#FFB90F]"> 
-                        {content.carousel_images[currentImageIndex]?.alt} 
+                      <h3 className="text-xl font-semibold mb-1 text-[#FFB90F]">
+                        {content.carousel_images[currentImageIndex]?.alt}
                       </h3>
-                      <p className="text-gray-200 text-sm"> 
-                        {content.carousel_images[currentImageIndex]?.placeholder} 
+                      <p className="text-gray-200 text-sm">
+                        {content.carousel_images[currentImageIndex]?.placeholder}
                       </p>
                     </div>
                   </div>
@@ -342,11 +340,11 @@ export default function Landing() {
                       <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                         <Eye className="w-8 h-8 text-[#FFB90F]" />
                       </div>
-                      <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]"> 
-                        {content.carousel_images[currentImageIndex]?.alt} 
+                      <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
+                        {content.carousel_images[currentImageIndex]?.alt}
                       </h3>
-                      <p className="text-gray-300"> 
-                        {content.carousel_images[currentImageIndex]?.placeholder} 
+                      <p className="text-gray-300">
+                        {content.carousel_images[currentImageIndex]?.placeholder}
                       </p>
                     </div>
                   </div>
@@ -356,11 +354,11 @@ export default function Landing() {
                   <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                     <Eye className="w-8 h-8 text-[#FFB90F]" />
                   </div>
-                  <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]"> 
-                    {content.carousel_images[currentImageIndex]?.alt} 
+                  <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
+                    {content.carousel_images[currentImageIndex]?.alt}
                   </h3>
-                  <p className="text-gray-300"> 
-                    {content.carousel_images[currentImageIndex]?.placeholder} 
+                  <p className="text-gray-300">
+                    {content.carousel_images[currentImageIndex]?.placeholder}
                   </p>
                 </div>
               )}
@@ -368,11 +366,11 @@ export default function Landing() {
             {/* Carousel Indicators */}
             <div className="flex justify-center mt-6 space-x-2">
               {content.carousel_images.map((_, index) => (
-                <button 
-                  key={index} 
-                  onClick={() => setCurrentImageIndex(index)} 
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${ 
-                    index === currentImageIndex ? 'bg-[#FFB90F]' : 'bg-gray-600 hover:bg-gray-400' 
+                <button
+                  key={index}
+                  onClick={() => setCurrentImageIndex(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                    index === currentImageIndex ? 'bg-[#FFB90F]' : 'bg-gray-600 hover:bg-gray-400'
                   }`}
                 ></button>
               ))}
@@ -475,11 +473,11 @@ export default function Landing() {
       </section>
 
       {/* Email Signup - MailerLite Form */}
-      <section id="signup" className="py-16 px-6"> {/* Added id="signup" for scrollIntoView */}
+      <section id="signup" className="py-16 px-6">
         <div className="max-w-lg mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 text-center">
           <h2 className="text-2xl font-bold mb-4 text-white">{content.signup_form_title}</h2>
           <p className="text-gray-300 mb-6">{content.signup_form_description}</p>
-          
+
           {/* MailerLite Form Embed for Landing Page */}
           {renderMailerLiteForm(content.mailerlite_form1_id, 'mlb2-28257750')}
 
