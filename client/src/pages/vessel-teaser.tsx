@@ -173,8 +173,9 @@ export default function VesselTeaser() {
   // --- End of Robust Content Handling ---
 
   return (
+    // Main container div for the entire page
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white font-inter">
-      {/* Header */}
+      {/* Header Section Start */}
       <header className="relative z-50 p-6">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-3">
@@ -192,8 +193,9 @@ export default function VesselTeaser() {
           </nav>
         </div>
       </header>
+      {/* Header Section End */}
 
-      {/* Hero Section */}
+      {/* Hero Section Start */}
       <section className="relative px-6 py-16 text-center">
         <img
           src={content.hero_background_image || "https://placehold.co/1920x1080/0a0a0a/ffffff?text=Vessel+Hero"}
@@ -219,8 +221,9 @@ export default function VesselTeaser() {
           </Button>
         </div>
       </section>
+      {/* Hero Section End */}
 
-      {/* Vessel Introduction */}
+      {/* Vessel Introduction Section Start */}
       <section className="py-16 px-6">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
@@ -232,8 +235,9 @@ export default function VesselTeaser() {
           <p className="text-lg text-gray-300 leading-relaxed">{content.vessel_intro_description}</p>
         </div>
       </section>
+      {/* Vessel Introduction Section End */}
 
-      {/* Core MVP Features */}
+      {/* Core MVP Features Section Start */}
       <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.mvp_features_title}</h2>
@@ -258,8 +262,9 @@ export default function VesselTeaser() {
           </div>
         </div>
       </section>
+      {/* Core MVP Features Section End */}
 
-      {/* Roadmap Features */}
+      {/* Roadmap Features Section Start */}
       <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.roadmap_features_title}</h2>
@@ -284,8 +289,9 @@ export default function VesselTeaser() {
           </div>
         </div>
       </section>
+      {/* Roadmap Features Section End */}
 
-      {/* CTA Early Access - MailerLite Form */}
+      {/* CTA Early Access - MailerLite Form Section Start */}
       <section className="py-16 px-6">
         <div className="max-w-lg mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 text-center">
           <h2 className="text-2xl font-bold mb-4 text-white">{content.cta_early_access_title}</h2>
@@ -296,8 +302,9 @@ export default function VesselTeaser() {
 
         </div>
       </section>
+      {/* CTA Early Access - MailerLite Form Section End */}
 
-      {/* Footer */}
+      {/* Footer Section Start */}
       <footer className="py-8 border-t border-white/10 px-6">
         <div className="max-w-6xl mx-auto text-center">
           <div className="flex items-center justify-center space-x-3 mb-4">
@@ -315,9 +322,10 @@ export default function VesselTeaser() {
             ))}
           </div>
         </div>
-      </section>
+      </footer>
+      {/* Footer Section End */}
 
-      {/* Back to Top Button */}
+      {/* Back to Top Button Start */}
       {showBackToTop && (
         <div className="fixed bottom-6 right-6 z-50">
           <Button
@@ -329,6 +337,8 @@ export default function VesselTeaser() {
           </Button>
         </div>
       )}
+      {/* Back to Top Button End */}
     </div>
+    // Main container div for the entire page End
   );
 }
