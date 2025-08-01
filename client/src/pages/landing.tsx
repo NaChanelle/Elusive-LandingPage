@@ -565,7 +565,7 @@ export default function Landing() {
           <div className="mt-16 max-w-2xl mx-auto">
             <h3 className="text-2xl font-semibold mb-6 text-center">{content.faq_title}</h3>
             <Accordion type="single" collapsible className="space-y-4">
-              {content.faq_items?.map((item, index) => ( // Added optional chaining for safety
+              {content.faq_items?.map((item, index) => (
                 <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
                   <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
                     {item.question}
