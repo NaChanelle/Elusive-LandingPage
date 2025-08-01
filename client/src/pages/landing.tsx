@@ -6,9 +6,22 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
-import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, Eye, BookOpen, Calendar } from "lucide-react"; // Added missing icons
+import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar } from "lucide-react";
 import { insertReservationSchema, type InsertReservation } from "@shared/schema";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"; // Added Accordion imports
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+
+// Declare global MailerLite object for TypeScript
+declare global {
+  interface Window {
+    ml_jQuery: any;
+    jQuery: any;
+    mailerlite: {
+      load: () => void;
+      [key: string]: any; // Allow other properties
+    };
+    ml_webform_success_28257750: () => void; // Declare the global callback
+  }
+}
 
 // Define the type for the content structure
 interface TierFeature {
@@ -24,7 +37,7 @@ interface LandingContent {
   header_title: string;
   back_to_coming_soon_text: string;
   hero_main_headline_part1: string;
-  hero_main_headline_part2: string; // This was missing in the original type, but used in JSX
+  hero_main_headline_part2: string;
   hero_sub_headline: string;
   event_date_text: string;
   event_launch_description: string;
@@ -72,8 +85,7 @@ interface LandingContent {
   signup_button_pending_text: string;
   signup_button_text: string;
   signup_form_footer_text: string;
-  mailerlite_form1_id: string;
-  tally_form1_id: string;
+  mailerlite_form1_id: string; // Keep MailerLite ID
   faq_title: string;
   faq_items: FAQItem[];
   footer_copyright_text: string;
@@ -166,6 +178,35 @@ export default function Landing() {
     return () => clearInterval(timer);
   }, [content]); // Depend on content to re-run if it changes
 
+  // MailerLite script injection (only this one needed for MailerLite)
+  useEffect(() => {
+    const mailerliteScriptId = 'mailerlite-webforms-script';
+    if (!document.getElementById(mailerliteScriptId)) {
+      const script = document.createElement('script');
+      script.id = mailerliteScriptId;
+      script.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
+      script.async = true;
+      document.body.appendChild(script); // Append to body for better loading
+    }
+
+    // Define MailerLite success callback globally
+    // This function must be globally accessible for MailerLite's script to call it.
+    (window as any).ml_webform_success_28257750 = function() {
+      const $ = (window as any).ml_jQuery || (window as any).jQuery;
+      if ($) {
+        $('.ml-subscribe-form-28257750 .row-success').show();
+        $('.ml-subscribe-form-28257750 .row-form').hide();
+      }
+    };
+
+    // Cleanup function
+    return () => {
+      const script = document.getElementById(mailerliteScriptId);
+      if (script) script.remove();
+      delete (window as any).ml_webform_success_28257750; // Clean up the global function
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+
   const signupMutation = useMutation({
     mutationFn: async (data: { email: string; firstName?: string }) => {
       const reservationData: InsertReservation = {
@@ -208,9 +249,12 @@ export default function Landing() {
     signupMutation.mutate({ email, firstName });
   };
 
-  // MailerLite embed rendering helper
+  // MailerLite embed rendering helper (no script injection, just the HTML structure)
   const renderMailerLiteForm = (formId: string, embedDivId: string) => {
     if (!formId) return null;
+    // The MailerLite script, once loaded, will automatically find and render forms
+    // associated with data-ml-form attributes or specific IDs.
+    // We just need to ensure the container div is present.
     return (
       <div id={embedDivId} className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28257750">
         <div className="ml-form-embedWrapper embedForm">
@@ -219,30 +263,8 @@ export default function Landing() {
               <h4>Join Our Waitlist</h4>
               <p>Be the first to know when we launch and get exclusive updates.</p>
             </div>
-            <form className="ml-block-form" action="https://assets.mailerlite.com/jsonp/204279/forms/28257750/subscribe" data-v2-id="28257750" method="post" target="_blank">
-              <div style={{ display: 'none' }}>
-                <input type="text" name="b_204279_28257750" tabIndex={-1} value="" />
-              </div>
-              <div className="ml-form-formContent">
-                <div className="ml-form-fieldRow ml-last-item">
-                  <div className="ml-field-group ml-field-name ml-validate-required">
-                    <input type="text" className="form-control" data-inputmask="" name="fields[name]" placeholder="First Name" autoComplete="name" />
-                  </div>
-                  <div className="ml-field-group ml-field-email ml-validate-email ml-validate-required">
-                    <input type="email" className="form-control" data-inputmask="" name="fields[email]" placeholder="Email" autoComplete="email" />
-                  </div>
-                </div>
-              </div>
-              <input type="hidden" name="ml-submit" value="1" />
-              <div className="ml-form-embedSubmit">
-                <button type="submit" className="primary">Join Waitlist</button>
-                <button disabled={true} style={{ display: 'none' }} type="button" className="loading">
-                  <div className="ml-form-embedSubmitLoad"></div>
-                  <span className="sr-only">Loading...</span>
-                </button>
-              </div>
-              <input type="hidden" name="anticsrf" value="true" />
-            </form>
+            {/* This div with data-ml-form is what MailerLite's script looks for */}
+            <div data-ml-form={formId}></div>
           </div>
           <div className="ml-form-successBody row-success" style={{ display: 'none' }}>
             <div className="ml-form-successContent">
@@ -251,31 +273,6 @@ export default function Landing() {
             </div>
           </div>
         </div>
-      </div>
-    );
-  };
-
-  // Helper to render Tally forms
-  const renderTallyForm = (formId: string, embedDivId: string) => {
-    if (!formId) return null;
-    return (
-      <div id={embedDivId}>
-        <iframe
-          data-tally-src={`https://tally.so/r/${formId}?transparentBackground=1`}
-          width="100%"
-          height="auto"
-          frameBorder="0"
-          scrolling="no"
-          className="rounded-lg"
-          title="Tally Form"
-        ></iframe>
-        {useEffect(() => {
-          if (!window.Tally && !document.querySelector('script[src*="tally.so/widgets/embed.js"]')) {
-            var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};"undefined"!=typeof Tally?v():(d.querySelector('script[src="'+w+'"]')||d.head.appendChild(d.createElement("script")).src=w).addEventListener("load",v);
-          } else if (window.Tally && window.Tally.loadEmbeds) {
-            window.Tally.loadEmbeds();
-          }
-        }, [formId])}
       </div>
     );
   };
@@ -551,55 +548,87 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Email Signup - MailerLite Form Section Start */}
-      <section id="signup" className="py-16 px-6">
-        <div className="max-w-lg mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 text-center">
-          <h2 className="text-2xl font-bold mb-4 text-white">{content.signup_form_title}</h2>
-          <p className="text-gray-300 mb-6">{content.signup_form_description}</p>
-
-          {/* MailerLite Form Embed for Landing Page */}
-          {renderMailerLiteForm(content.mailerlite_form1_id, 'mlb2-28257750')}
-
-        </div>
-      </section>
-      {/* Email Signup - MailerLite Form Section End */}
-
-      {/* FAQ Section */}
-      <section className="py-16 px-6">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.faq_title}</h2>
-          <Accordion type="single" collapsible className="space-y-4">
-            {content.faq_items?.map((item, index) => ( // Added optional chaining
-              <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
-                <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
-                  {item.question}
-                </AccordionTrigger>
-                <AccordionContent className="px-6 pb-4 text-gray-300 text-sm" dangerouslySetInnerHTML={{ __html: item.answer }}></AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-8 border-t border-white/10 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="w-6 h-6 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
-              <div className="w-1.5 h-1.5 bg-[#FFB90F] rounded-full"></div>
+      {/* Streamlined Email Signup Form (Original form, text now dynamic) */}
+      <section id="signup-form" className="mt-20 pt-8 border-t border-white/10 max-w-2xl mx-auto">
+        <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10">
+          <h3 className="text-3xl font-bold mb-4 text-center">{content.signup_form_title}</h3>
+          <p className="text-gray-300 mb-8 text-center">
+            {content.signup_form_description}
+          </p>
+          
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid sm:grid-cols-2 gap-4">
+              <Input
+                type="text"
+                placeholder={content.firstname_placeholder}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-xl h-12"
+              />
+              <Input
+                type="email"
+                placeholder={content.email_placeholder}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-xl h-12"
+                required
+              />
             </div>
-            <span className="text-lg font-bold tracking-wider">{content.header_title}</span>
-          </div>
-          <p className="text-gray-400 text-sm mb-4">{content.footer_copyright_text}</p>
-          <div className="flex justify-center space-x-6 text-sm">
-            {content.footer_links?.map((link, index) => ( // Added optional chaining
-              <a key={index} href={link.url} className="text-gray-400 hover:text-[#FFB90F] transition-colors">
-                {link.text}
-              </a>
-            ))}
-          </div>
+            <Button
+              type="submit"
+              disabled={signupMutation.isPending}
+              className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-semibold rounded-xl h-12 text-lg transition-all duration-200"
+            >
+              {signupMutation.isPending ? content.signup_button_pending_text : content.signup_button_text}
+              <ChevronRight className="w-5 h-5 ml-2" />
+            </Button>
+          </form>
+          
+          <p className="text-xs text-gray-400 mt-4 text-center">
+            {content.signup_form_footer_text}
+          </p>
         </div>
-      </footer>
+      </section>
+
+      {/* MailerLite Form 1 (Additional) */}
+      <div className="mt-16 bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-2xl mx-auto">
+        <h3 className="text-3xl font-bold mb-4 text-center">MailerLite Form</h3>
+        {renderMailerLiteForm(content.mailerlite_form1_id, 'landing-mailerlite-form-1')}
+      </div>
+
+      {/* Brief FAQ */}
+      <div className="mt-16 max-w-2xl mx-auto">
+        <h3 className="text-2xl font-semibold mb-6 text-center">{content.faq_title}</h3>
+        <Accordion type="single" collapsible className="space-y-4">
+          {content.faq_items?.map((item, index) => ( // Added optional chaining
+            <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+              <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
+                {item.question}
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-4 text-gray-300 text-sm" dangerouslySetInnerHTML={{ __html: item.answer }}></AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
     </div>
+  </main>
+
+  {/* Minimal Footer */}
+  <footer className="relative mt-16 py-8 border-t border-white/10">
+    <div className="max-w-6xl mx-auto px-6">
+      <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+        <p className="text-sm text-gray-400">&copy; {content.footer_copyright_text}</p>
+        <div className="flex items-center space-x-6">
+          <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
+            {content.contact_us_link_text}
+          </a>
+          <Link href="/" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
+            {content.back_to_coming_soon_text}
+          </Link>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
   );
 }
