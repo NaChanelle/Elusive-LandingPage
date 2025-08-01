@@ -410,7 +410,7 @@ export default function ComingSoon() {
           {/* Auto-scrolling Image Gallery */}
           <div className="mt-16 overflow-hidden">
             <div className="flex animate-scroll space-x-6" style={{width: 'calc(200% + 24px)'}}>
-              {content.gallery_items.map((item, i) => (
+              {content.gallery_items?.map((item, i) => ( // Added optional chaining
                 <div key={i} className="flex-shrink-0 w-64 h-64 bg-white/10 rounded-lg border border-white/20 flex items-center justify-center">
                   <div className="text-center">
                     <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-3">
@@ -433,7 +433,7 @@ export default function ComingSoon() {
         <div className="max-w-3xl mx-auto px-6">
           <h3 className="text-xl font-semibold mb-8 text-center text-white">{content.testimonials_title}</h3>
           <div className="grid md:grid-cols-2 gap-8">
-            {content.testimonials.map((testimonial, index) => (
+            {content.testimonials?.map((testimonial, index) => ( // Added optional chaining
               <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                 <p className="text-lg text-white mb-4 italic">
                   "{testimonial.quote}"
@@ -458,7 +458,7 @@ export default function ComingSoon() {
         <div className="max-w-4xl mx-auto px-6">
           <h3 className="text-2xl font-bold mb-8 text-center text-white">{content.why_join_title}</h3>
           <div className="grid md:grid-cols-2 gap-6">
-            {content.why_join_features.map((feature, index) => (
+            {content.why_join_features?.map((feature, index) => ( // Added optional chaining
               <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/20">
                 <div className="flex items-start space-x-4">
                   <div className="w-3 h-3 bg-[#FFB90F] rounded-full mt-2 flex-shrink-0"></div>
@@ -478,7 +478,7 @@ export default function ComingSoon() {
         <div className="max-w-3xl mx-auto px-6">
           <h3 className="text-2xl font-bold mb-8 text-center text-white">{content.faq_section_title}</h3>
           <Accordion type="single" collapsible className="space-y-4">
-            {content.faq_items.map((item, index) => (
+            {content.faq_items?.map((item, index) => ( // Added optional chaining
               <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
                 <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
                   {item.question}
@@ -501,7 +501,7 @@ export default function ComingSoon() {
           </div>
           <p className="text-gray-400 text-sm mb-4">{content.footer_copyright_text}</p>
           <div className="flex justify-center space-x-6 text-sm">
-            {content.footer_links.map((link, index) => (
+            {content.footer_links?.map((link, index) => ( // Added optional chaining
               <a key={index} href={link.url} className="text-gray-400 hover:text-[#FFB90F] transition-colors">
                 {link.text}
               </a>
