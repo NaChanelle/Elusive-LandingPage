@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
-import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye } from "lucide-react"; // Added missing Eye icon
+import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye } from "lucide-react";
 import { insertReservationSchema, type InsertReservation } from "@shared/schema";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
@@ -36,15 +36,14 @@ interface FAQItem {
 interface LandingContent {
   header_title: string;
   back_to_coming_soon_text: string;
-  hero_main_headline_part1: string;
-  hero_main_headline_part2: string;
+  hero_main_headline: string; // Changed to single string
   hero_sub_headline: string;
   event_date_text: string;
   event_launch_description: string;
   current_rsvps: number;
   target_rsvps: number;
   value_proposition_text: string;
-  countdown_target_date: string;
+  countdown_target_date: string; // Added for countdown logic
   reserve_spot_button_text: string;
   learn_more_button_text: string;
   image_carousel_title: string;
@@ -300,6 +299,11 @@ export default function Landing() {
   }
   // --- End of Robust Content Handling ---
 
+  // Split hero_main_headline into parts for gradient effect
+  const heroHeadlineParts = content.hero_main_headline.split(' ');
+  const heroHeadlinePart1 = heroHeadlineParts[0];
+  const heroHeadlinePart2 = heroHeadlineParts.slice(1).join(' ');
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white font-inter">
       {/* Header */}
@@ -341,9 +345,9 @@ export default function Landing() {
 
             <div className="space-y-6">
               <h1 className="text-6xl md:text-8xl font-bold leading-tight">
-                {content.hero_main_headline_part1}{" "}
+                {heroHeadlinePart1}{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">
-                  {content.hero_main_headline_part2}
+                  {heroHeadlinePart2}
                 </span>
               </h1>
               <p className="text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
@@ -448,10 +452,10 @@ export default function Landing() {
                     {content.detective_tier_description}
                   </p>
                   <ul className="text-left space-y-2 mb-6">
-                    {content.detective_tier_features?.map((feature, index) => ( // Added optional chaining
+                    {content.detective_tier_features.map((feature, index) => (
                       <li key={index} className="flex items-center text-sm">
                         <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                        {feature.feature} {/* Accessing feature.feature */}
+                        {feature.feature}
                       </li>
                     ))}
                   </ul>
@@ -475,10 +479,10 @@ export default function Landing() {
                     {content.curator_tier_description}
                   </p>
                   <ul className="text-left space-y-2 mb-6">
-                    {content.curator_tier_features?.map((feature, index) => ( // Added optional chaining
+                    {content.curator_tier_features.map((feature, index) => (
                       <li key={index} className="flex items-center text-sm">
                         <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                        {feature.feature} {/* Accessing feature.feature */}
+                        {feature.feature}
                       </li>
                     ))}
                   </ul>
@@ -497,10 +501,10 @@ export default function Landing() {
                     {content.accomplice_tier_description}
                   </p>
                   <ul className="text-left space-y-2 mb-6">
-                    {content.accomplice_tier_features?.map((feature, index) => ( // Added optional chaining
+                    {content.accomplice_tier_features.map((feature, index) => (
                       <li key={index} className="flex items-center text-sm">
                         <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
-                        {feature.feature} {/* Accessing feature.feature */}
+                        {feature.feature}
                       </li>
                     ))}
                   </ul>
@@ -561,7 +565,7 @@ export default function Landing() {
           <div className="mt-16 max-w-2xl mx-auto">
             <h3 className="text-2xl font-semibold mb-6 text-center">{content.faq_title}</h3>
             <Accordion type="single" collapsible className="space-y-4">
-              {content.faq_items?.map((item, index) => ( // Added optional chaining
+              {content.faq_items?.map((item, index) => ( // Added optional chaining for safety
                 <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
                   <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
                     {item.question}
