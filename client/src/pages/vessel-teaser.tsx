@@ -242,7 +242,7 @@ export default function VesselTeaser() {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.mvp_features_title}</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {content.mvp_features.map((feature) => {
+            {content.mvp_features?.map((feature) => { // Added optional chaining
               const IconComponent = getIconComponent(feature.icon_name);
               return (
                 <div key={feature.id} className={`bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20 flex flex-col items-center text-center ${feature.gradient || ''}`}>
@@ -269,7 +269,7 @@ export default function VesselTeaser() {
         <div className="max-w-6xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.roadmap_features_title}</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {content.roadmap_features.map((feature) => {
+            {content.roadmap_features?.map((feature) => { // Added optional chaining
               const IconComponent = getIconComponent(feature.icon_name);
               return (
                 <div key={feature.id} className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 flex flex-col items-center text-center">
@@ -315,7 +315,7 @@ export default function VesselTeaser() {
           </div>
           <p className="text-gray-400 text-sm mb-4">{content.footer_copyright_text}</p>
           <div className="flex justify-center space-x-6 text-sm">
-            {content.footer_links.map((link, index) => (
+            {content.footer_links?.map((link, index) => ( // Added optional chaining
               <a key={index} href={link.url} className="text-gray-400 hover:text-[#FFB90F] transition-colors">
                 {link.text}
               </a>
