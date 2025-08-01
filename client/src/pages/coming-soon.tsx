@@ -30,7 +30,7 @@ interface ComingSoonContent {
   twitter_share_text: string;
   email_share_subject: string;
   email_share_body: string;
-  gallery_items: { label: string }[];
+  gallery_items: { url: string; alt: string; image: string }[]; // Updated type to match JSON
   testimonials_title: string;
   testimonials: { quote: string; initials: string; name: string; role: string }[];
   why_join_title: string;
@@ -410,16 +410,14 @@ export default function ComingSoon() {
           {/* Auto-scrolling Image Gallery */}
           <div className="mt-16 overflow-hidden">
             <div className="flex animate-scroll space-x-6" style={{width: 'calc(200% + 24px)'}}>
-              {content.gallery_items?.map((item, i) => ( // Added optional chaining
+              {content.gallery_items?.map((item, i) => ( // Using item.alt for display
                 <div key={i} className="flex-shrink-0 w-64 h-64 bg-white/10 rounded-lg border border-white/20 flex items-center justify-center">
                   <div className="text-center">
                     <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-3">
                       {/* You can replace this SVG with a dynamic image or different icon based on content.icon */}
-                      <svg className="w-8 h-8 text-[#FFB90F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
+                      <img src={item.image} alt={item.alt} className="w-full h-full object-cover rounded-lg" onError={(e) => e.currentTarget.src = "https://placehold.co/64x64/0a0a0a/ffffff?text=Img"} />
                     </div>
-                    <p className="text-sm text-gray-400">{item.label}</p>
+                    <p className="text-sm text-gray-400">{item.alt}</p> {/* Changed to item.alt */}
                   </div>
                 </div>
               ))}
