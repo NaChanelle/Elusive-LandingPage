@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
-import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar } from "lucide-react";
+import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye } from "lucide-react"; // Added missing Eye icon
 import { insertReservationSchema, type InsertReservation } from "@shared/schema";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
@@ -19,7 +19,7 @@ declare global {
       load: () => void;
       [key: string]: any; // Allow other properties
     };
-    ml_webform_success_28257750: () => void; // Declare the global callback
+    ml_webform_success_28257750: () => void; // Declare the global callback for MailerLite form 28257750
   }
 }
 
@@ -178,7 +178,7 @@ export default function Landing() {
     return () => clearInterval(timer);
   }, [content]); // Depend on content to re-run if it changes
 
-  // MailerLite script injection (only this one needed for MailerLite)
+  // MailerLite script injection
   useEffect(() => {
     const mailerliteScriptId = 'mailerlite-webforms-script';
     if (!document.getElementById(mailerliteScriptId)) {
@@ -186,11 +186,10 @@ export default function Landing() {
       script.id = mailerliteScriptId;
       script.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
       script.async = true;
-      document.body.appendChild(script); // Append to body for better loading
+      document.body.appendChild(script);
     }
 
     // Define MailerLite success callback globally
-    // This function must be globally accessible for MailerLite's script to call it.
     (window as any).ml_webform_success_28257750 = function() {
       const $ = (window as any).ml_jQuery || (window as any).jQuery;
       if ($) {
@@ -252,9 +251,6 @@ export default function Landing() {
   // MailerLite embed rendering helper (no script injection, just the HTML structure)
   const renderMailerLiteForm = (formId: string, embedDivId: string) => {
     if (!formId) return null;
-    // The MailerLite script, once loaded, will automatically find and render forms
-    // associated with data-ml-form attributes or specific IDs.
-    // We just need to ensure the container div is present.
     return (
       <div id={embedDivId} className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28257750">
         <div className="ml-form-embedWrapper embedForm">
@@ -323,312 +319,277 @@ export default function Landing() {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <div className="space-y-6">
-            <h1 className="text-5xl md:text-7xl font-bold leading-tight">
-              {content.hero_main_headline_part1}{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">
-                {content.hero_main_headline_part2}
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300">{content.hero_sub_headline}</p>
-            <div className="text-[#FFB90F] font-semibold">{content.event_date_text}</div>
-            <div className="text-sm text-gray-400">{content.event_launch_description}</div>
-            <div
-              className="text-lg text-gray-300 max-w-2xl mx-auto"
-              dangerouslySetInnerHTML={{
-                __html: content.value_proposition_text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-              }}
-            />
+      {/* Hero Event Section */}
+      <main className="relative px-6 py-12">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-20 left-20 w-32 h-32 border border-[#FFB90F] rotate-45"></div>
+          <div className="absolute bottom-40 right-32 w-24 h-24 border border-[#8B0000] rotate-12"></div>
+          <div className="absolute top-1/3 right-20 w-16 h-16 bg-[#FFB90F] opacity-20 rounded-full"></div>
+        </div>
+
+        <div className="max-w-5xl mx-auto text-center space-y-12 relative z-10">
+          {/* Main Event Hero */}
+          <div className="space-y-8">
+            {/* Pulsing Logo */}
+            <div className="flex justify-center">
+              <div className="w-20 h-20 border-4 border-[#FFB90F] rotate-45 mx-auto mb-8 relative animate-pulse-glow">
+                <div className="absolute inset-3 bg-[#FFB90F]/20 rotate-45"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#FFB90F] rounded-full"></div>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <h1 className="text-6xl md:text-8xl font-bold leading-tight">
+                {content.hero_main_headline_part1}{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">
+                  {content.hero_main_headline_part2}
+                </span>
+              </h1>
+              <p className="text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+                {content.hero_sub_headline}
+              </p>
+              <div className="text-xl text-[#FFB90F] font-semibold">
+                {content.event_date_text}
+              </div>
+            </div>
+
+            {/* Value Proposition */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-4xl mx-auto">
+              <p className="text-xl md:text-2xl text-gray-100 leading-relaxed" dangerouslySetInnerHTML={{ __html: content.value_proposition_text }}></p>
+            </div>
+
+            {/* Countdown Timer */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-3xl mx-auto">
+              <div className="flex items-center justify-center mb-6">
+                <Clock className="w-8 h-8 text-[#FFB90F] mr-3" />
+                <h3 className="text-2xl font-semibold">Event Launches In</h3>
+              </div>
+              <div className="grid grid-cols-4 gap-4 text-center">
+                <div className="bg-white/10 rounded-lg p-4">
+                  <div className="text-3xl font-bold text-[#FFB90F]">{timeLeft.days}</div>
+                  <div className="text-sm text-gray-400">Days</div>
+                </div>
+                <div className="bg-white/10 rounded-lg p-4">
+                  <div className="text-3xl font-bold text-[#FFB90F]">{timeLeft.hours}</div>
+                  <div className="text-sm text-gray-400">Hours</div>
+                </div>
+                <div className="bg-white/10 rounded-lg p-4">
+                  <div className="text-3xl font-bold text-[#FFB90F]">{timeLeft.minutes}</div>
+                  <div className="text-sm text-gray-400">Minutes</div>
+                </div>
+                <div className="bg-white/10 rounded-lg p-4">
+                  <div className="text-3xl font-bold text-[#FFB90F]">{timeLeft.seconds}</div>
+                  <div className="text-sm text-gray-400">Seconds</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Primary CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
+              <Button 
+                onClick={() => document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' })}
+                className="w-full sm:w-auto bg-[#8B0000] hover:bg-[#8B0000]/90 text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200"
+              >
+                {content.reserve_spot_button_text}
+                <ChevronRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Button 
+                onClick={() => document.getElementById('what-to-expect')?.scrollIntoView({ behavior: 'smooth' })}
+                variant="outline"
+                className="w-full sm:w-auto border-[#FFB90F] text-[#FFB90F] hover:bg-[#FFB90F] hover:text-black px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200"
+              >
+                {content.learn_more_button_text}
+              </Button>
+            </div>
           </div>
 
-          {/* RSVP Progress - Simplified as per previous request */}
-          <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 max-w-2xl mx-auto">
-            <div className="flex items-center justify-center mb-4">
-              <Users className="w-6 h-6 text-[#FFB90F] mr-2" />
-              <h3 className="text-xl font-semibold">Community Interest</h3>
-            </div>
-            <div className="space-y-4">
+          {/* Brief What to Expect Section */}
+          <div id="what-to-expect" className="mt-20 pt-8 border-t border-white/10 max-w-4xl mx-auto">
+            <h3 className="text-3xl font-bold mb-8">{content.whats_coming_next_title}</h3>
+            <div className="grid md:grid-cols-3 gap-8">
               <div className="text-center">
-                <div className="text-2xl font-bold text-[#FFB90F] mb-2">Growing Community</div>
-                <p className="text-gray-300 text-sm">
-                  Investigators are joining the mystery. Reserve your spot to be notified when we launch.
-                </p>
+                <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-8 h-8 text-[#FFB90F]" />
+                </div>
+                <h4 className="text-xl font-semibold mb-3">{content.feature1_title}</h4>
+                <p className="text-gray-300">{content.feature1_description}</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Sparkles className="w-8 h-8 text-[#FFB90F]" />
+                </div>
+                <h4 className="text-xl font-semibold mb-3">{content.feature2_title}</h4>
+                <p className="text-gray-300">{content.feature2_description}</p>
+              </div>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Mail className="w-8 h-8 text-[#FFB90F]" />
+                </div>
+                <h4 className="text-xl font-semibold mb-3">{content.feature3_title}</h4>
+                <p className="text-gray-300">{content.feature3_description}</p>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-            <Button
-              onClick={() => document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-8 py-3 rounded-full"
-            >
-              {content.reserve_spot_button_text}
-            </Button>
-            <Button
-              onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-              variant="outline"
-              className="border-white/20 text-white hover:bg-white/10 px-8 py-3 rounded-full"
-            >
-              {content.learn_more_button_text}
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Image Carousel Section */}
-      <section id="gallery" className="px-6 py-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.image_carousel_title}</h2>
-          <div className="relative">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-2 border border-white/10 aspect-video flex items-center justify-center overflow-hidden">
-              {/* Check if carousel_images array exists and has elements before accessing */}
-              {content.carousel_images && content.carousel_images.length > 0 && content.carousel_images[currentImageIndex]?.image ? (
-                <div className="relative w-full h-full">
-                  <img
-                    src={content.carousel_images[currentImageIndex].image}
-                    alt={content.carousel_images[currentImageIndex].alt}
-                    className="w-full h-full object-cover rounded-lg"
-                    onError={(e) => {
-                      // Fallback to placeholder if image fails to load
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                      const fallback = target.nextElementSibling as HTMLElement;
-                      if (fallback) fallback.style.display = 'flex';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-black/20 rounded-lg flex items-end">
-                    <div className="p-6 text-white">
-                      <h3 className="text-xl font-semibold mb-1 text-[#FFB90F]">
-                        {content.carousel_images[currentImageIndex]?.alt}
-                      </h3>
-                      <p className="text-gray-200 text-sm">
-                        {content.carousel_images[currentImageIndex]?.placeholder}
-                      </p>
-                    </div>
+          {/* Access Tiers Section */}
+          <div className="mt-20 pt-8 border-t border-white/10 max-w-4xl mx-auto">
+            <h3 className="text-3xl font-bold mb-8 text-center">{content.access_tiers_title}</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Detective Tier */}
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-[#FFB90F]/50 transition-all duration-300">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-6 h-6 text-[#FFB90F]" />
                   </div>
-                  {/* Fallback content (hidden by default) */}
-                  <div className="absolute inset-0 bg-white/5 backdrop-blur-sm rounded-lg flex items-center justify-center" style={{display: 'none'}}>
-                    <div className="text-center p-8">
-                      <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                        <Eye className="w-8 h-8 text-[#FFB90F]" />
-                      </div>
-                      <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
-                        {content.carousel_images[currentImageIndex]?.alt || "Image Placeholder"}
-                      </h3>
-                      <p className="text-gray-300">
-                        {content.carousel_images[currentImageIndex]?.placeholder || "No image available."}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                // Fallback for when no image URL is provided or image array is empty/undefined
-                <div className="text-center p-8">
-                  <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Eye className="w-8 h-8 text-[#FFB90F]" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
-                    {content.carousel_images?.[currentImageIndex]?.alt || "Image Placeholder"}
-                  </h3>
-                  <p className="text-gray-300">
-                    {content.carousel_images?.[currentImageIndex]?.placeholder || "No image available."}
+                  <h4 className="text-xl font-bold mb-2">{content.detective_tier_title}</h4>
+                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">{content.detective_tier_price}</div>
+                  <p className="text-gray-300 mb-6 text-sm">
+                    {content.detective_tier_description}
                   </p>
+                  <ul className="text-left space-y-2 mb-6">
+                    {content.detective_tier_features?.map((feature, index) => ( // Added optional chaining
+                      <li key={index} className="flex items-center text-sm">
+                        <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
+                        {feature.feature} {/* Accessing feature.feature */}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              )}
+              </div>
+
+              {/* Curator Tier */}
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border-2 border-[#FFB90F] hover:border-[#FFB90F]/80 transition-all duration-300 relative">
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                  <span className="bg-[#FFB90F] text-black px-3 py-1 rounded-full text-xs font-semibold">
+                    {content.curator_tier_tag}
+                  </span>
+                </div>
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Users className="w-6 h-6 text-[#FFB90F]" />
+                  </div>
+                  <h4 className="text-xl font-bold mb-2">{content.curator_tier_title}</h4>
+                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">{content.curator_tier_price}</div>
+                  <p className="text-gray-300 mb-6 text-sm">
+                    {content.curator_tier_description}
+                  </p>
+                  <ul className="text-left space-y-2 mb-6">
+                    {content.curator_tier_features?.map((feature, index) => ( // Added optional chaining
+                      <li key={index} className="flex items-center text-sm">
+                        <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
+                        {feature.feature} {/* Accessing feature.feature */}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Accomplice Tier */}
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-[#8B0000]/50 transition-all duration-300">
+                <div className="text-center">
+                  <div className="w-12 h-12 bg-[#8B0000]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
+                    <Crown className="w-6 h-6 text-[#8B0000]" />
+                  </div>
+                  <h4 className="text-xl font-bold mb-2">{content.accomplice_tier_title}</h4>
+                  <div className="text-3xl font-bold text-[#8B0000] mb-4">{content.accomplice_tier_price}</div>
+                  <p className="text-gray-300 mb-6 text-sm">
+                    {content.accomplice_tier_description}
+                  </p>
+                  <ul className="text-left space-y-2 mb-6">
+                    {content.accomplice_tier_features?.map((feature, index) => ( // Added optional chaining
+                      <li key={index} className="flex items-center text-sm">
+                        <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
+                        {feature.feature} {/* Accessing feature.feature */}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
             </div>
-            {/* Carousel Indicators */}
-            <div className="flex justify-center mt-6 space-x-2">
-              {content.carousel_images?.map((_, index) => ( // Added optional chaining
-                <button
-                  key={index}
-                  onClick={() => setCurrentImageIndex(index)}
-                  className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                    index === currentImageIndex ? 'bg-[#FFB90F]' : 'bg-gray-600 hover:bg-gray-400'
-                  }`}
-                ></button>
+          </div>
+
+          {/* Streamlined Email Signup Form (Original form, text now dynamic) */}
+          <div id="signup-form" className="mt-20 pt-8 border-t border-white/10 max-w-2xl mx-auto">
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10">
+              <h3 className="text-3xl font-bold mb-4 text-center">{content.signup_form_title}</h3>
+              <p className="text-gray-300 mb-8 text-center">
+                {content.signup_form_description}
+              </p>
+              
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <Input
+                    type="text"
+                    placeholder={content.firstname_placeholder}
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-xl h-12"
+                  />
+                  <Input
+                    type="email"
+                    placeholder={content.email_placeholder}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-xl h-12"
+                    required
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  disabled={signupMutation.isPending}
+                  className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-semibold rounded-xl h-12 text-lg transition-all duration-200"
+                >
+                  {signupMutation.isPending ? content.signup_button_pending_text : content.signup_button_text}
+                  <ChevronRight className="w-5 h-5 ml-2" />
+                </Button>
+              </form>
+              
+              <p className="text-xs text-gray-400 mt-4 text-center">
+                {content.signup_form_footer_text}
+              </p>
+            </div>
+          </div>
+
+          {/* MailerLite Form 1 (Additional) */}
+          <div className="mt-16 bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-2xl mx-auto">
+            <h3 className="text-3xl font-bold mb-4 text-center">MailerLite Form</h3>
+            {renderMailerLiteForm(content.mailerlite_form1_id, 'landing-mailerlite-form-1')}
+          </div>
+
+          {/* Brief FAQ */}
+          <div className="mt-16 max-w-2xl mx-auto">
+            <h3 className="text-2xl font-semibold mb-6 text-center">{content.faq_title}</h3>
+            <Accordion type="single" collapsible className="space-y-4">
+              {content.faq_items?.map((item, index) => ( // Added optional chaining
+                <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
+                  <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-6 pb-4 text-gray-300 text-sm" dangerouslySetInnerHTML={{ __html: item.answer }}></AccordionContent>
+                </AccordionItem>
               ))}
+            </Accordion>
+          </div>
+        </div>
+      </main>
+
+      {/* Minimal Footer */}
+      <footer className="relative mt-16 py-8 border-t border-white/10">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+            <p className="text-sm text-gray-400">&copy; {content.footer_copyright_text}</p>
+            <div className="flex items-center space-x-6">
+              <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
+                {content.contact_us_link_text}
+              </a>
+              <Link href="/" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
+                {content.back_to_coming_soon_text}
+              </Link>
             </div>
           </div>
         </div>
-      </section>
-
-      {/* What's Coming Next */}
-      <section id="features" className="py-16 px-6">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.whats_coming_next_title}</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20 text-center">
-              <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Calendar className="w-8 h-8 text-[#FFB90F]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">{content.feature1_title}</h3>
-              <p className="text-gray-300 text-sm">{content.feature1_description}</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20 text-center">
-              <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <BookOpen className="w-8 h-8 text-[#FFB90F]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">{content.feature2_title}</h3>
-              <p className="text-gray-300 text-sm">{content.feature2_description}</p>
-            </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20 text-center">
-              <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-[#FFB90F]" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-white">{content.feature3_title}</h3>
-              <p className="text-gray-300 text-sm">{content.feature3_description}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Access Tiers */}
-      <section className="py-16 px-6">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.access_tiers_title}</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Detective Tier */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 flex flex-col items-center text-center">
-              <h3 className="text-2xl font-bold mb-2 text-white">{content.detective_tier_title}</h3>
-              <p className="text-4xl font-extrabold text-[#FFB90F] mb-4">{content.detective_tier_price}</p>
-              <p className="text-gray-300 text-sm mb-6">{content.detective_tier_description}</p>
-              <ul className="text-gray-300 text-sm space-y-2 mb-8 text-left w-full">
-                {content.detective_tier_features?.map((feature, index) => ( // Added optional chaining
-                  <li key={index} className="flex items-center">
-                    <Check className="w-4 h-4 text-[#FFB90F] mr-2" />
-                    {feature.feature}
-                  </li>
-                ))}
-              </ul>
-              <Button className="mt-auto bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 w-full">
-                Select {content.detective_tier_title}
-              </Button>
-            </div>
-
-            {/* Curator Tier */}
-            <div className="bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-[#FFB90F] relative flex flex-col items-center text-center shadow-lg">
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#FFB90F] text-black text-xs font-bold px-3 py-1 rounded-full">{content.curator_tier_tag}</span>
-              <h3 className="text-2xl font-bold mb-2 text-white">{content.curator_tier_title}</h3>
-              <p className="text-4xl font-extrabold text-[#FFB90F] mb-4">{content.curator_tier_price}</p>
-              <p className="text-gray-300 text-sm mb-6">{content.curator_tier_description}</p>
-              <ul className="text-gray-300 text-sm space-y-2 mb-8 text-left w-full">
-                {content.curator_tier_features?.map((feature, index) => ( // Added optional chaining
-                  <li key={index} className="flex items-center">
-                    <Check className="w-4 h-4 text-[#FFB90F] mr-2" />
-                    {feature.feature}
-                  </li>
-                ))}
-              </ul>
-              <Button className="mt-auto bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 w-full">
-                Select {content.curator_tier_title}
-              </Button>
-            </div>
-
-            {/* Accomplice Tier */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 flex flex-col items-center text-center">
-              <h3 className="text-2xl font-bold mb-2 text-white">{content.accomplice_tier_title}</h3>
-              <p className="text-4xl font-extrabold text-[#FFB90F] mb-4">{content.accomplice_tier_price}</p>
-              <p className="text-gray-300 text-sm mb-6">{content.accomplice_tier_description}</p>
-              <ul className="text-gray-300 text-sm space-y-2 mb-8 text-left w-full">
-                {content.accomplice_tier_features?.map((feature, index) => ( // Added optional chaining
-                  <li key={index} className="flex items-center">
-                    <Check className="w-4 h-4 text-[#FFB90F] mr-2" />
-                    {feature.feature}
-                  </li>
-                ))}
-              </ul>
-              <Button className="mt-auto bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 w-full">
-                Select {content.accomplice_tier_title}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Streamlined Email Signup Form (Original form, text now dynamic) */}
-      <section id="signup-form" className="mt-20 pt-8 border-t border-white/10 max-w-2xl mx-auto">
-        <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10">
-          <h3 className="text-3xl font-bold mb-4 text-center">{content.signup_form_title}</h3>
-          <p className="text-gray-300 mb-8 text-center">
-            {content.signup_form_description}
-          </p>
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid sm:grid-cols-2 gap-4">
-              <Input
-                type="text"
-                placeholder={content.firstname_placeholder}
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-xl h-12"
-              />
-              <Input
-                type="email"
-                placeholder={content.email_placeholder}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-xl h-12"
-                required
-              />
-            </div>
-            <Button
-              type="submit"
-              disabled={signupMutation.isPending}
-              className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-semibold rounded-xl h-12 text-lg transition-all duration-200"
-            >
-              {signupMutation.isPending ? content.signup_button_pending_text : content.signup_button_text}
-              <ChevronRight className="w-5 h-5 ml-2" />
-            </Button>
-          </form>
-          
-          <p className="text-xs text-gray-400 mt-4 text-center">
-            {content.signup_form_footer_text}
-          </p>
-        </div>
-      </section>
-
-      {/* MailerLite Form 1 (Additional) */}
-      <div className="mt-16 bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-2xl mx-auto">
-        <h3 className="text-3xl font-bold mb-4 text-center">MailerLite Form</h3>
-        {renderMailerLiteForm(content.mailerlite_form1_id, 'landing-mailerlite-form-1')}
-      </div>
-
-      {/* Brief FAQ */}
-      <div className="mt-16 max-w-2xl mx-auto">
-        <h3 className="text-2xl font-semibold mb-6 text-center">{content.faq_title}</h3>
-        <Accordion type="single" collapsible className="space-y-4">
-          {content.faq_items?.map((item, index) => ( // Added optional chaining
-            <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-              <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
-                {item.question}
-              </AccordionTrigger>
-              <AccordionContent className="px-6 pb-4 text-gray-300 text-sm" dangerouslySetInnerHTML={{ __html: item.answer }}></AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </div>
+      </footer>
     </div>
-  </main>
-
-  {/* Minimal Footer */}
-  <footer className="relative mt-16 py-8 border-t border-white/10">
-    <div className="max-w-6xl mx-auto px-6">
-      <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-        <p className="text-sm text-gray-400">&copy; {content.footer_copyright_text}</p>
-        <div className="flex items-center space-x-6">
-          <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
-            {content.contact_us_link_text}
-          </a>
-          <Link href="/" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
-            {content.back_to_coming_soon_text}
-          </Link>
-        </div>
-      </div>
-    </div>
-  </footer>
-</div>
   );
 }
