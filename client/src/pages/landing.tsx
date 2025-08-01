@@ -12,7 +12,7 @@ interface TierFeature {
 
 interface FAQItem {
   question: string;
-  answer: string;
+  answer: string; // Ensure answer is also part of the type
 }
 
 interface LandingContent {
@@ -73,6 +73,7 @@ interface LandingContent {
   faq_items: FAQItem[];
   footer_copyright_text: string;
   contact_us_link_text: string;
+  footer_links: { text: string; url: string }[];
 }
 
 // Helper Check icon for features list
@@ -117,7 +118,8 @@ export default function Landing() {
 
   // Image carousel auto-rotation
   useEffect(() => {
-    if (!content?.carousel_images?.length) return;
+    // Ensure content and carousel_images exist and have length before setting up interval
+    if (!content?.carousel_images || content.carousel_images.length === 0) return;
 
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) =>
@@ -126,7 +128,7 @@ export default function Landing() {
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [content?.carousel_images]);
+  }, [content?.carousel_images]); // Depend on content.carousel_images to re-run if it changes
 
   // Countdown timer logic
   useEffect(() => {
@@ -154,7 +156,7 @@ export default function Landing() {
     const timer = setInterval(calculateTimeLeft, 1000);
 
     return () => clearInterval(timer);
-  }, [content]);
+  }, [content]); // Depend on content to re-run if it changes
 
   // MailerLite embed rendering helper
   const renderMailerLiteForm = (formId: string, embedDivId: string) => {
@@ -310,7 +312,8 @@ export default function Landing() {
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.image_carousel_title}</h2>
           <div className="relative">
             <div className="bg-white/5 backdrop-blur-sm rounded-xl p-2 border border-white/10 aspect-video flex items-center justify-center overflow-hidden">
-              {content.carousel_images[currentImageIndex]?.image ? (
+              {/* Check if carousel_images array exists and has elements before accessing */}
+              {content.carousel_images && content.carousel_images.length > 0 && content.carousel_images[currentImageIndex]?.image ? (
                 <div className="relative w-full h-full">
                   <img
                     src={content.carousel_images[currentImageIndex].image}
@@ -350,22 +353,23 @@ export default function Landing() {
                   </div>
                 </div>
               ) : (
+                // Fallback for when no image URL is provided or image array is empty/undefined
                 <div className="text-center p-8">
                   <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
                     <Eye className="w-8 h-8 text-[#FFB90F]" />
                   </div>
                   <h3 className="text-xl font-semibold mb-2 text-[#FFB90F]">
-                    {content.carousel_images[currentImageIndex]?.alt}
+                    {content.carousel_images?.[currentImageIndex]?.alt || "Image Placeholder"}
                   </h3>
                   <p className="text-gray-300">
-                    {content.carousel_images[currentImageIndex]?.placeholder}
+                    {content.carousel_images?.[currentImageIndex]?.placeholder || "No image available."}
                   </p>
                 </div>
               )}
             </div>
             {/* Carousel Indicators */}
             <div className="flex justify-center mt-6 space-x-2">
-              {content.carousel_images.map((_, index) => (
+              {content.carousel_images?.map((_, index) => ( // Added optional chaining
                 <button
                   key={index}
                   onClick={() => setCurrentImageIndex(index)}
@@ -420,7 +424,7 @@ export default function Landing() {
               <p className="text-4xl font-extrabold text-[#FFB90F] mb-4">{content.detective_tier_price}</p>
               <p className="text-gray-300 text-sm mb-6">{content.detective_tier_description}</p>
               <ul className="text-gray-300 text-sm space-y-2 mb-8 text-left w-full">
-                {content.detective_tier_features.map((feature, index) => (
+                {content.detective_tier_features?.map((feature, index) => ( // Added optional chaining
                   <li key={index} className="flex items-center">
                     <Check className="w-4 h-4 text-[#FFB90F] mr-2" />
                     {feature.feature}
@@ -439,7 +443,7 @@ export default function Landing() {
               <p className="text-4xl font-extrabold text-[#FFB90F] mb-4">{content.curator_tier_price}</p>
               <p className="text-gray-300 text-sm mb-6">{content.curator_tier_description}</p>
               <ul className="text-gray-300 text-sm space-y-2 mb-8 text-left w-full">
-                {content.curator_tier_features.map((feature, index) => (
+                {content.curator_tier_features?.map((feature, index) => ( // Added optional chaining
                   <li key={index} className="flex items-center">
                     <Check className="w-4 h-4 text-[#FFB90F] mr-2" />
                     {feature.feature}
@@ -457,7 +461,7 @@ export default function Landing() {
               <p className="text-4xl font-extrabold text-[#FFB90F] mb-4">{content.accomplice_tier_price}</p>
               <p className="text-gray-300 text-sm mb-6">{content.accomplice_tier_description}</p>
               <ul className="text-gray-300 text-sm space-y-2 mb-8 text-left w-full">
-                {content.accomplice_tier_features.map((feature, index) => (
+                {content.accomplice_tier_features?.map((feature, index) => ( // Added optional chaining
                   <li key={index} className="flex items-center">
                     <Check className="w-4 h-4 text-[#FFB90F] mr-2" />
                     {feature.feature}
@@ -490,7 +494,7 @@ export default function Landing() {
         <div className="max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.faq_title}</h2>
           <Accordion type="single" collapsible className="space-y-4">
-            {content.faq_items.map((item, index) => (
+            {content.faq_items?.map((item, index) => ( // Added optional chaining
               <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/10 backdrop-blur-sm rounded-xl border border-white/20 overflow-hidden">
                 <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
                   {item.question}
@@ -513,9 +517,11 @@ export default function Landing() {
           </div>
           <p className="text-gray-400 text-sm mb-4">{content.footer_copyright_text}</p>
           <div className="flex justify-center space-x-6 text-sm">
-            <a href="#" className="text-gray-400 hover:text-[#FFB90F] transition-colors">
-              {content.contact_us_link_text}
-            </a>
+            {content.footer_links?.map((link, index) => ( // Added optional chaining
+              <a key={index} href={link.url} className="text-gray-400 hover:text-[#FFB90F] transition-colors">
+                {link.text}
+              </a>
+            ))}
           </div>
         </div>
       </footer>
