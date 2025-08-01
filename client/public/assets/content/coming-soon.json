@@ -1,6 +1,6 @@
 {
   "event_updates_button_text": "Event Updates",
-  "gallery_images": [
+  "gallery_items": [
     {
       "url": "/api/placeholder/300/200",
       "alt": "Mystery Events Preview",
@@ -79,7 +79,7 @@
   "faq_items": [
     {
       "question": " What is Elusive, exactly?",
-      "answer": "Imagine a world where mysteries don’t just entertain but also spark conversations about identity and truth.  Elusive is a hybrid mystery-meets-meaning storyworld that combines immersive films, live events, and interactive tools to create premium, multi-city experiences where your decisions and theories help uncover deeper narratives. Think \"Black Mirror\" meets scavenger hunt meets cultural archive.."
+      "answer": "Imagine a world where mysteries don’t just entertain but also spark conversations about identity and truth.  Elusive is a hybrid mystery-meets-meaning storyworld that combines immersive films, live events, and interactive tools to create premium, multi-city experiences where your decisions and theories help uncover deeper narratives. Think \"Black Mirror\" meets scavenger hunt meets cultural archive.."
     },
     {
       "question": "What makes Elusive different?",
@@ -99,7 +99,7 @@
     },
     {
       "question": "Is it free?",
-      "answer": " Yes for a limited time to explore, decode, and join the Circle. Paid experiences, mystery boxes, and limited event tickets may be available later for those who want to dive deeper."
+      "answer": " Yes for a limited time to explore, decode, and join the Circle. Paid experiences, mystery boxes, and limited event tickets may be available later for those who want to dive deeper."
     }
   ],
   "signup_section_title": "Join the First Wave of Truth-Seekers",
@@ -130,5 +130,7 @@
   "signup_section_description": "Get early access, behind-the-scenes clues, and a first look at the story before it unfolds.",
   "share_page_text": "Share this page",
   "footer_logo_text": "ELUSIVE",
-  "signup_form_footer_text": "No spam, just mysteries. Unsubscribe at any time."
+  "signup_form_footer_text": "No spam, just mysteries. Unsubscribe at any time.",
+  "countdown_date": "2025-12-31T23:59:59"
 }
+
