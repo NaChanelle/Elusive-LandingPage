@@ -24,6 +24,7 @@
     }
   ],
   "learn_more_button_text": "Learn More",
+  "countdown_target_date": "2025-08-31T23:59:59",
   "accomplice_tier_description": "For those ready to shape the narrative and lead investigations. Everything in Memory-Holder, plus:",
   "firstname_placeholder": "First Name",
   "access_tiers_title": "Choose Your Investigation Level",
@@ -55,12 +56,12 @@
   "current_rsvps": 25,
   "signup_button_text": "Reserve Your Role",
   "feature1_title": "Interactive Narrative",
-  "hero_main_headline": "Next Event",  
   "feature2_title": "Seasonal Immersive Events",
-  "curator_tier_price": "$55",
+  "curator_tier_price": "$35",
+  "hero_main_headline": "Next Event",
   "event_launch_description": "Early Access gets first look at event date once launched.",
   "feature3_title": "Vessel - Cultural Mystery Companion App",
-  "detective_tier_price": "$25",
+  "detective_tier_price": "$15",
   "faq_items": [
     {
       "question": "Do I need to have seen anything before this event?",
@@ -123,10 +124,9 @@
   "mailerlite_form1_id": "your-mailerlite-form-id",
   "feature3_description": "Where Stories Are Shared and Debated\nJoin a growing digital space for breaking down evidence, crafting your own character theories, and reading what others believe is really going on.",
   "signup_button_pending_text": "Reserving...",
-  "accomplice_tier_price": "$75",
+  "accomplice_tier_price": "$55",
   "image_carousel_title": "Past Mystery Event August 2024 - #Burglary30",
   "signup_form_footer_text": "We'll never share your information. Only mystery updates and event invitations. Only those who register will receive the pre-event clues.",
   "accomplice_tier_selection": "accomplice",
-  "back_to_coming_soon_text": "← Coming Soon",
-  "countdown_target_date": "2025-08-31T23:59:59"
+  "back_to_coming_soon_text": "← Coming Soon"
 }
