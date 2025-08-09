@@ -119,6 +119,144 @@ export default function Landing() {
       });
   }, []);
 
+  // src/pages/landing.tsx
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
+import { Clock, ChevronRight, Users, Sparkles, Search, Crown } from "lucide-react";
+
+export default function Landing() {
+  const [content, setContent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+
+  useEffect(() => {
+    fetch('/assets/content/landing.json')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setContent(data);
+        setLoading(false);
+      })
+      .catch((err: Error) => {
+        setError(err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
+        Loading content...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-red-600">
+        Error loading content: {error.message}
+      </div>
+    );
+  }
+
+  if (!content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
+        Content not available. Please check your JSON file.
+      </div>
+    );
+  }
+
+  const heroHeadlineParts = content.hero_main_headline?.split(' ') || [];
+  const heroHeadlinePart1 = heroHeadlineParts[0] || "";
+  const heroHeadlinePart2 = heroHeadlineParts.slice(1).join(' ');
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white font-inter">
+      {/* Header */}
+      <header className="p-6">
+        <div className="flex items-center justify-between max-w-6xl mx-auto">
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
+              <div className="w-2 h-2 bg-[#FFB90F] rounded-full"></div>
+            </div>
+            <span className="text-xl font-bold tracking-wider">{content.header_title}</span>
+          </div>
+          <Link href="/">
+            <Button variant="ghost" className="text-gray-400 hover:text-white">
+              {content.back_to_coming_soon_text}
+            </Button>
+          </Link>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <main className="relative px-6 py-12">
+        <div className="max-w-5xl mx-auto text-center space-y-12 relative z-10">
+          <div className="space-y-8">
+            <div className="flex justify-center">
+              <div className="w-20 h-20 border-4 border-[#FFB90F] rotate-45 mx-auto mb-8 relative animate-pulse-glow">
+                <div className="absolute inset-3 bg-[#FFB90F]/20 rotate-45"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#FFB90F] rounded-full"></div>
+              </div>
+            </div>
+            <div className="space-y-6">
+              <h1 className="text-6xl md:text-8xl font-bold leading-tight">
+                {heroHeadlinePart1}{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">
+                  {heroHeadlinePart2}
+                </span>
+              </h1>
+              <p className="text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
+                {content.hero_sub_headline}
+              </p>
+              <div className="text-xl text-[#FFB90F] font-semibold">
+                {content.event_date_text}
+              </div>
+            </div>
+            
+            {/* Value Proposition */}
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-4xl mx-auto">
+              <p className="text-xl md:text-2xl text-gray-100 leading-relaxed" dangerouslySetInnerHTML={{ __html: content.value_proposition_text }}></p>
+            </div>
+
+            {/* Primary CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
+              <Button 
+                onClick={() => document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' })}
+                className="w-full sm:w-auto bg-[#8B0000] hover:bg-[#8B0000]/90 text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200"
+              >
+                {content.reserve_spot_button_text}
+                <ChevronRight className="w-5 h-5 ml-2" />
+              </Button>
+              <Button 
+                onClick={() => document.getElementById('what-to-expect')?.scrollIntoView({ behavior: 'smooth' })}
+                variant="outline"
+                className="w-full sm:w-auto border-[#FFB90F] text-[#FFB90F] hover:bg-[#FFB90F] hover:text-black px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200"
+              >
+                {content.learn_more_button_text}
+              </Button>
+            </div>
+
+          </div>
+
+          {/* Your MailerLite embedded form */}
+          <div id="signup-form" className="mt-20 pt-8 border-t border-white/10 max-w-2xl mx-auto">
+            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10">
+              <h3 className="text-3xl font-bold mb-4 text-center">{content.signup_form_title}</h3>
+              <p className="text-gray-300 mb-8 text-center">{content.signup_form_description}</p>
+              <div
+                className="my-8"
+                dangerouslySetInnerHTML={{ __html: `<div class="ml-embedded" data-form="4f8mQz"></div>` }}
+              />
+            </div>
+          </div>
+
   // Image carousel auto-rotation
   useEffect(() => {
     if (!content?.carousel_images?.length) return;
@@ -131,98 +269,6 @@ export default function Landing() {
 
     return () => clearInterval(interval);
   }, [content?.carousel_images]);
-
-  // Script injection for external services
-  useEffect(() => {
-    // Inject MailerLite script
-    const mailerliteScriptId = 'mailerlite-webforms-script';
-    if (!document.getElementById(mailerliteScriptId)) {
-      const script = document.createElement('script');
-      script.id = mailerliteScriptId;
-      script.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
-      script.async = true;
-      document.head.appendChild(script);
-    }
-
-    // Define MailerLite success callback globally
-    window.ml_webform_success_28257750 = function() {
-      const $ = window.ml_jQuery || window.jQuery;
-      if ($) {
-        $('.ml-subscribe-form-28257750 .row-success').show();
-        $('.ml-subscribe-form-28257750 .row-form').hide();
-      }
-    };
-
-    // Inject Tally script
-    const tallyScriptId = 'tally-embed-script';
-    if (!document.getElementById(tallyScriptId)) {
-      const script = document.createElement('script');
-      script.id = tallyScriptId;
-      script.src = 'https://tally.so/widgets/embed.js';
-      script.async = true;
-      script.onload = () => {
-        if (typeof window.Tally !== "undefined") {
-          window.Tally.loadEmbeds();
-        } else {
-          document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
-            e.src = e.dataset.tallySrc;
-          });
-        }
-      };
-      document.body.appendChild(script);
-    }
-
-    return () => {
-      const mlScript = document.getElementById(mailerliteScriptId);
-      if (mlScript) mlScript.remove();
-      delete window.ml_webform_success_28257750;
-
-      const tallyScript = document.getElementById(tallyScriptId);
-      if (tallyScript) tallyScript.remove();
-    };
-  }, []);
-
-  // Mutation for form submission
-  const reservationMutation = useMutation({
-    mutationFn: (data: InsertReservation) =>
-      apiRequest("/api/reservations", "POST", data),
-    onSuccess: () => {
-      toast({
-        title: "Success!",
-        description: "Your reservation has been submitted successfully.",
-      });
-      setEmail("");
-      setFirstName("");
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) {
-      toast({
-        title: "Error",
-        description: "Email is required",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const reservationData: InsertReservation = {
-      email,
-      firstName: firstName || null,
-      investigationInterests: selectedTier ? [selectedTier] : [],
-      preferredRole: selectedTier || null,
-    };
-
-    reservationMutation.mutate(reservationData);
-  };
 
   // Conditional rendering for loading and error states
   if (loading) {
@@ -601,21 +647,22 @@ export default function Landing() {
           </div>
         </div>
       </section>
+        </div>
+      </main>
 
-      {/* Footer */}
-      <footer className="px-6 py-12 border-t border-white/10">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
-              <div className="w-2 h-2 bg-[#FFB90F] rounded-full"></div>
+       {/* Footer */}
+      <footer className="relative mt-16 py-8 border-t border-white/10">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+            <p className="text-sm text-gray-400">&copy; {content.footer_copyright_text}</p>
+            <div className="flex items-center space-x-6">
+              <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
+                {content.contact_us_link_text}
+              </a>
+              <Link href="/" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
+                {content.back_to_coming_soon_text}
+              </Link>
             </div>
-            <span className="text-xl font-bold tracking-wider">{content.header_title}</span>
-          </div>
-          <div className="text-sm text-gray-400 space-x-4">
-            <span>{content.footer_copyright_text}</span>
-            <a href="/contact" className="hover:text-[#FFB90F] transition-colors">
-              {content.contact_us_link_text}
-            </a>
           </div>
         </div>
       </footer>
