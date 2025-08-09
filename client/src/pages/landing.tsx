@@ -17,9 +17,9 @@ declare global {
     jQuery: any;
     mailerlite: {
       load: () => void;
-      [key: string]: any; // Allow other properties
+      [key: string]: any;
     };
-    ml_webform_success_28257750: () => void; // Declare the global callback for MailerLite form 28257750
+    ml_webform_success_28257750: () => void;
   }
 }
 
@@ -36,14 +36,14 @@ interface FAQItem {
 interface LandingContent {
   header_title: string;
   back_to_coming_soon_text: string;
-  hero_main_headline: string; // Changed to single string
+  hero_main_headline: string;
   hero_sub_headline: string;
   event_date_text: string;
   event_launch_description: string;
   current_rsvps: number;
   target_rsvps: number;
   value_proposition_text: string;
-  countdown_target_date: string; // Added for countdown logic
+  countdown_target_date: string;
   reserve_spot_button_text: string;
   learn_more_button_text: string;
   image_carousel_title: string;
@@ -107,6 +107,7 @@ export default function Landing() {
   const [content, setContent] = useState<LandingContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -137,28 +138,22 @@ export default function Landing() {
 
   // Image carousel auto-rotation
   useEffect(() => {
-    // Ensure content and carousel_images exist and have length before setting up interval
     if (!content?.carousel_images || content.carousel_images.length === 0) return;
-
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) =>
         (prev + 1) % content.carousel_images.length
       );
     }, 4000);
-
     return () => clearInterval(interval);
-  }, [content?.carousel_images]); // Depend on content.carousel_images to re-run if it changes
+  }, [content?.carousel_images]);
 
   // Countdown timer logic
   useEffect(() => {
     if (!content || !content.countdown_target_date) return;
-
     const targetDate = new Date(content.countdown_target_date);
-
     const calculateTimeLeft = () => {
       const now = new Date();
       const difference = targetDate.getTime() - now.getTime();
-
       if (difference > 0) {
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -170,12 +165,10 @@ export default function Landing() {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
     };
-
     calculateTimeLeft();
     const timer = setInterval(calculateTimeLeft, 1000);
-
     return () => clearInterval(timer);
-  }, [content]); // Depend on content to re-run if it changes
+  }, [content]);
 
   // MailerLite script injection
   useEffect(() => {
@@ -187,7 +180,6 @@ export default function Landing() {
       script.async = true;
       document.body.appendChild(script);
     }
-
     // Define MailerLite success callback globally
     (window as any).ml_webform_success_28257750 = function() {
       const $ = (window as any).ml_jQuery || (window as any).jQuery;
@@ -196,14 +188,13 @@ export default function Landing() {
         $('.ml-subscribe-form-28257750 .row-form').hide();
       }
     };
-
     // Cleanup function
     return () => {
       const script = document.getElementById(mailerliteScriptId);
       if (script) script.remove();
-      delete (window as any).ml_webform_success_28257750; // Clean up the global function
+      delete (window as any).ml_webform_success_28257750;
     };
-  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+  }, []);
 
   const signupMutation = useMutation({
     mutationFn: async (data: { email: string; firstName?: string }) => {
@@ -214,14 +205,11 @@ export default function Landing() {
         investigationInterests: ["Cultural Mysteries"],
         preferredRole: "Detective"
       };
-
       const response = await apiRequest("POST", "/api/reservations", reservationData);
-
       if (!response.ok) {
         const error = await response.text();
         throw new Error(error);
       }
-
       return response.json();
     },
     onSuccess: () => {
@@ -391,14 +379,14 @@ export default function Landing() {
 
             {/* Primary CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
-              <Button 
+              <Button
                 onClick={() => document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' })}
                 className="w-full sm:w-auto bg-[#8B0000] hover:bg-[#8B0000]/90 text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200"
               >
                 {content.reserve_spot_button_text}
                 <ChevronRight className="w-5 h-5 ml-2" />
               </Button>
-              <Button 
+              <Button
                 onClick={() => document.getElementById('what-to-expect')?.scrollIntoView({ behavior: 'smooth' })}
                 variant="outline"
                 className="w-full sm:w-auto border-[#FFB90F] text-[#FFB90F] hover:bg-[#FFB90F] hover:text-black px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200"
@@ -520,7 +508,6 @@ export default function Landing() {
               <p className="text-gray-300 mb-8 text-center">
                 {content.signup_form_description}
               </p>
-              
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid sm:grid-cols-2 gap-4">
                   <Input
@@ -548,7 +535,6 @@ export default function Landing() {
                   <ChevronRight className="w-5 h-5 ml-2" />
                 </Button>
               </form>
-              
               <p className="text-xs text-gray-400 mt-4 text-center">
                 {content.signup_form_footer_text}
               </p>
@@ -558,7 +544,7 @@ export default function Landing() {
           {/* MailerLite Form 1 (Additional) */}
           <div className="mt-16 bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-2xl mx-auto">
             <h3 className="text-3xl font-bold mb-4 text-center">MailerLite Form</h3>
-            {renderMailerLiteForm(content.mailerlite_form1_id, 'landing-mailerlite-form-1')}
+            <div className="my-8" dangerouslySetInnerHTML={{ __html: `<div class="ml-embedded" data-form="4f8mQz"></div>` }} />
           </div>
 
           {/* Brief FAQ */}
@@ -582,7 +568,7 @@ export default function Landing() {
       <footer className="relative mt-16 py-8 border-t border-white/10">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <p className="text-sm text-gray-400">&copy; {content.footer_copyright_text}</p>
+            <p className="text-sm text-gray-400">&copy;{content.footer_copyright_text}</p>
             <div className="flex items-center space-x-6">
               <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
                 {content.contact_us_link_text}
