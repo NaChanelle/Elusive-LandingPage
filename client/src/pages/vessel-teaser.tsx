@@ -1,39 +1,14 @@
 // src/pages/vessel-teaser.tsx
 import React, { useState, useEffect } from "react";
-import { useLocation } from "wouter";
-import { ArrowLeft, Eye, Users, Zap, BookOpen, Lightbulb, MessageSquare, Play, ChevronRight, Mail, Globe, Database, Calendar } from "lucide-react";
-import SwipeableFeatureCarousel from "@/components/swipeable-feature-carousel";
 import { Button } from "@/components/ui/button";
+import { Link } from "wouter";
+import { Eye, Users, Calendar, Database, BookOpen, MessageSquare, Play, Globe, Zap, Lightbulb, ChevronUp } from "lucide-react";
 
-// Define TypeScript interfaces for vessel teaser content
-interface FooterLink {
-  text: string;
-  url: string;
-}
-
-interface MVPFeature {
-  id: string;
-  title: string;
-  description: string;
-  icon_name: string;
-  visualPlaceholder?: string;
-  gradient?: string;
-  status?: string;
-}
-
-interface RoadmapFeature {
-  id: string;
-  title: string;
-  description: string;
-  icon_name: string;
-  status?: string;
-  timeline?: string;
-}
-
-interface VesselContent {
+// Define the type for the content structure
+interface VesselTeaserContent {
   header_logo_text: string;
   platform_button_text: string;
-  hero_background_image?: string;
+  hero_background_image: string;
   hero_main_headline_part1: string;
   hero_main_headline_part2: string;
   hero_sub_headline: string;
@@ -42,47 +17,57 @@ interface VesselContent {
   vessel_intro_title_part2: string;
   vessel_intro_description: string;
   mvp_features_title: string;
-  mvp_features: MVPFeature[];
+  mvp_features: {
+    id: string;
+    title: string;
+    description: string;
+    icon_name: string;
+    visualPlaceholder?: string;
+    gradient?: string;
+    status?: string;
+  }[];
   roadmap_features_title: string;
-  roadmap_features: RoadmapFeature[];
-  freemium_section_title: string;
-  freemium_description: string;
-  freemium_features: string[];
-  premium_upgrade_text: string;
+  roadmap_features: {
+    id: string;
+    title: string;
+    description: string;
+    icon_name: string;
+    status?: string;
+    timeline?: string;
+  }[];
   cta_early_access_title: string;
   cta_early_access_description: string;
-  feature_voting_description: string;
   tally_form_id: string;
+  mailerlite_form_id: string;
   footer_logo_text: string;
   footer_copyright_text: string;
-  footer_links: FooterLink[];
+  footer_links: { text: string; url: string }[];
 }
 
-// Extend processed feature interface
-interface ProcessedFeature extends MVPFeature {
-  icon: React.ComponentType<any>;
-}
-
-interface ProcessedRoadmapFeature extends RoadmapFeature {
-  icon: React.ComponentType<any>;
-}
-
-declare global {
-  interface Window {
-    Tally?: any;
+// Helper function to get Lucide icon component by name
+const getIconComponent = (iconName: string) => {
+  switch (iconName) {
+    case "Eye": return Eye;
+    case "Users": return Users;
+    case "Calendar": return Calendar;
+    case "Database": return Database;
+    case "BookOpen": return BookOpen;
+    case "MessageSquare": return MessageSquare;
+    case "Play": return Play;
+    case "Globe": return Globe;
+    case "Zap": return Zap;
+    case "Lightbulb": return Lightbulb;
+    default: return null;
   }
-}
+};
 
 export default function VesselTeaser() {
-  const [, setLocation] = useLocation();
-  const [scrollY, setScrollY] = useState(0);
-
-  // State for dynamic content with proper typing
-  const [content, setContent] = useState<VesselContent | null>(null);
+  const [content, setContent] = useState<VesselTeaserContent | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
-  // Fetch content specific to the Vessel Teaser page from JSON
+  // Fetch content from JSON
   useEffect(() => {
     fetch('/assets/content/vessel.json')
       .then(response => {
@@ -91,110 +76,76 @@ export default function VesselTeaser() {
         }
         return response.json();
       })
-      .then((data: VesselContent) => {
+      .then((data: VesselTeaserContent) => {
         setContent(data);
         setLoading(false);
       })
-      .catch((err: Error) => {
+      .catch(err => {
         console.error("Error loading Vessel Teaser page content:", err);
         setError(err);
         setLoading(false);
       });
   }, []);
 
-  // Parallax effect
+  // Handle scroll effect for back to top button
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Tally Script Injection
-  useEffect(() => {
-    const tallyScriptId = 'tally-embed-script';
-    if (!document.getElementById(tallyScriptId)) {
-      const script = document.createElement('script');
-      script.id = tallyScriptId;
-      script.src = 'https://tally.so/widgets/embed.js';
-      script.async = true;
-      script.onload = () => {
-        if (typeof window.Tally !== "undefined") {
-          window.Tally.loadEmbeds();
-        } else {
-          // Fallback if Tally object isn't immediately available
-          document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
-            e.src = e.dataset.tallySrc;
-          });
-        }
-      };
-      script.onerror = () => {
-        // Fallback on error
-        document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
-          e.src = e.dataset.tallySrc;
-        });
-      };
-      document.body.appendChild(script);
-    }
-
-    return () => {
-      const existingScript = document.getElementById(tallyScriptId);
-      if (existingScript) {
-        existingScript.remove();
-      }
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 500);
     };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Helper to render Tally forms with proper typing
-  const renderTallyForm = (formId: string, embedDivId: string) => {
-    if (!formId || formId === 'your-tally-form-id') {
-      // Return a simple fallback form if no Tally ID is configured
-      return (
-        <div className="space-y-4">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F]"
-          />
-          <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg">
-            Get Early Access
-          </Button>
-        </div>
-      );
-    }
-
+  // MailerLite embed rendering helper (simplified)
+  const renderMailerLiteForm = (formId: string, embedDivId: string) => {
+    if (!formId) return null;
     return (
-      <div id={embedDivId}>
-        <iframe
-          data-tally-src={`https://tally.so/r/${formId}?transparentBackground=1`}
-          width="100%"
-          height="auto"
-          frameBorder="0"
-          scrolling="no"
-          className="rounded-lg"
-          title="Tally Form"
-        />
+      <div id={embedDivId} className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28314007">
+        <div className="ml-form-embedWrapper embedForm">
+          <div className="ml-form-embedBody ml-form-embedBodyHorizontal row-form">
+            <div className="ml-form-embedContent" style={{ marginBottom: 0 }}>
+              <h4>Join Waitlist</h4>
+              <p>Be the first to know when we launch and get exclusive updates.</p>
+            </div>
+            <form className="ml-block-form" action="https://assets.mailerlite.com/jsonp/204279/forms/28314007/subscribe" data-v2-id="28314007" method="post" target="_blank">
+              <div style={{ display: 'none' }}>
+                <input type="text" name="b_204279_28314007" tabIndex={-1} value="" />
+              </div>
+              <div className="ml-form-formContent">
+                <div className="ml-form-fieldRow ml-last-item">
+                  <div className="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                    <input type="email" className="form-control" data-inputmask="" name="fields[email]" placeholder="Email" autoComplete="email" />
+                  </div>
+                </div>
+              </div>
+              <input type="hidden" name="ml-submit" value="1" />
+              <div className="ml-form-embedSubmit">
+                <button type="submit" className="primary">Join Waitlist</button>
+                <button disabled={true} style={{ display: 'none' }} type="button" className="loading">
+                  <div className="ml-form-embedSubmitLoad"></div>
+                  <span className="sr-only">Loading...</span>
+                </button>
+              </div>
+              <input type="hidden" name="anticsrf" value="true" />
+            </form>
+          </div>
+          <div className="ml-form-successBody row-success" style={{ display: 'none' }}>
+            <div className="ml-form-successContent">
+              <h4>Thank you!</h4>
+              <p>You have successfully joined our subscriber list.</p>
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
 
-  // Icon mapping helper
-  const getIconComponent = (iconName: string) => {
-    const iconMap: Record<string, React.ComponentType<any>> = {
-      Eye,
-      Users,
-      Calendar,
-      Database,
-      BookOpen,
-      MessageSquare,
-      Play,
-      Globe,
-      Zap,
-      Lightbulb
-    };
-    return iconMap[iconName] || Eye;
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Conditional rendering for loading and error states
+  // --- Start of Robust Content Handling ---
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
@@ -211,30 +162,20 @@ export default function VesselTeaser() {
     );
   }
 
+  // Crucial check: only render the main content if 'content' is not null
   if (!content) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
-        No content available
+        Content not available. Please check your JSON file.
       </div>
     );
   }
-
-  // Process features with icons
-  const mvpFeatures: ProcessedFeature[] = content.mvp_features.map(feature => ({
-    ...feature,
-    icon: getIconComponent(feature.icon_name),
-    visualPlaceholder: feature.visualPlaceholder || 'Feature preview',
-    gradient: feature.gradient || 'bg-gradient-to-br from-[#FFB90F] to-[#FFA500]'
-  }));
-
-  const roadmapFeatures: ProcessedRoadmapFeature[] = content.roadmap_features.map(feature => ({
-    ...feature,
-    icon: getIconComponent(feature.icon_name)
-  }));
+  // --- End of Robust Content Handling ---
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white overflow-x-hidden">
-      {/* Header */}
+    // Main container div for the entire page
+    <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white font-inter">
+      {/* Header Section Start */}
       <header className="relative z-50 p-6">
         <div className="flex items-center justify-between max-w-6xl mx-auto">
           <div className="flex items-center space-x-3">
@@ -243,100 +184,77 @@ export default function VesselTeaser() {
             </div>
             <span className="text-xl font-bold tracking-wider">{content.header_logo_text}</span>
           </div>
-          <Button 
-            onClick={() => setLocation("/platform")} 
-            className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-6 py-2 rounded-full"
-          >
-            {content.platform_button_text}
-          </Button>
+          <nav>
+            <Link href="/platform">
+              <Button className="bg-white/10 hover:bg-white/20 text-white p-2 rounded-lg backdrop-blur-sm border border-white/20">
+                {content.platform_button_text}
+              </Button>
+            </Link>
+          </nav>
         </div>
       </header>
+      {/* Header Section End */}
 
-      {/* Hero Section */}
-      <section className="relative px-6 py-20 overflow-hidden">
-        <div 
-          className="absolute inset-0 opacity-20"
-          style={{
-            transform: `translateY(${scrollY * 0.5}px)`,
+      {/* Hero Section Start */}
+      <section className="relative px-6 py-16 text-center">
+        <img
+          src={content.hero_background_image || "https://placehold.co/1920x1080/0a0a0a/ffffff?text=Vessel+Hero"}
+          alt="Vessel Hero Background"
+          className="absolute inset-0 w-full h-full object-cover opacity-30"
+          onError={(e) => {
+            e.currentTarget.onerror = null; // Prevent infinite loop
+            e.currentTarget.src = "https://placehold.co/1920x1080/0a0a0a/ffffff?text=Vessel+Hero";
           }}
-        >
-          <div className="absolute top-32 left-20 w-64 h-64 border border-[#FFB90F] rotate-45 opacity-30"></div>
-          <div className="absolute bottom-20 right-32 w-48 h-48 border border-[#8B0000] rotate-12 opacity-40"></div>
-          <div className="absolute top-1/2 left-1/2 w-32 h-32 bg-[#FFB90F] opacity-10 rounded-full"></div>
-        </div>
-
-        <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
-          <div className="space-y-6">
-            <h1 className="text-6xl md:text-8xl font-bold leading-tight">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">
-                {content.hero_main_headline_part1}
-              </span>{" "}
+        />
+        <div className="relative z-10 max-w-4xl mx-auto space-y-8">
+          <h1 className="text-5xl md:text-7xl font-bold leading-tight">
+            {content.hero_main_headline_part1}{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">
               {content.hero_main_headline_part2}
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-              {content.hero_sub_headline}
-            </p>
-          </div>
-
-          <Button 
-            onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-            className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-8 py-4 rounded-full text-lg"
-          >
+            </span>
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            {content.hero_sub_headline}
+          </p>
+          <Button className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105">
             {content.discover_features_button_text}
           </Button>
         </div>
       </section>
+      {/* Hero Section End */}
 
-      {/* Vessel Introduction */}
-      <section className="px-6 py-16">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          <h2 className="text-4xl md:text-5xl font-bold">
+      {/* Vessel Introduction Section Start */}
+      <section className="py-16 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">
             {content.vessel_intro_title_part1}{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B0000] to-[#A52A2A]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">
               {content.vessel_intro_title_part2}
             </span>
           </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            {content.vessel_intro_description}
-          </p>
+          <p className="text-lg text-gray-300 leading-relaxed">{content.vessel_intro_description}</p>
         </div>
       </section>
+      {/* Vessel Introduction Section End */}
 
-      {/* MVP Features - Swipeable Carousel */}
-      <section id="features" className="px-6 py-16">
+      {/* Core MVP Features Section Start */}
+      <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.mvp_features_title}</h2>
-          <SwipeableFeatureCarousel features={mvpFeatures} />
-        </div>
-      </section>
-
-      {/* Roadmap Features */}
-      <section className="px-6 py-16">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.roadmap_features_title}</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {roadmapFeatures.map((feature) => {
-              const IconComponent = feature.icon;
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.mvp_features_title}</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {content.mvp_features?.map((feature) => { // Added optional chaining
+              const IconComponent = getIconComponent(feature.icon_name);
               return (
-                <div key={feature.id} className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-                  <div className="flex items-center space-x-3 mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#4B0082] to-[#6A0DAD] rounded-lg flex items-center justify-center">
-                      <IconComponent className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="text-xl font-semibold text-[#FFB90F]">{feature.title}</h3>
-                      {feature.timeline && (
-                        <span className="text-sm text-gray-400">{feature.timeline}</span>
-                      )}
-                    </div>
+                <div key={feature.id} className={`bg-white/10 backdrop-blur-sm rounded-xl p-8 border border-white/20 flex flex-col items-center text-center ${feature.gradient || ''}`}>
+                  <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    {IconComponent && <IconComponent className="w-8 h-8 text-[#FFB90F]" />}
                   </div>
-                  <p className="text-gray-300">{feature.description}</p>
+                  <h3 className="text-xl font-semibold mb-2 text-white">{feature.title}</h3>
+                  <p className="text-gray-300 text-sm">{feature.description}</p>
                   {feature.status && (
-                    <div className="mt-4">
-                      <span className="px-3 py-1 bg-[#4B0082]/20 text-[#9370DB] rounded-full text-sm font-medium">
-                        {feature.status}
-                      </span>
-                    </div>
+                    <span className="mt-4 text-xs font-bold px-3 py-1 rounded-full bg-[#8B0000]/30 text-[#FFB90F]">
+                      {feature.status.toUpperCase()}
+                    </span>
                   )}
                 </div>
               );
@@ -344,90 +262,83 @@ export default function VesselTeaser() {
           </div>
         </div>
       </section>
+      {/* Core MVP Features Section End */}
 
-      {/* Freemium Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.freemium_section_title}</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
-              <h3 className="text-xl font-semibold mb-4 text-[#FFB90F]">Free Features</h3>
-              <p className="text-gray-300 mb-6">{content.freemium_description}</p>
-              <ul className="space-y-3 mb-6">
-                {content.freemium_features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="bg-gradient-to-br from-[#FFB90F]/10 to-[#FFA500]/10 backdrop-blur-sm rounded-xl p-6 border border-[#FFB90F]/20">
-              <h3 className="text-xl font-semibold mb-4 text-[#FFB90F]">Premium Upgrade</h3>
-              <p className="text-gray-300 mb-6">{content.premium_upgrade_text}</p>
-              <div className="space-y-3">
-                <div className="flex items-center text-gray-300">
-                  <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
-                  Unlimited theory boards
-                </div>
-                <div className="flex items-center text-gray-300">
-                  <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
-                  Full cultural library access
-                </div>
-                <div className="flex items-center text-gray-300">
-                  <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
-                  Advanced collaboration tools
-                </div>
-                <div className="flex items-center text-gray-300">
-                  <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
-                  Priority community features
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-2xl mx-auto text-center">
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
-            <div className="flex items-center justify-center mb-4">
-              <Mail className="w-8 h-8 text-[#FFB90F] mr-3" />
-              <h2 className="text-2xl font-bold">{content.cta_early_access_title}</h2>
-            </div>
-            <p className="text-gray-300 mb-4">{content.cta_early_access_description}</p>
-            <p className="text-sm text-gray-400 mb-6">{content.feature_voting_description}</p>
-
-            {/* Tally Form */}
-            {renderTallyForm(content.tally_form_id, 'vessel-early-access-form')}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="px-6 py-12 border-t border-white/10">
+      {/* Roadmap Features Section Start */}
+      <section className="py-16 px-6">
         <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
-                <div className="w-2 h-2 bg-[#FFB90F] rounded-full"></div>
-              </div>
-              <span className="text-xl font-bold tracking-wider">{content.footer_logo_text}</span>
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-white">{content.roadmap_features_title}</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {content.roadmap_features?.map((feature) => { // Added optional chaining
+              const IconComponent = getIconComponent(feature.icon_name);
+              return (
+                <div key={feature.id} className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 flex flex-col items-center text-center">
+                  <div className="w-16 h-16 bg-gray-700/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    {IconComponent && <IconComponent className="w-8 h-8 text-gray-400" />}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-white">{feature.title}</h3>
+                  <p className="text-gray-300 text-sm">{feature.description}</p>
+                  {feature.timeline && (
+                    <span className="mt-4 text-xs font-bold px-3 py-1 rounded-full bg-gray-600/30 text-gray-300">
+                      {feature.timeline}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+      {/* Roadmap Features Section End */}
+
+      {/* CTA Early Access - MailerLite Form Section Start */}
+      <section className="py-16 px-6">
+        <div className="max-w-lg mx-auto bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 text-center">
+          <h2 className="text-2xl font-bold mb-4 text-white">{content.cta_early_access_title}</h2>
+          <p className="text-gray-300 mb-6">{content.cta_early_access_description}</p>
+
+          {/* MailerLite Form Embed for Vessel Page */}
+          {renderMailerLiteForm(content.mailerlite_form_id, 'mlb2-28314007')}
+
+        </div>
+      </section>
+      {/* CTA Early Access - MailerLite Form Section End */}
+
+      {/* Footer Section Start */}
+      <footer className="py-8 border-t border-white/10 px-6">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className="flex items-center justify-center space-x-3 mb-4">
+            <div className="w-6 h-6 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
+              <div className="w-1.5 h-1.5 bg-[#FFB90F] rounded-full"></div>
             </div>
-            <div className="text-center md:text-right">
-              <p className="text-sm text-gray-400 mb-2">{content.footer_copyright_text}</p>
-              <div className="flex flex-wrap justify-center md:justify-end space-x-4">
-                {content.footer_links.map((link, index) => (
-                  <a key={index} href={link.url} className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
-                    {link.text}
-                  </a>
-                ))}
-              </div>
-            </div>
+            <span className="text-lg font-bold tracking-wider">{content.footer_logo_text}</span>
+          </div>
+          <p className="text-gray-400 text-sm mb-4">{content.footer_copyright_text}</p>
+          <div className="flex justify-center space-x-6 text-sm">
+            {content.footer_links?.map((link, index) => ( // Added optional chaining
+              <a key={index} href={link.url} className="text-gray-400 hover:text-[#FFB90F] transition-colors">
+                {link.text}
+              </a>
+            ))}
           </div>
         </div>
       </footer>
+      {/* Footer Section End */}
+
+      {/* Back to Top Button Start */}
+      {showBackToTop && (
+        <div className="fixed bottom-6 right-6 z-50">
+          <Button
+            onClick={scrollToTop}
+            className="bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+            size="icon"
+          >
+            <ChevronUp className="w-5 h-5" />
+          </Button>
+        </div>
+      )}
+      {/* Back to Top Button End */}
     </div>
+    // Main container div for the entire page End
   );
 }
