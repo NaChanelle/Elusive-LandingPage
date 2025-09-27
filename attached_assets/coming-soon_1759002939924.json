@@ -1,0 +1,134 @@
+{
+  "event_updates_button_text": "Event Updates",
+  "gallery_images": [
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Mystery Events Preview",
+      "image": "/assets/uploads/elusive-full-5-.png"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Community Gathering",
+      "image": "/assets/uploads/elusive-name-3-.png"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Cultural Investigation",
+      "image": "/assets/uploads/elusive-name-12-.png"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Story Creation Workshop",
+      "image": "/assets/uploads/elusive-symbol-transparentbg-7-.png"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Investigation Tools",
+      "image": "/assets/uploads/elusive-full-3-.png"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Community Discussion",
+      "image": "/assets/uploads/elusive-name-15-.png"
+    }
+  ],
+  "email_share_body": "Check out Elusive Origin - an immersive cultural investigation platform",
+  "countdown_minutes_label": "Minutes",
+  "rsvp_countdown_title": "RSVPs to Launch",
+  "countdown_seconds_label": "Seconds",
+  "countdown_type": "rsvp_based",
+  "email_share_subject": "The Investigation Begins",
+  "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
+  "mailerlite_form_id": "your-mailerlite-form-id",
+  "countdown_title": "Event Launches In",
+  "target_rsvps": 75,
+  "testimonials_title": "What Is Elusive?",
+  "header_logo_text": "ELUSIVE",
+  "current_rsvps": 0,
+  "testimonials": [
+    {
+      "quote": "#Buglary30 was so fun! It's exactly the type of event I like to attend these days. I love celebrating birthdays AND participating in a little mystery and drama!",
+      "initials": "C.J.",
+      "name": "Candice Johnson",
+      "role": ""
+    },
+    {
+      "quote": "Ahhhhh! I’m too excited",
+      "initials": "K.G.",
+      "name": "Kershawn Gibbs",
+      "role": ""
+    }
+  ],
+  "event_updates_link": "/platform",
+  "footer_links": [
+    {
+      "text": "Contact",
+      "url": "/contact"
+    },
+    {
+      "text": "Privacy",
+      "url": "/privacy"
+    },
+    {
+      "text": "Terms",
+      "url": "/terms"
+    }
+  ],
+  "faq_section_title": "Frequently Asked Questions",
+  "countdown_hours_label": "Hours",
+  "faq_items": [
+    {
+      "question": " What is Elusive, exactly?",
+      "answer": "Imagine a world where mysteries don’t just entertain but also spark conversations about identity and truth.  Elusive is a hybrid mystery-meets-meaning storyworld that combines immersive films, live events, and interactive tools to create premium, multi-city experiences where your decisions and theories help uncover deeper narratives. Think \"Black Mirror\" meets scavenger hunt meets cultural archive.."
+    },
+    {
+      "question": "What makes Elusive different?",
+      "answer": "We create authentic cultural experiences that celebrate heritage through interactive storytelling, not just entertainment or aesthetics."
+    },
+    {
+      "question": "Is this a game or a show?",
+      "answer": "\\\nBoth—and neither. It’s a living storyworld. You can watch it unfold, participate in real-world mysteries, or join the Investigator Circle to influence what happens next"
+    },
+    {
+      "question": "When does it launch?",
+      "answer": "Our first chapter begins **August**. Early Investigators will get sneak previews, puzzle drops, and priority invites before the public."
+    },
+    {
+      "question": " Do I need to be in a certain city to participate?",
+      "answer": "No! While we host IRL events, much of Elusive lives online. Investigators from anywhere in the world can explore, decode, and contribute."
+    },
+    {
+      "question": "Is it free?",
+      "answer": " Yes for a limited time to explore, decode, and join the Circle. Paid experiences, mystery boxes, and limited event tickets may be available later for those who want to dive deeper."
+    }
+  ],
+  "signup_section_title": "Join the First Wave of Truth-Seekers",
+  "hero_description": "Elusive is an immersive storytelling experience and cultural mystery platform where truth is pieced together by those brave enough to look closer. \n\nNot everything lost should stay hidden.",
+  "twitter_share_text": "The Investigation Begins - Join the Elusive Origin community",
+  "main_headline_part1": "Mystery",
+  "vessel_preview_button_text": "Vessel Preview",
+  "vessel_preview_link": "/vessel",
+  "main_headline_part2": "Worth",
+  "why_join_title": "Why Join the Investigation?",
+  "countdown_days_label": "Days",
+  "rsvp_progress_text": "Join the investigation when we reach our goal",
+  "why_join_features": [
+    {
+      "title": "Insider Access",
+      "description": "Be the first to decode clues, test prototypes, and attend secret events."
+    },
+    {
+      "title": "Influence the Story",
+      "description": "Your theories and choices help shape how the narrative unfolds across digital and live chapters."
+    },
+    {
+      "title": "Exclusive Rewards",
+      "description": "Get early access to drops, surprise merch, and first-in-line access to limited events and missions."
+    }
+  ],
+  "main_headline_part3": "Remembering",
+  "signup_section_description": "Get early access, behind-the-scenes clues, and a first look at the story before it unfolds.",
+  "share_page_text": "Share this page",
+  "footer_logo_text": "ELUSIVE",
+  "signup_form_footer_text": "No spam, just mysteries. Unsubscribe at any time."
+}

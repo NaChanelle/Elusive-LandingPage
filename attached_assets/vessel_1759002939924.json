@@ -1,0 +1,98 @@
+{
+  "vessel_intro_description": "Whether you're attending in person or decoding from afar, the Vessel App helps you stay immersed, connected, and informed. Track theories, collect evidence, and uncover exclusive story drops—all in one place.\n\nLaunching Fall 2025 on mobile and desktop.",
+  "roadmap_features": [
+    {
+      "id": "live-events",
+      "title": "Live Event Integration",
+      "description": "Real-time participation in cultural investigation events.",
+      "icon_name": "Calendar",
+      "status": "Roadmap",
+      "timeline": "Late 2025"
+    },
+    {
+      "id": "creator-empowerment",
+      "title": "Creator Empowerment",
+      "description": "Provide tools and community for original cultural storytelling",
+      "icon_name": "Globe",
+      "status": "Roadmap",
+      "timeline": "2026"
+    }
+  ],
+  "tally_form_id": "your-tally-form-id",
+  "cta_early_access_title": "Join the Waitlist",
+  "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
+  "cta_early_access_description": "Be the first to test the app, submit your own theories, and access hidden archives before the public launch.",
+  "feature_voting_description": "Which features would you like to see prioritized?",
+  "platform_button_text": "Home",
+  "mvp_features_title": "Core Features",
+  "discover_features_button_text": "Discover Features",
+  "header_logo_text": "ELUSIVE",
+  "hero_background_image": null,
+  "hero_main_headline_part1": "Vessel",
+  "footer_links": [
+    {
+      "text": "Contact",
+      "url": "/contact"
+    },
+    {
+      "text": "Privacy",
+      "url": "/privacy"
+    },
+    {
+      "text": "Terms",
+      "url": "/terms"
+    }
+  ],
+  "mvp_features": [
+    {
+      "id": "theory-boards",
+      "title": "Theory Boards",
+      "description": "Collaborative spaces for organizing clues and building theories with your investigation team.",
+      "icon_name": "Eye",
+      "visualPlaceholder": "Interactive board interface",
+      "gradient": "bg-gradient-to-br from-[#FFB90F] to-[#FFA500]",
+      "status": "MVP"
+    },
+    {
+      "id": "cultural-library",
+      "title": "Cultural Code Library",
+      "description": "Curated collection of cultural references, symbols, and historical context for investigations.",
+      "icon_name": "BookOpen",
+      "visualPlaceholder": "Library interface",
+      "gradient": "bg-gradient-to-br from-[#8B0000] to-[#A52A2A]",
+      "status": "MVP"
+    },
+    {
+      "id": "community-hub",
+      "title": "Community Hub",
+      "description": "Connect with fellow investigators and share discoveries in real-time.",
+      "icon_name": "Users",
+      "visualPlaceholder": "Community interface",
+      "gradient": "bg-gradient-to-br from-[#2E8B57] to-[#3CB371]",
+      "status": "MVP"
+    },
+    {
+      "id": "story-studio",
+      "title": "Story Studio",
+      "description": "Tools for creating and sharing mystery narratives with community feedback.",
+      "icon_name": "Play",
+      "visualPlaceholder": "Studio interface",
+      "gradient": "bg-gradient-to-br from-[#4B0082] to-[#6A0DAD]",
+      "status": "MVP"
+    }
+  ],
+  "hero_main_headline_part2": "App",
+  "hero_sub_headline": "Introducing the Vessel: Elusive’s digital storytelling companion app.",
+  "premium_upgrade_text": "Upgrade for commentary features, advanced tools, and exclusive content.",
+  "roadmap_features_title": "Future Features",
+  "vessel_intro_title_part1": "Your phone is no longer just a device—",
+  "vessel_intro_title_part2": "it’s a key.",
+  "freemium_features": [
+    "Basic theory board (view-only)",
+    "Cultural library access (view-only)",
+    "Community discussions"
+  ],
+  "footer_logo_text": "ELUSIVE",
+  "freemium_description": "Start investigating for free with essential tools, then upgrade for advanced features.",
+  "freemium_section_title": "Vessel Freemium Features"
+}
