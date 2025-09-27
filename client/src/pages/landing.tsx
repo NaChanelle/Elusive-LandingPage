@@ -80,10 +80,8 @@ interface LandingContent {
 
 declare global {
   interface Window {
-    ml_webform_success_28257750?: () => void;
-    ml_jQuery?: any;
-    jQuery?: any;
-    Tally?: any;
+    mailerlite?: any;
+    MailerLiteObject?: any;
   }
 }
 
@@ -132,55 +130,24 @@ export default function Landing() {
     return () => clearInterval(interval);
   }, [content?.carousel_images]);
 
-  // Script injection for external services
+  // MailerLite script injection
   useEffect(() => {
-    // Inject MailerLite script
-    const mailerliteScriptId = 'mailerlite-webforms-script';
-    if (!document.getElementById(mailerliteScriptId)) {
-      const script = document.createElement('script');
-      script.id = mailerliteScriptId;
-      script.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
-      script.async = true;
-      document.head.appendChild(script);
-    }
-
-    // Define MailerLite success callback globally
-    window.ml_webform_success_28257750 = function() {
-      const $ = window.ml_jQuery || window.jQuery;
-      if ($) {
-        $('.ml-subscribe-form-28257750 .row-success').show();
-        $('.ml-subscribe-form-28257750 .row-form').hide();
+    if (content?.mailerlite_form1_id && content.mailerlite_form1_id !== 'your-mailerlite-form-id') {
+      if (!document.querySelector('script[src*="static.mailerlite.com"]')) {
+        const script = document.createElement('script');
+        script.src = 'https://static.mailerlite.com/js/universal.js';
+        script.async = true;
+        script.onload = () => {
+          // Initialize MailerLite forms after script loads
+          if (window.MailerLiteObject) {
+            window.MailerLiteObject.q = window.MailerLiteObject.q || [];
+            window.MailerLiteObject.q.push(['init', { embedMode: true }]);
+          }
+        };
+        document.head.appendChild(script);
       }
-    };
-
-    // Inject Tally script
-    const tallyScriptId = 'tally-embed-script';
-    if (!document.getElementById(tallyScriptId)) {
-      const script = document.createElement('script');
-      script.id = tallyScriptId;
-      script.src = 'https://tally.so/widgets/embed.js';
-      script.async = true;
-      script.onload = () => {
-        if (typeof window.Tally !== "undefined") {
-          window.Tally.loadEmbeds();
-        } else {
-          document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
-            e.src = e.dataset.tallySrc;
-          });
-        }
-      };
-      document.body.appendChild(script);
     }
-
-    return () => {
-      const mlScript = document.getElementById(mailerliteScriptId);
-      if (mlScript) mlScript.remove();
-      delete window.ml_webform_success_28257750;
-
-      const tallyScript = document.getElementById(tallyScriptId);
-      if (tallyScript) tallyScript.remove();
-    };
-  }, []);
+  }, [content?.mailerlite_form1_id]);
 
   // Mutation for form submission
   const reservationMutation = useMutation({
@@ -550,30 +517,70 @@ export default function Landing() {
               <p className="text-gray-300">{content.signup_form_description}</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input
-                type="text"
-                placeholder={content.firstname_placeholder}
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-              />
-              <Input
-                type="email"
-                placeholder={content.email_placeholder}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-              />
-              <Button
-                type="submit"
-                disabled={reservationMutation.isPending}
-                className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3"
-              >
-                {reservationMutation.isPending ? content.signup_button_pending_text : content.signup_button_text}
-              </Button>
-            </form>
+            <div className="mailerlite-form-wrapper">
+              <div 
+                className="ml-embedded" 
+                data-form={content.mailerlite_form1_id}
+              ></div>
+              <style dangerouslySetInnerHTML={{
+                __html: `
+                .mailerlite-form-wrapper .ml-form-embedContainer {
+                  background: transparent !important;
+                  border: none !important;
+                  width: 100% !important;
+                }
+                .mailerlite-form-wrapper .ml-form-embedWrapper {
+                  background: transparent !important;
+                  border: none !important;
+                  padding: 0 !important;
+                }
+                .mailerlite-form-wrapper .ml-form-embedBody {
+                  padding: 0 !important;
+                  background: transparent !important;
+                }
+                .mailerlite-form-wrapper input[type="email"],
+                .mailerlite-form-wrapper input[type="text"] {
+                  background: rgba(255, 255, 255, 0.1) !important;
+                  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                  border-radius: 8px !important;
+                  color: white !important;
+                  padding: 12px 16px !important;
+                  width: 100% !important;
+                  font-size: 14px !important;
+                  margin-bottom: 12px !important;
+                }
+                .mailerlite-form-wrapper input[type="email"]::placeholder,
+                .mailerlite-form-wrapper input[type="text"]::placeholder {
+                  color: rgba(255, 255, 255, 0.6) !important;
+                }
+                .mailerlite-form-wrapper input[type="email"]:focus,
+                .mailerlite-form-wrapper input[type="text"]:focus {
+                  border-color: #FFB90F !important;
+                  outline: none !important;
+                }
+                .mailerlite-form-wrapper button[type="submit"] {
+                  background: #FFB90F !important;
+                  color: black !important;
+                  border: none !important;
+                  border-radius: 8px !important;
+                  padding: 12px 24px !important;
+                  font-weight: 500 !important;
+                  width: 100% !important;
+                  cursor: pointer !important;
+                  transition: all 0.3s ease !important;
+                }
+                .mailerlite-form-wrapper button[type="submit"]:hover {
+                  background: rgba(255, 185, 15, 0.9) !important;
+                }
+                `
+              }} />
+              
+              {selectedTier && (
+                <div className="text-sm text-gray-300 text-center mt-2">
+                  Selected: <span className="text-[#FFB90F] font-medium">{selectedTier}</span>
+                </div>
+              )}
+            </div>
 
             <p className="text-xs text-gray-400 text-center mt-4">
               {content.signup_form_footer_text}

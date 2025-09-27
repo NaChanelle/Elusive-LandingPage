@@ -6,6 +6,16 @@ import SwipeableFeatureCarousel from "@/components/swipeable-feature-carousel";
 import { Button } from "@/components/ui/button";
 
 // Define TypeScript interfaces for vessel teaser content
+
+// FeatureCard interface matching SwipeableFeatureCarousel requirements
+interface FeatureCard {
+  id: string;
+  title: string;
+  description: string;
+  icon: React.ComponentType<any>;
+  visualPlaceholder: string;
+  gradient: string;
+}
 interface FooterLink {
   text: string;
   url: string;
@@ -52,7 +62,7 @@ interface VesselContent {
   cta_early_access_title: string;
   cta_early_access_description: string;
   feature_voting_description: string;
-  tally_form_id: string;
+  mailerlite_form_id: string;
   footer_logo_text: string;
   footer_copyright_text: string;
   footer_links: FooterLink[];
@@ -69,7 +79,8 @@ interface ProcessedRoadmapFeature extends RoadmapFeature {
 
 declare global {
   interface Window {
-    Tally?: any;
+    mailerlite?: any;
+    MailerLiteObject?: any;
   }
 }
 
@@ -109,40 +120,24 @@ export default function VesselTeaser() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Tally Script Injection
+  // MailerLite Script Injection
   useEffect(() => {
-    const tallyScriptId = 'tally-embed-script';
-    if (!document.getElementById(tallyScriptId)) {
-      const script = document.createElement('script');
-      script.id = tallyScriptId;
-      script.src = 'https://tally.so/widgets/embed.js';
-      script.async = true;
-      script.onload = () => {
-        if (typeof window.Tally !== "undefined") {
-          window.Tally.loadEmbeds();
-        } else {
-          // Fallback if Tally object isn't immediately available
-          document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
-            e.src = e.dataset.tallySrc;
-          });
-        }
-      };
-      script.onerror = () => {
-        // Fallback on error
-        document.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((e: any) => {
-          e.src = e.dataset.tallySrc;
-        });
-      };
-      document.body.appendChild(script);
-    }
-
-    return () => {
-      const existingScript = document.getElementById(tallyScriptId);
-      if (existingScript) {
-        existingScript.remove();
+    if (content?.mailerlite_form_id && content.mailerlite_form_id !== 'your-tally-form-id') {
+      if (!document.querySelector('script[src*="static.mailerlite.com"]')) {
+        const script = document.createElement('script');
+        script.src = 'https://static.mailerlite.com/js/universal.js';
+        script.async = true;
+        script.onload = () => {
+          // Initialize MailerLite forms after script loads
+          if (window.MailerLiteObject) {
+            window.MailerLiteObject.q = window.MailerLiteObject.q || [];
+            window.MailerLiteObject.q.push(['init', { embedMode: true }]);
+          }
+        };
+        document.head.appendChild(script);
       }
-    };
-  }, []);
+    }
+  }, [content?.mailerlite_form_id]);
 
   // State for fallback form
   const [email, setEmail] = useState('');
@@ -177,42 +172,66 @@ export default function VesselTeaser() {
     }
   };
 
-  // Helper to render Tally forms with proper typing
-  const renderTallyForm = (formId: string, embedDivId: string) => {
-    if (!formId || formId === 'your-tally-form-id') {
-      // Return a simple fallback form if no Tally ID is configured
-      return (
-        <form onSubmit={handleFallbackSubmit} className="space-y-4">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
-            required
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F]"
-          />
-          <Button 
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg"
-          >
-            {isSubmitting ? 'Joining...' : 'Get Early Access'}
-          </Button>
-        </form>
-      );
-    }
-
+  // Helper to render MailerLite forms with proper typing
+  const renderMailerLiteForm = (formId: string, embedDivId: string) => {
     return (
-      <div id={embedDivId}>
-        <iframe
-          data-tally-src={`https://tally.so/r/${formId}?transparentBackground=1`}
-          width="100%"
-          height="auto"
-          frameBorder="0"
-          scrolling="no"
-          className="rounded-lg"
-          title="Tally Form"
-        />
+      <div id={embedDivId} className="mailerlite-form-wrapper">
+        <div 
+          className="ml-embedded" 
+          data-form={formId}
+        ></div>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+          .mailerlite-form-wrapper .ml-form-embedContainer {
+            background: transparent !important;
+            border: none !important;
+            width: 100% !important;
+          }
+          .mailerlite-form-wrapper .ml-form-embedWrapper {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+          }
+          .mailerlite-form-wrapper .ml-form-embedBody {
+            padding: 0 !important;
+            background: transparent !important;
+          }
+          .mailerlite-form-wrapper input[type="email"],
+          .mailerlite-form-wrapper input[type="text"] {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 8px !important;
+            color: white !important;
+            padding: 12px 16px !important;
+            width: 100% !important;
+            font-size: 14px !important;
+            margin-bottom: 12px !important;
+          }
+          .mailerlite-form-wrapper input[type="email"]::placeholder,
+          .mailerlite-form-wrapper input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
+          }
+          .mailerlite-form-wrapper input[type="email"]:focus,
+          .mailerlite-form-wrapper input[type="text"]:focus {
+            border-color: #FFB90F !important;
+            outline: none !important;
+          }
+          .mailerlite-form-wrapper button[type="submit"] {
+            background: #FFB90F !important;
+            color: black !important;
+            border: none !important;
+            border-radius: 8px !important;
+            padding: 12px 24px !important;
+            font-weight: 500 !important;
+            width: 100% !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+          }
+          .mailerlite-form-wrapper button[type="submit"]:hover {
+            background: rgba(255, 185, 15, 0.9) !important;
+          }
+          `
+        }} />
       </div>
     );
   };
@@ -259,9 +278,11 @@ export default function VesselTeaser() {
     );
   }
 
-  // Process features with icons
-  const mvpFeatures: ProcessedFeature[] = content.mvp_features.map(feature => ({
-    ...feature,
+  // Process features with icons and ensure all required FeatureCard properties
+  const mvpFeatures: FeatureCard[] = content.mvp_features.map(feature => ({
+    id: feature.id,
+    title: feature.title,
+    description: feature.description,
     visualPlaceholder: feature.visualPlaceholder || 'Feature preview',
     gradient: feature.gradient || 'bg-gradient-to-br from-[#FFB90F] to-[#FFA500]',
     icon: getIconComponent(feature.icon_name)
@@ -439,8 +460,8 @@ export default function VesselTeaser() {
             <p className="text-gray-300 mb-4">{content.cta_early_access_description}</p>
             <p className="text-sm text-gray-400 mb-6">{content.feature_voting_description}</p>
 
-            {/* Tally Form */}
-            {renderTallyForm(content.tally_form_id, 'vessel-early-access-form')}
+            {/* MailerLite Form */}
+            {renderMailerLiteForm(content.mailerlite_form_id, 'vessel-early-access-form')}
           </div>
         </div>
       </section>

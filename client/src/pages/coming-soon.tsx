@@ -78,6 +78,7 @@ interface ComingSoonContent {
 declare global {
   interface Window {
     mailerlite?: any;
+    MailerLiteObject?: any;
   }
 }
 
@@ -250,52 +251,84 @@ export default function ComingSoon() {
     }
   };
 
-  // Enhanced form with RSVP tracking and investigation choice
+  // MailerLite embed form with custom styling
   const renderEnhancedMailerLiteForm = () => {
     return (
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <input 
-            type="text"
-            placeholder="First name (optional)"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#FFB90F]"
-          />
-          <input 
-            type="email" 
-            placeholder="Email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-[#FFB90F]"
-          />
-        </div>
-        
-        <button 
-          type="submit"
-          disabled={isSubmitting || !email}
-          className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 disabled:opacity-50 disabled:cursor-not-allowed text-black font-medium py-3 rounded-lg transition-colors"
-        >
-          {isSubmitting ? 'Joining...' : 'Join the Investigation'}
-        </button>
-        
-        {message && (
-          <p className={`text-sm text-center ${message.includes('Success') ? 'text-green-400' : 'text-red-400'}`}>
-            {message}
-          </p>
-        )}
-      </form>
+      <div className="mailerlite-form-wrapper">
+        <div 
+          className="ml-embedded" 
+          data-form={content?.mailerlite_form_id}
+        ></div>
+        <style dangerouslySetInnerHTML={{
+          __html: `
+          .mailerlite-form-wrapper .ml-form-embedContainer {
+            background: transparent !important;
+            border: none !important;
+            width: 100% !important;
+          }
+          .mailerlite-form-wrapper .ml-form-embedWrapper {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+          }
+          .mailerlite-form-wrapper .ml-form-embedBody {
+            padding: 0 !important;
+            background: transparent !important;
+          }
+          .mailerlite-form-wrapper input[type="email"],
+          .mailerlite-form-wrapper input[type="text"] {
+            background: rgba(255, 255, 255, 0.1) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 8px !important;
+            color: white !important;
+            padding: 12px 16px !important;
+            width: 100% !important;
+            font-size: 14px !important;
+            margin-bottom: 12px !important;
+          }
+          .mailerlite-form-wrapper input[type="email"]::placeholder,
+          .mailerlite-form-wrapper input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.6) !important;
+          }
+          .mailerlite-form-wrapper input[type="email"]:focus,
+          .mailerlite-form-wrapper input[type="text"]:focus {
+            border-color: #FFB90F !important;
+            outline: none !important;
+          }
+          .mailerlite-form-wrapper button[type="submit"] {
+            background: #FFB90F !important;
+            color: black !important;
+            border: none !important;
+            border-radius: 8px !important;
+            padding: 12px 24px !important;
+            font-weight: 500 !important;
+            width: 100% !important;
+            cursor: pointer !important;
+            transition: all 0.3s ease !important;
+          }
+          .mailerlite-form-wrapper button[type="submit"]:hover {
+            background: rgba(255, 185, 15, 0.9) !important;
+          }
+          `
+        }} />
+      </div>
     );
   };
 
   // MailerLite script loading effect
   useEffect(() => {
     if (content?.mailerlite_form_id && content.mailerlite_form_id !== 'your-mailerlite-form-id') {
-      if (!window.mailerlite && !document.querySelector('script[src*="mailerlite"]')) {
+      if (!document.querySelector('script[src*="static.mailerlite.com"]')) {
         const script = document.createElement('script');
         script.src = 'https://static.mailerlite.com/js/universal.js';
         script.async = true;
+        script.onload = () => {
+          // Initialize MailerLite forms after script loads
+          if (window.MailerLiteObject) {
+            window.MailerLiteObject.q = window.MailerLiteObject.q || [];
+            window.MailerLiteObject.q.push(['init', { embedMode: true }]);
+          }
+        };
         document.head.appendChild(script);
       }
     }
