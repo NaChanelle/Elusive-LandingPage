@@ -144,21 +144,61 @@ export default function VesselTeaser() {
     };
   }, []);
 
+  // State for fallback form
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Handle fallback form submission
+  const handleFallbackSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || isSubmitting) return;
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        alert('Thank you! You\'ve been added to the waitlist.');
+        setEmail('');
+      } else {
+        alert('Error joining waitlist. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting to waitlist:', error);
+      alert('Error joining waitlist. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   // Helper to render Tally forms with proper typing
   const renderTallyForm = (formId: string, embedDivId: string) => {
     if (!formId || formId === 'your-tally-form-id') {
       // Return a simple fallback form if no Tally ID is configured
       return (
-        <div className="space-y-4">
+        <form onSubmit={handleFallbackSubmit} className="space-y-4">
           <input
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
+            required
             className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F]"
           />
-          <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg">
-            Get Early Access
+          <Button 
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg"
+          >
+            {isSubmitting ? 'Joining...' : 'Get Early Access'}
           </Button>
-        </div>
+        </form>
       );
     }
 
@@ -222,6 +262,7 @@ export default function VesselTeaser() {
   // Process features with icons
   const mvpFeatures: ProcessedFeature[] = content.mvp_features.map(feature => ({
     ...feature,
+    visualPlaceholder: feature.visualPlaceholder || '',
     icon: getIconComponent(feature.icon_name),
     visualPlaceholder: feature.visualPlaceholder || 'Feature preview',
     gradient: feature.gradient || 'bg-gradient-to-br from-[#FFB90F] to-[#FFA500]'
