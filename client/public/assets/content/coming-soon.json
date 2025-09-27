@@ -3,33 +3,33 @@
   "gallery_images": [
     {
       "url": "/api/placeholder/300/200",
-      "alt": "Mystery Events Preview",
-      "image": "/assets/uploads/elusive-full-5-.png"
+      "alt": "Community Gathering",
+      "image": "/assets/uploads/dsc02323.jpg"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Mystery Investigation Setup",
+      "image": "/assets/uploads/dsc02477.jpg"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Storytelling Session",
+      "image": "/assets/uploads/dsc02299.jpg"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Investigation Tools & Mobile App",
+      "image": "/assets/uploads/dsc02478.jpg"
+    },
+    {
+      "url": "/api/placeholder/300/200",
+      "alt": "Event Documentation",
+      "image": "/assets/uploads/dsc02513.jpg"
     },
     {
       "url": "/api/placeholder/300/200",
       "alt": "Community Gathering",
-      "image": "/assets/uploads/elusive-name-3-.png"
-    },
-    {
-      "url": "/api/placeholder/300/200",
-      "alt": "Cultural Investigation",
-      "image": "/assets/uploads/elusive-name-12-.png"
-    },
-    {
-      "url": "/api/placeholder/300/200",
-      "alt": "Story Creation Workshop",
-      "image": "/assets/uploads/elusive-symbol-transparentbg-7-.png"
-    },
-    {
-      "url": "/api/placeholder/300/200",
-      "alt": "Investigation Tools",
-      "image": "/assets/uploads/elusive-full-3-.png"
-    },
-    {
-      "url": "/api/placeholder/300/200",
-      "alt": "Community Discussion",
-      "image": "/assets/uploads/elusive-name-15-.png"
+      "image": "/assets/uploads/dsc02323.jpg"
     }
   ],
   "email_share_body": "Check out Elusive Origin - an immersive cultural investigation platform",

@@ -14,6 +14,7 @@ interface FooterLink {
 interface GalleryImage {
   url: string;
   alt: string;
+  image?: string;
 }
 
 interface Testimonial {
@@ -521,9 +522,16 @@ export default function ComingSoon() {
             {[...content.gallery_images, ...content.gallery_images].map((image, i) => (
               <div key={i} className="min-w-[300px] h-[200px] bg-white/5 backdrop-blur-sm rounded-lg border border-white/10 overflow-hidden">
                 <img 
-                  src={image.url} 
+                  src={image.image || image.url} 
                   alt={image.alt}
                   className="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-300"
+                  onError={(e) => {
+                    // Fallback to placeholder if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    if (target.src !== image.url) {
+                      target.src = image.url;
+                    }
+                  }}
                 />
               </div>
             ))}

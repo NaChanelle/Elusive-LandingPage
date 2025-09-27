@@ -216,9 +216,9 @@ export default function Landing() {
 
     const reservationData: InsertReservation = {
       email,
-      firstName: firstName || null,
+      firstName: firstName || undefined,
       investigationInterests: selectedTier ? [selectedTier] : [],
-      preferredRole: selectedTier || null,
+      preferredRole: selectedTier || undefined,
     };
 
     reservationMutation.mutate(reservationData);
