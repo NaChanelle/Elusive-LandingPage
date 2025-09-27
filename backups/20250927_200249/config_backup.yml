@@ -1,0 +1,358 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Global settings to make fields optional by default  
+publish_mode: simple
+slug_encoding: "ascii"
+
+media_folder: "client/public/assets/uploads" # Where images uploaded via CMS will be stored
+public_folder: "/assets/uploads" # Public path to uploaded images
+
+collections:
+  - name: "pages" # A label for the collection
+    label: "Website Pages" # How it appears in the CMS UI
+    files:
+      - label: "1. Coming Soon / Homepage (/) "
+        name: "coming_soon"
+        file: "client/public/assets/content/coming-soon.json"
+        fields:
+          - label: "Header Logo Text"
+            name: "header_logo_text"
+            widget: "string"
+            required: false
+          - label: "Main Headline Part 1"
+            name: "main_headline_part1"
+            widget: "string"
+            required: false
+          - label: "Main Headline Part 2"
+            name: "main_headline_part2"
+            widget: "string"
+            required: false
+          - label: "Main Headline Part 3"
+            name: "main_headline_part3"
+            widget: "string"
+            required: false
+          - label: "Hero Description"
+            name: "hero_description"
+            widget: "text"
+            required: false
+          - label: "Event Updates Button Text"
+            name: "event_updates_button_text"
+            widget: "string"
+            required: false
+          - label: "Event Updates Link"
+            name: "event_updates_link"
+            widget: "string"
+            required: false
+          - label: "Vessel Preview Button Text"
+            name: "vessel_preview_button_text"
+            widget: "string"
+            required: false
+          - label: "Vessel Preview Link"
+            name: "vessel_preview_link"
+            widget: "string"
+            required: false
+          - label: "Countdown Title"
+            name: "countdown_title"
+            widget: "string"
+            required: false
+          - label: "Countdown Date"
+            name: "countdown_date"
+            widget: "datetime"
+            required: false
+
+      - label: "2. Landing / Event Platform (/platform)"
+        name: "landing"
+        file: "client/public/assets/content/landing.json"
+        fields:
+          - label: "Header Title"
+            name: "header_title"
+            widget: "string"
+            required: false
+          - label: "Back to Coming Soon Link Text"
+            name: "back_to_coming_soon_text"
+            widget: "string"
+            required: false
+          - label: "Hero Main Headline Part 1"
+            name: "hero_main_headline_part1"
+            widget: "string"
+            required: false
+          - label: "Hero Main Headline Part 2"
+            name: "hero_main_headline_part2"
+            widget: "string"
+            required: false
+          - label: "Hero Sub Headline"
+            name: "hero_sub_headline"
+            widget: "string"
+            required: false
+          - label: "Event Date Text"
+            name: "event_date_text"
+            widget: "string"
+            required: false
+          - label: "Event Launch Description"
+            name: "event_launch_description"
+            widget: "text"
+            required: false
+          - label: "Current RSVPs"
+            name: "current_rsvps"
+            widget: "number"
+            required: false
+            default: 0
+          - label: "Target RSVPs"
+            name: "target_rsvps"
+            widget: "number"
+            required: false
+            default: 75
+          - label: "Value Proposition Text"
+            name: "value_proposition_text"
+            widget: "markdown"
+            required: false
+          - label: "Reserve Spot Button Text"
+            name: "reserve_spot_button_text"
+            widget: "string"
+            required: false
+          - label: "Learn More Button Text"
+            name: "learn_more_button_text"
+            widget: "string"
+            required: false
+          - label: "Image Carousel Title"
+            name: "image_carousel_title"
+            widget: "string"
+            required: false
+          - label: "Carousel Images"
+            name: "carousel_images"
+            widget: "list"
+            required: false
+            fields:
+              - label: "ID"
+                name: "id"
+                widget: "number"
+                required: false
+              - label: "Image Upload (1200x600px recommended)"
+                name: "image"
+                widget: "image"
+                required: false
+                hint: "Upload carousel image - recommended size: 1200x600 pixels for optimal display"
+              - label: "Alt Text"
+                name: "alt"
+                widget: "string"
+                required: false
+              - label: "Placeholder Description"
+                name: "placeholder"
+                widget: "string"
+                required: false
+          - label: "What's Coming Next Title"
+            name: "whats_coming_next_title"
+            widget: "string"
+            required: false
+          - label: "Feature 1 Title"
+            name: "feature1_title"
+            widget: "string"
+            required: false
+          - label: "Feature 1 Description"
+            name: "feature1_description"
+            widget: "text"
+            required: false
+          - label: "Feature 2 Title"
+            name: "feature2_title"
+            widget: "string"
+            required: false
+          - label: "Feature 2 Description"
+            name: "feature2_description"
+            widget: "text"
+            required: false
+          - label: "Feature 3 Title"
+            name: "feature3_title"
+            widget: "string"
+            required: false
+          - label: "Feature 3 Description"
+            name: "feature3_description"
+            widget: "text"
+            required: false
+          - label: "Access Tiers Title"
+            name: "access_tiers_title"
+            widget: "string"
+            required: false
+          - label: "Detective Tier Title"
+            name: "detective_tier_title"
+            widget: "string"
+            required: false
+          - label: "Detective Tier Price"
+            name: "detective_tier_price"
+            widget: "string"
+            required: false
+          - label: "Detective Tier Description"
+            name: "detective_tier_description"
+            widget: "text"
+            required: false
+          - label: "Detective Tier Features"
+            name: "detective_tier_features"
+            widget: "list"
+            required: false
+            fields:
+              - label: "Feature"
+                name: "feature"
+                widget: "string"
+                required: false
+          - label: "Curator Tier Title"
+            name: "curator_tier_title"
+            widget: "string"
+            required: false
+          - label: "Curator Tier Price"
+            name: "curator_tier_price"
+            widget: "string"
+            required: false
+          - label: "Curator Tier Tag"
+            name: "curator_tier_tag"
+            widget: "string"
+            required: false
+          - label: "Curator Tier Description"
+            name: "curator_tier_description"
+            widget: "text"
+            required: false
+          - label: "Curator Tier Features"
+            name: "curator_tier_features"
+            widget: "list"
+            required: false
+            fields:
+              - label: "Feature"
+                name: "feature"
+                widget: "string"
+                required: false
+          - label: "Accomplice Tier Title"
+            name: "accomplice_tier_title"
+            widget: "string"
+            required: false
+          - label: "Accomplice Tier Price"
+            name: "accomplice_tier_price"
+            widget: "string"
+            required: false
+          - label: "Accomplice Tier Description"
+            name: "accomplice_tier_description"
+            widget: "text"
+            required: false
+          - label: "Accomplice Tier Features"
+            name: "accomplice_tier_features"
+            widget: "list"
+            required: false
+            fields:
+              - label: "Feature"
+                name: "feature"
+                widget: "string"
+                required: false
+          - label: "Signup Form Title"
+            name: "signup_form_title"
+            widget: "string"
+            required: false
+          - label: "Signup Form Description"
+            name: "signup_form_description"
+            widget: "text"
+            required: false
+          - label: "First Name Placeholder"
+            name: "firstname_placeholder"
+            widget: "string"
+            required: false
+          - label: "Email Placeholder"
+            name: "email_placeholder"
+            widget: "string"
+            required: false
+          - label: "Signup Button Text"
+            name: "signup_button_text"
+            widget: "string"
+            required: false
+          - label: "Signup Form Footer Text"
+            name: "signup_form_footer_text"
+            widget: "text"
+            required: false
+          - label: "FAQ Title"
+            name: "faq_title"
+            widget: "string"
+            required: false
+          - label: "FAQ Items"
+            name: "faq_items"
+            widget: "list"
+            required: false
+            fields:
+              - label: "Question"
+                name: "question"
+                widget: "string"
+                required: false
+              - label: "Answer"
+                name: "answer"
+                widget: "markdown"
+                required: false
+          - label: "Footer Copyright Text"
+            name: "footer_copyright_text"
+            widget: "string"
+            required: false
+          - label: "Contact Us Link Text"
+            name: "contact_us_link_text"
+            widget: "string"
+            required: false
+
+      - label: "3. Vessel Teaser (/vessel)"
+        name: "vessel"
+        file: "client/public/assets/content/vessel.json"
+        fields:
+          - label: "Header Title"
+            name: "header_title"
+            widget: "string"
+            required: false
+          - label: "Main Headline"
+            name: "main_headline"
+            widget: "string"
+            required: false
+          - label: "Sub Headline"
+            name: "sub_headline"
+            widget: "string"
+            required: false
+          - label: "Hero Description"
+            name: "hero_description"
+            widget: "text"
+            required: false
+          - label: "App Preview Title"
+            name: "app_preview_title"
+            widget: "string"
+            required: false
+          - label: "Features Title"
+            name: "features_title"
+            widget: "string"
+            required: false
+          - label: "Feature Cards"
+            name: "feature_cards"
+            widget: "list"
+            required: false
+            fields:
+              - label: "Title"
+                name: "title"
+                widget: "string"
+                required: false
+              - label: "Description"
+                name: "description"
+                widget: "text"
+                required: false
+              - label: "Icon"
+                name: "icon"
+                widget: "string"
+                required: false
+          - label: "Early Access Title"
+            name: "early_access_title"
+            widget: "string"
+            required: false
+          - label: "Early Access Description"
+            name: "early_access_description"
+            widget: "text"
+            required: false
+          - label: "Name Placeholder"
+            name: "name_placeholder"
+            widget: "string"
+            required: false
+          - label: "Email Placeholder"
+            name: "email_placeholder"
+            widget: "string"
+            required: false
+          - label: "Submit Button Text"
+            name: "submit_button_text"
+            widget: "string"
+            required: false
