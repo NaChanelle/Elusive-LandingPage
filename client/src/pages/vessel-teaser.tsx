@@ -262,10 +262,9 @@ export default function VesselTeaser() {
   // Process features with icons
   const mvpFeatures: ProcessedFeature[] = content.mvp_features.map(feature => ({
     ...feature,
-    visualPlaceholder: feature.visualPlaceholder || '',
-    icon: getIconComponent(feature.icon_name),
     visualPlaceholder: feature.visualPlaceholder || 'Feature preview',
-    gradient: feature.gradient || 'bg-gradient-to-br from-[#FFB90F] to-[#FFA500]'
+    gradient: feature.gradient || 'bg-gradient-to-br from-[#FFB90F] to-[#FFA500]',
+    icon: getIconComponent(feature.icon_name)
   }));
 
   const roadmapFeatures: ProcessedRoadmapFeature[] = content.roadmap_features.map(feature => ({
