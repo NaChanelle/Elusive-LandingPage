@@ -340,21 +340,32 @@ export default function ComingSoon() {
     );
   };
 
-  // MailerLite initialization effect
+  // MailerLite debugging and fallback initialization
   useEffect(() => {
-    // Wait a bit for the DOM to be ready and script to load
-    const timer = setTimeout(() => {
-      if (window.ml && typeof window.ml === 'function') {
-        try {
-          // Initialize the form after ensuring the script is loaded
-          window.ml('embedForm', '4f8mQz', '#ml-embed-home');
-        } catch (error) {
-          console.log('MailerLite initialization pending...');
+    const checkFormLoading = () => {
+      console.log('Checking MailerLite form status...');
+      console.log('Window.ml available:', !!window.ml);
+      console.log('MailerLiteObject available:', !!window.MailerLiteObject);
+      
+      const formContainer = document.querySelector('.ml-embedded[data-form="4f8mQz"]');
+      if (formContainer) {
+        console.log('Form container found:', formContainer);
+        console.log('Container innerHTML:', formContainer.innerHTML);
+        console.log('Container children count:', formContainer.children.length);
+        
+        // If container is empty after 5 seconds, something is wrong
+        if (formContainer.innerHTML.trim() === '') {
+          console.warn('MailerLite form not loading - container empty after 5 seconds');
         }
+      } else {
+        console.error('MailerLite form container not found');
       }
-    }, 1000);
+    };
 
-    return () => clearTimeout(timer);
+    // Check immediately and after delay
+    setTimeout(checkFormLoading, 1000);
+    setTimeout(checkFormLoading, 3000);
+    setTimeout(checkFormLoading, 5000);
   }, []);
 
   const scrollToTop = () => {
@@ -517,8 +528,27 @@ export default function ComingSoon() {
 
 
 
-            {/* Enhanced MailerLite Form */}
-            <div className="ml-embedded" data-form="4f8mQz" id="ml-embed-home"></div>
+            {/* MailerLite Form with HTML Fallback */}
+            <div className="ml-embedded" data-form="4f8mQz" id="ml-embed-home">
+              {/* Fallback HTML form for when MailerLite embed fails */}
+              <form action="https://assets.mailerlite.com/jsonp/1605566/forms/4f8mQz/subscribe" method="post" target="_blank">
+                <input 
+                  type="email" 
+                  name="fields[email]" 
+                  placeholder="Enter your email"
+                  required
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F] mb-3"
+                  data-testid="input-email"
+                />
+                <button 
+                  type="submit"
+                  className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg transition-all duration-300"
+                  data-testid="button-submit"
+                >
+                  Reserve Your Investigation
+                </button>
+              </form>
+            </div>
             
             <p className="text-xs text-gray-400 text-center mt-4">
               Join 75+ investigators in our upcoming cultural mystery experience.

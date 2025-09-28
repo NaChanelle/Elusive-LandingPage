@@ -121,21 +121,29 @@ export default function VesselTeaser() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // MailerLite initialization effect
+  // MailerLite debugging and status checking
   useEffect(() => {
-    // Wait a bit for the DOM to be ready and script to load
-    const timer = setTimeout(() => {
-      if (window.ml && typeof window.ml === 'function') {
-        try {
-          // Initialize the form after ensuring the script is loaded
-          window.ml('embedForm', 'evBTcL', '.ml-embedded[data-form="evBTcL"]');
-        } catch (error) {
-          console.log('MailerLite initialization pending...');
+    const checkFormLoading = () => {
+      console.log('Vessel page - checking MailerLite form status...');
+      console.log('Window.ml available:', !!window.ml);
+      
+      const formContainer = document.querySelector('.ml-embedded[data-form="evBTcL"]');
+      if (formContainer) {
+        console.log('Vessel form container found:', formContainer);
+        console.log('Vessel container innerHTML:', formContainer.innerHTML);
+        console.log('Vessel container children count:', formContainer.children.length);
+        
+        if (formContainer.innerHTML.trim() === '') {
+          console.warn('Vessel MailerLite form not loading - container empty');
         }
+      } else {
+        console.error('Vessel MailerLite form container not found');
       }
-    }, 1000);
+    };
 
-    return () => clearTimeout(timer);
+    setTimeout(checkFormLoading, 1000);
+    setTimeout(checkFormLoading, 3000);
+    setTimeout(checkFormLoading, 5000);
   }, []);
 
   // State for fallback form
@@ -441,7 +449,33 @@ export default function VesselTeaser() {
             <p className="text-sm text-gray-400 mb-6">{content.feature_voting_description}</p>
 
             {/* Email Signup Form */}
-            <div className="ml-embedded" data-form="evBTcL"></div>
+            <div className="ml-embedded" data-form="evBTcL">
+              {/* Fallback HTML form for when MailerLite embed fails */}
+              <form action="https://assets.mailerlite.com/jsonp/1605566/forms/evBTcL/subscribe" method="post" target="_blank">
+                <input 
+                  type="text" 
+                  name="fields[name]" 
+                  placeholder="Name (Optional)"
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F] mb-3"
+                  data-testid="input-name"
+                />
+                <input 
+                  type="email" 
+                  name="fields[email]" 
+                  placeholder="Enter your email"
+                  required
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F] mb-3"
+                  data-testid="input-email"
+                />
+                <button 
+                  type="submit"
+                  className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg transition-all duration-300"
+                  data-testid="button-submit"
+                >
+                  Get Early Access
+                </button>
+              </form>
+            </div>
 
             {message && (
               <p className={`text-center text-sm transition-all ${
