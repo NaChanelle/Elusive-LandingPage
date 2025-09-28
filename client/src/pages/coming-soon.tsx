@@ -449,7 +449,7 @@ export default function ComingSoon() {
 
 
             {/* MailerLite Form */}
-            <MailerLiteForm formId="28257750" className="w-full" />
+            <MailerLiteForm formId="4f8mQz" className="w-full" />
             
             <p className="text-xs text-gray-400 text-center mt-4">
               Join 75+ investigators in our upcoming cultural mystery experience.

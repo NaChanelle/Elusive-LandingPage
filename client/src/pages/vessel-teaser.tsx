@@ -425,7 +425,7 @@ export default function VesselTeaser() {
             <p className="text-sm text-gray-400 mb-6">{content.feature_voting_description}</p>
 
             {/* Email Signup Form */}
-            <MailerLiteForm formId="28314007" className="w-full" />
+            <MailerLiteForm formId="evBTcL" className="w-full" />
 
             {message && (
               <p className={`text-center text-sm transition-all ${

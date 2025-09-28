@@ -460,7 +460,7 @@ export default function Landing() {
             </div>
 
             {/* MailerLite Form */}
-            <MailerLiteForm formId="28258222" className="w-full" />
+            <MailerLiteForm formId="qp06KG" className="w-full" />
             
             {selectedTier && (
               <div className="text-sm text-gray-300 text-center mt-4">
