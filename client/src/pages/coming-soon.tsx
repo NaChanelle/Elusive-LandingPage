@@ -519,95 +519,11 @@ export default function ComingSoon() {
 
 
             {/* Enhanced MailerLite Form */}
-            <div className="ml-subscribe-form-28257750">
-              <form className="ml-block-form" action="https://assets.mailerlite.com/jsonp/28257750/forms/129542913683537542/subscribe" data-code="28257750" method="post" target="_blank">
-                <div className="ml-form-formContent">
-                  <div className="ml-form-fieldRow">
-                    <div className="ml-field-group ml-field-name ml-validate-required">
-                      <input 
-                        aria-label="First Name" 
-                        aria-required="true" 
-                        type="text" 
-                        className="ml-form-fieldInput" 
-                        data-inputmask="" 
-                        name="fields[name]" 
-                        placeholder="First Name (Optional)" 
-                        autoComplete="given-name" 
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.1)',
-                          border: '1px solid rgba(255, 255, 255, 0.2)',
-                          borderRadius: '8px',
-                          color: 'white',
-                          padding: '12px 16px',
-                          width: '100%',
-                          fontSize: '14px',
-                          marginBottom: '12px'
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="ml-form-fieldRow">
-                    <div className="ml-field-group ml-field-email ml-validate-email ml-validate-required">
-                      <input 
-                        aria-label="Email" 
-                        aria-required="true" 
-                        type="email" 
-                        className="ml-form-fieldInput" 
-                        data-inputmask="" 
-                        name="fields[email]" 
-                        placeholder="Enter your email address" 
-                        autoComplete="email" 
-                        required
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.1)',
-                          border: '1px solid rgba(255, 255, 255, 0.2)',
-                          borderRadius: '8px',
-                          color: 'white',
-                          padding: '12px 16px',
-                          width: '100%',
-                          fontSize: '14px',
-                          marginBottom: '12px'
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="ml-form-fieldRow ml-last-item">
-                    <div className="ml-field-group ml-field-button">
-                      <button 
-                        type="submit" 
-                        className="primary"
-                        style={{
-                          background: '#FFB90F',
-                          color: 'black',
-                          border: 'none',
-                          borderRadius: '8px',
-                          padding: '12px 24px',
-                          fontWeight: '500',
-                          width: '100%',
-                          cursor: 'pointer',
-                          transition: 'all 0.3s ease'
-                        }}
-                        onMouseOver={(e) => (e.target as HTMLButtonElement).style.background = 'rgba(255, 185, 15, 0.9)'}
-                        onMouseOut={(e) => (e.target as HTMLButtonElement).style.background = '#FFB90F'}
-                      >
-                        Reserve Your Investigation
-                      </button>
-                    </div>
-                  </div>
-                  <div className="ml-form-fieldRow ml-subscribe-close">
-                    <div className="ml-field-group">
-                      <p className="text-xs text-gray-400 text-center" style={{color: 'rgba(255, 255, 255, 0.6)', fontSize: '12px', marginTop: '12px'}}>
-                        Join 75+ investigators in our upcoming cultural mystery experience.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <input type="hidden" name="ml-submit" value="1" />
-                <div className="ml-mobileButton-horizontal">
-                  <input type="hidden" name="anticsrf" value="true" />
-                </div>
-              </form>
-            </div>
+            <div className="ml-embedded" data-form="4f8mQz"></div>
+            
+            <p className="text-xs text-gray-400 text-center mt-4">
+              Join 75+ investigators in our upcoming cultural mystery experience.
+            </p>
 
             <p className="text-xs text-gray-400 mt-3">
               {content.signup_form_footer_text}
