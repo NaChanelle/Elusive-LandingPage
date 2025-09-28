@@ -209,20 +209,39 @@
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
-/* MailerLite Embedded Form Styling to Match Dark Theme */
+/* MailerLite Embedded Form Styling - ELUSIVE Dark Theme */
 .ml-embedded iframe {
-  border-radius: 8px;
+  border-radius: 12px;
 }
 
-/* Override MailerLite default styles to match our dark theme */
+/* Override MailerLite default styles to match ELUSIVE dark theme */
+.mailerlite-form,
+.ml-embedded {
+  width: 100% !important;
+}
+
+.mailerlite-form .ml-form-embedWrapper,
 .ml-embedded .ml-form-embedContent {
   background: rgba(255, 255, 255, 0.1) !important;
   backdrop-filter: blur(16px) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 8px !important;
+  border-radius: 12px !important;
   padding: 24px !important;
 }
 
+.mailerlite-form .ml-form-embedBody,
+.ml-embedded .ml-form-embedBody {
+  background: transparent !important;
+}
+
+.mailerlite-form .ml-form-embedHeader,
+.ml-embedded .ml-form-embedHeader {
+  display: none !important;
+}
+
+.mailerlite-form input[type="text"],
+.mailerlite-form input[type="email"],
+.mailerlite-form input[type="name"],
 .ml-embedded input[type="text"],
 .ml-embedded input[type="email"] {
   background: rgba(255, 255, 255, 0.1) !important;
@@ -231,22 +250,24 @@
   color: white !important;
   padding: 12px 16px !important;
   width: 100% !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
   margin-bottom: 12px !important;
 }
 
-.ml-embedded input[type="text"]::placeholder,
-.ml-embedded input[type="email"]::placeholder {
-  color: rgba(255, 255, 255, 0.6) !important;
+.mailerlite-form input::placeholder,
+.ml-embedded input::placeholder {
+  color: rgba(156, 163, 175, 1) !important;
 }
 
-.ml-embedded input[type="text"]:focus,
-.ml-embedded input[type="email"]:focus {
+.mailerlite-form input:focus,
+.ml-embedded input:focus {
   outline: none !important;
   border-color: #FFB90F !important;
   box-shadow: 0 0 0 2px rgba(255, 185, 15, 0.2) !important;
 }
 
+.mailerlite-form button[type="submit"],
+.mailerlite-form .ml-button,
 .ml-embedded button[type="submit"],
 .ml-embedded .ml-button {
   background: #FFB90F !important;
@@ -258,20 +279,32 @@
   width: 100% !important;
   cursor: pointer !important;
   transition: all 0.3s ease !important;
-  font-size: 14px !important;
+  font-size: 16px !important;
 }
 
+.mailerlite-form button[type="submit"]:hover,
+.mailerlite-form .ml-button:hover,
 .ml-embedded button[type="submit"]:hover,
 .ml-embedded .ml-button:hover {
   background: rgba(255, 185, 15, 0.9) !important;
   transform: translateY(-1px) !important;
 }
 
+.mailerlite-form .ml-form-embedContent p,
 .ml-embedded .ml-form-embedContent p {
   color: rgba(255, 255, 255, 0.8) !important;
 }
 
-.ml-embedded .ml-form-embedContent .ml-form-embedPermissions {
+.mailerlite-form .ml-form-embedPermissions,
+.ml-embedded .ml-form-embedPermissions {
   color: rgba(255, 255, 255, 0.6) !important;
   font-size: 12px !important;
+}
+
+/* Hide MailerLite branding */
+.mailerlite-form .ml-form-embedFooter,
+.ml-embedded .ml-form-embedFooter,
+.mailerlite-form a[href*="mailerlite"],
+.ml-embedded a[href*="mailerlite"] {
+  display: none !important;
 }
