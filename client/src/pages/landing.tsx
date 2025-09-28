@@ -517,39 +517,92 @@ export default function Landing() {
               <p className="text-gray-300">{content.signup_form_description}</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4" data-testid="platform-signup-form">
-              <Input
-                type="text"
-                placeholder={content.firstname_placeholder}
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-                data-testid="input-firstname"
-              />
-              <Input
-                type="email"
-                placeholder={content.email_placeholder}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="bg-white/10 border-white/20 text-white placeholder-gray-400"
-                data-testid="input-email"
-              />
-              <Button
-                type="submit"
-                disabled={reservationMutation.isPending}
-                className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3"
-                data-testid="button-submit"
-              >
-                {reservationMutation.isPending ? content.signup_button_pending_text : content.signup_button_text}
-              </Button>
-              
-              {selectedTier && (
-                <div className="text-sm text-gray-300 text-center mt-2">
-                  Selected: <span className="text-[#FFB90F] font-medium">{selectedTier}</span>
+            <div className="ml-subscribe-form-28258222">
+              <form className="ml-block-form" action="https://assets.mailerlite.com/jsonp/28258222/forms/129542913683537542/subscribe" data-code="28258222" method="post" target="_blank">
+                <div className="ml-form-formContent">
+                  <div className="ml-form-fieldRow">
+                    <div className="ml-field-group ml-field-name ml-validate-required">
+                      <input 
+                        aria-label="First Name" 
+                        type="text" 
+                        className="ml-form-fieldInput" 
+                        data-inputmask="" 
+                        name="fields[name]" 
+                        placeholder="First Name (Optional)" 
+                        autoComplete="given-name" 
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          borderRadius: '8px',
+                          color: 'white',
+                          padding: '12px 16px',
+                          width: '100%',
+                          fontSize: '14px',
+                          marginBottom: '12px'
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="ml-form-fieldRow">
+                    <div className="ml-field-group ml-field-email ml-validate-email ml-validate-required">
+                      <input 
+                        aria-label="Email" 
+                        aria-required="true" 
+                        type="email" 
+                        className="ml-form-fieldInput" 
+                        data-inputmask="" 
+                        name="fields[email]" 
+                        placeholder="Enter your email address" 
+                        autoComplete="email" 
+                        required
+                        style={{
+                          background: 'rgba(255, 255, 255, 0.1)',
+                          border: '1px solid rgba(255, 255, 255, 0.2)',
+                          borderRadius: '8px',
+                          color: 'white',
+                          padding: '12px 16px',
+                          width: '100%',
+                          fontSize: '14px',
+                          marginBottom: '12px'
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="ml-form-fieldRow ml-last-item">
+                    <div className="ml-field-group ml-field-button">
+                      <button 
+                        type="submit" 
+                        className="primary"
+                        style={{
+                          background: '#FFB90F',
+                          color: 'black',
+                          border: 'none',
+                          borderRadius: '8px',
+                          padding: '12px 24px',
+                          fontWeight: '500',
+                          width: '100%',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease'
+                        }}
+                        onMouseOver={(e) => e.target.style.background = 'rgba(255, 185, 15, 0.9)'}
+                        onMouseOut={(e) => e.target.style.background = '#FFB90F'}
+                      >
+                        Reserve Your Spot
+                      </button>
+                    </div>
+                  </div>
+                  {selectedTier && (
+                    <div className="text-sm text-gray-300 text-center mt-2">
+                      Selected: <span className="text-[#FFB90F] font-medium">{selectedTier}</span>
+                    </div>
+                  )}
                 </div>
-              )}
-            </form>
+                <input type="hidden" name="ml-submit" value="1" />
+                <div className="ml-mobileButton-horizontal">
+                  <input type="hidden" name="anticsrf" value="true" />
+                </div>
+              </form>
+            </div>
 
             <p className="text-xs text-gray-400 text-center mt-4">
               {content.signup_form_footer_text}
