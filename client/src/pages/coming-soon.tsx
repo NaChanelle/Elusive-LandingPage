@@ -177,7 +177,7 @@ export default function ComingSoon() {
     if (!formId || formId === 'your-mailerlite-form-id') {
       // Return a fallback form if no MailerLite ID is configured
       return (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-4">
           <input
             type="email"
             value={email}
@@ -198,7 +198,7 @@ export default function ComingSoon() {
               {message}
             </p>
           )}
-        </form>
+        </div>
       );
     }
 
