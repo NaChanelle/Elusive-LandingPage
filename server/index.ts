@@ -35,23 +35,22 @@ app.post('/api/subscribe', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invalid form ID' });
     }
 
-    // Submit to MailerLite API
-    const response = await fetch(`https://connect.mailerlite.com/api/subscribers`, {
+    // Submit to MailerLite API using the correct Classic API endpoint
+    const response = await fetch(`https://api.mailerlite.com/api/v2/groups/${groupId}/subscribers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${apiToken}`
+        'X-MailerLite-ApiKey': apiToken
       },
       body: JSON.stringify({
         email,
-        groups: [groupId]
+        type: 'active'
       })
     });
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.log('MailerLite API error:', errorData);
+      console.log('MailerLite API error:', response.status, errorData);
       return res.status(response.status).json({ error: 'Failed to subscribe' });
     }
 
