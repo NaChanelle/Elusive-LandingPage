@@ -83,7 +83,6 @@ declare global {
   interface Window {
     mailerlite?: any;
     MailerLiteObject?: any;
-    ml?: any;
   }
 }
 
@@ -502,7 +501,7 @@ export default function Landing() {
             </div>
 
             {/* MailerLite Form */}
-            <MailerLiteForm formId="qp06KG" className="w-full" />
+            <MailerLiteForm formId="28258222" className="w-full" />
             
             {selectedTier && (
               <div className="text-sm text-gray-300 text-center mt-4">

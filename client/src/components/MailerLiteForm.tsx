@@ -11,51 +11,126 @@ export default function MailerLiteForm({ formId, className = '' }: MailerLiteFor
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Try the updated MailerLite integration approach
-    const script = document.createElement('script');
-    script.async = true;
-    script.src = `https://static.mailerlite.com/js/w/webforms.min.js?v${Date.now()}`;
-    
-    // Create the embed structure with additional attributes
-    containerRef.current.innerHTML = `
-      <div class="ml-form-embed" 
-           data-account="1605566" 
-           data-form="${formId}"
-           id="mlb2-${formId}">
-      </div>
-    `;
-    
-    // Add script to head if not already present
-    if (!document.querySelector(`script[src*="webforms.min.js"]`)) {
-      document.head.appendChild(script);
-    }
-    
-    // Force re-initialization after a delay
-    setTimeout(() => {
-      if (window.ml && window.ml.show) {
-        try {
-          window.ml.show({
-            webforms: {
-              'form': formId
-            }
-          });
-        } catch (e) {
-          console.log(`Attempting alternate initialization for form ${formId}`);
-        }
-      }
-    }, 1000);
+    // Clear any existing content
+    containerRef.current.innerHTML = '';
 
-    console.log(`MailerLite form ${formId} updated integration attempt`);
+    // Create the standard MailerLite embedded form structure
+    const embedDiv = document.createElement('div');
+    embedDiv.className = 'ml-embedded';
+    embedDiv.setAttribute('data-form', formId);
+    
+    containerRef.current.appendChild(embedDiv);
+
+    // Load MailerLite script if not already loaded
+    if (!document.querySelector('script[src*="universal.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://assets.mailerlite.com/js/universal.js';
+      script.async = true;
+      script.onload = () => {
+        // Initialize MailerLite with your account ID
+        if (window.ml) {
+          window.ml('account', '1605566');
+        }
+      };
+      document.head.appendChild(script);
+    } else {
+      // If script already loaded, just reinitialize
+      if (window.ml) {
+        window.ml('account', '1605566');
+      }
+    }
+
+    console.log(`MailerLite form ${formId} embedded successfully`);
 
   }, [formId]);
 
   return (
-    <div 
-      ref={containerRef}
-      className={`mailerlite-form ${className}`}
-      style={{ minHeight: '120px' }}
-    />
+    <div className={`w-full ${className}`}>
+      <div 
+        ref={containerRef}
+        className="mailerlite-container"
+        style={{ minHeight: '120px' }}
+      />
+      
+      {/* Custom styling for MailerLite forms */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .mailerlite-container .ml-form-embedContainer {
+          background: transparent !important;
+          border: none !important;
+          width: 100% !important;
+        }
+        .mailerlite-container .ml-form-embedWrapper {
+          background: transparent !important;
+          border: none !important;
+          padding: 0 !important;
+        }
+        .mailerlite-container .ml-form-embedBody {
+          padding: 0 !important;
+          background: transparent !important;
+        }
+        .mailerlite-container input[type="email"],
+        .mailerlite-container input[type="text"] {
+          background: rgba(255, 255, 255, 0.1) !important;
+          border: 1px solid rgba(255, 255, 255, 0.2) !important;
+          border-radius: 8px !important;
+          color: white !important;
+          padding: 12px 16px !important;
+          width: 100% !important;
+          font-size: 14px !important;
+          margin-bottom: 12px !important;
+        }
+        .mailerlite-container input[type="email"]::placeholder,
+        .mailerlite-container input[type="text"]::placeholder {
+          color: rgba(255, 255, 255, 0.6) !important;
+        }
+        .mailerlite-container input[type="email"]:focus,
+        .mailerlite-container input[type="text"]:focus {
+          border-color: #FFB90F !important;
+          outline: none !important;
+          box-shadow: 0 0 0 2px rgba(255, 185, 15, 0.2) !important;
+        }
+        .mailerlite-container button[type="submit"] {
+          background: #FFB90F !important;
+          color: black !important;
+          border: none !important;
+          border-radius: 8px !important;
+          padding: 12px 24px !important;
+          font-weight: 500 !important;
+          width: 100% !important;
+          cursor: pointer !important;
+          transition: all 0.3s ease !important;
+          font-size: 14px !important;
+        }
+        .mailerlite-container button[type="submit"]:hover {
+          background: rgba(255, 185, 15, 0.9) !important;
+          transform: translateY(-1px) !important;
+        }
+        .mailerlite-container .ml-form-successMessage {
+          color: #10B981 !important;
+          background: rgba(16, 185, 129, 0.1) !important;
+          border: 1px solid rgba(16, 185, 129, 0.3) !important;
+          border-radius: 8px !important;
+          padding: 12px !important;
+          margin-top: 12px !important;
+        }
+        .mailerlite-container .ml-form-errorMessage {
+          color: #EF4444 !important;
+          background: rgba(239, 68, 68, 0.1) !important;
+          border: 1px solid rgba(239, 68, 68, 0.3) !important;
+          border-radius: 8px !important;
+          padding: 12px !important;
+          margin-top: 12px !important;
+        }
+        `
+      }} />
+    </div>
   );
 }
 
-// MailerLite types already declared globally
+// Extend window for MailerLite global
+declare global {
+  interface Window {
+    ml: any;
+  }
+}
