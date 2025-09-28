@@ -519,7 +519,7 @@ export default function ComingSoon() {
 
 
             {/* Enhanced MailerLite Form */}
-            <div className="ml-embedded" data-form="4f8mQz"></div>
+            <div className="ml-embedded" data-form="4f8mQz" id="ml-embed-home"></div>
             
             <p className="text-xs text-gray-400 text-center mt-4">
               Join 75+ investigators in our upcoming cultural mystery experience.
