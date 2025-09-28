@@ -531,7 +531,7 @@ export default function ComingSoon() {
             {/* MailerLite Form with HTML Fallback */}
             <div className="ml-embedded" data-form="4f8mQz" id="ml-embed-home">
               {/* Fallback HTML form for when MailerLite embed fails */}
-              <form action="https://assets.mailerlite.com/jsonp/1605566/forms/4f8mQz/subscribe" method="post" target="_blank">
+              <form action="https://landing.mailerlite.com/webforms/landing/4f8mQz" method="post" target="_blank">
                 <input 
                   type="email" 
                   name="fields[email]" 

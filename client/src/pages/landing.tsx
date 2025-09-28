@@ -526,7 +526,7 @@ export default function Landing() {
 
             <div className="ml-embedded" data-form="qp06KG">
               {/* Fallback HTML form for when MailerLite embed fails */}
-              <form action="https://assets.mailerlite.com/jsonp/1605566/forms/qp06KG/subscribe" method="post" target="_blank">
+              <form action="https://landing.mailerlite.com/webforms/landing/qp06KG" method="post" target="_blank">
                 <input 
                   type="text" 
                   name="fields[first_name]" 

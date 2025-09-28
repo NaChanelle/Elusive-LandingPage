@@ -451,7 +451,7 @@ export default function VesselTeaser() {
             {/* Email Signup Form */}
             <div className="ml-embedded" data-form="evBTcL">
               {/* Fallback HTML form for when MailerLite embed fails */}
-              <form action="https://assets.mailerlite.com/jsonp/1605566/forms/evBTcL/subscribe" method="post" target="_blank">
+              <form action="https://landing.mailerlite.com/webforms/landing/evBTcL" method="post" target="_blank">
                 <input 
                   type="text" 
                   name="fields[name]" 
