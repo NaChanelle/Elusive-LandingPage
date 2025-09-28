@@ -105,15 +105,13 @@ export default function ComingSoon() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [message, setMessage] = useState('');
 
-  // Fetch content and current RSVP count
+  // Fetch content only - no backend RSVP data needed
   useEffect(() => {
-    Promise.all([
-      fetch('/assets/content/coming-soon.json').then(res => res.json()),
-      fetch('/api/rsvps/count').then(res => res.json())
-    ])
-      .then(([contentData, rsvpData]) => {
+    fetch('/assets/content/coming-soon.json')
+      .then(res => res.json())
+      .then((contentData) => {
         setContent(contentData);
-        setCurrentRSVPs(rsvpData.count);
+        setCurrentRSVPs(0); // Static count since we're using MailerLite only
         setLoading(false);
       })
       .catch((err: Error) => {
@@ -223,58 +221,7 @@ export default function ComingSoon() {
     );
   };
 
-  // Handle RSVP submission with investigation choice
-  const handleRSVPSubmit = async (email: string, firstName: string = '') => {
-    try {
-      const response = await fetch('/api/rsvps', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          firstName,
-          investigationChoice,
-          source: 'coming_soon'
-        }),
-      });
-
-      const data = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(data.message || 'Failed to submit RSVP');
-      }
-
-      // Update RSVP count immediately
-      setCurrentRSVPs(prev => prev + 1);
-      
-      return data;
-    } catch (error) {
-      console.error('RSVP submission error:', error);
-      throw error;
-    }
-  };
-
-  // Handle form submission
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setMessage('');
-
-    try {
-      // Submit RSVP to our backend first
-      await handleRSVPSubmit(email, firstName);
-      
-      setMessage('Success! You\'ll be notified when we launch.');
-      setEmail('');
-      setFirstName('');
-      
-    } catch (error: any) {
-      setMessage(error.message || 'Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  // Removed backend submission logic - using only MailerLite forms
 
   // MailerLite embed form with custom styling
   const renderEnhancedMailerLiteForm = () => {

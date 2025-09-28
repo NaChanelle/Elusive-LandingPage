@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { Button } from "@/components/ui/button";
+import { useEffect, useRef } from 'react';
 
 interface MailerLiteFormProps {
   formId: string;
@@ -7,135 +6,126 @@ interface MailerLiteFormProps {
 }
 
 export default function MailerLiteForm({ formId, className = '' }: MailerLiteFormProps) {
-  const [email, setEmail] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState('');
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!email) {
-      setMessage('Please enter your email address');
-      return;
+  useEffect(() => {
+    if (!containerRef.current || !formId) return;
+
+    // Clear any existing content  
+    containerRef.current.innerHTML = `
+      <div class="ml-embedded" data-form="${formId}"></div>
+    `;
+
+    // Load MailerLite universal script if not already loaded
+    if (!document.querySelector('script[src*="universal.js"]')) {
+      const script = document.createElement('script');
+      script.src = 'https://assets.mailerlite.com/js/universal.js';
+      script.async = true;
+      script.onload = () => {
+        // Initialize MailerLite with account ID
+        if (window.ml) {
+          window.ml('account', '1605566');
+        }
+      };
+      document.head.appendChild(script);
+    } else {
+      // If script already loaded, just initialize account
+      if (window.ml) {
+        window.ml('account', '1605566');
+      }
     }
 
-    setIsSubmitting(true);
-    setMessage('');
+    console.log(`MailerLite form ${formId} embedded with data-form attribute`);
 
-    try {
-      // Submit to our backend first (for backup)
-      const response = await fetch('/api/rsvps', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email,
-          firstName: firstName || undefined,
-          source: `form_${formId}`,
-          investigationInterests: [],
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network error');
-      }
-
-      // Also submit directly to MailerLite using JSONP-like approach
-      try {
-        const mailerLiteSubmit = await fetch(`https://landing.mailerlite.com/webforms/submitform/${formId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: new URLSearchParams({
-            'fields[email]': email,
-            'fields[name]': firstName || '',
-            'ml-submit': '1',
-            'anticsrf': 'true'
-          }).toString(),
-          mode: 'no-cors'
-        });
-        
-        console.log('Submitted to MailerLite successfully');
-      } catch (mlError) {
-        console.log('MailerLite direct submission failed, but backup saved');
-      }
-
-      setMessage('✅ Success! You\'ll be notified when we launch.');
-      setEmail('');
-      setFirstName('');
-      
-    } catch (error) {
-      console.error('Form submission error:', error);
-      setMessage('❌ Something went wrong. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  }, [formId]);
 
   return (
     <div className={`w-full ${className}`}>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Name Field (optional for some forms) */}
-        {(formId !== '28257750') && (
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            placeholder="First Name (optional)"
-            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F] focus:border-transparent transition-all"
-            data-testid="input-firstname"
-          />
-        )}
-        
-        {/* Email Field */}
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter your email address"
-          required
-          className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F] focus:border-transparent transition-all"
-          data-testid="input-email"
-        />
-        
-        {/* Submit Button */}
-        <Button 
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
-          data-testid="button-submit"
-        >
-          {isSubmitting ? 'Joining...' : getButtonText(formId)}
-        </Button>
-        
-        {/* Status Message */}
-        {message && (
-          <p className={`text-center text-sm transition-all ${
-            message.includes('Success') || message.includes('✅') 
-              ? 'text-green-400' 
-              : 'text-red-400'
-          }`} data-testid="form-message">
-            {message}
-          </p>
-        )}
-      </form>
+      <div 
+        ref={containerRef}
+        className="mailerlite-embed-container"
+        style={{ minHeight: '120px' }}
+      />
+      
+      {/* Custom styling for MailerLite forms to match ELUSIVE theme */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+        .mailerlite-embed-container .ml-form-embedContainer {
+          background: transparent !important;
+          border: none !important;
+          width: 100% !important;
+        }
+        .mailerlite-embed-container .ml-form-embedWrapper {
+          background: transparent !important;
+          border: none !important;
+          padding: 0 !important;
+        }
+        .mailerlite-embed-container .ml-form-embedBody {
+          padding: 0 !important;
+          background: transparent !important;
+        }
+        .mailerlite-embed-container input[type="email"],
+        .mailerlite-embed-container input[type="text"] {
+          background: rgba(255, 255, 255, 0.1) !important;
+          border: 1px solid rgba(255, 255, 255, 0.2) !important;
+          border-radius: 8px !important;
+          color: white !important;
+          padding: 12px 16px !important;
+          width: 100% !important;
+          font-size: 14px !important;
+          margin-bottom: 12px !important;
+        }
+        .mailerlite-embed-container input[type="email"]::placeholder,
+        .mailerlite-embed-container input[type="text"]::placeholder {
+          color: rgba(255, 255, 255, 0.6) !important;
+        }
+        .mailerlite-embed-container input[type="email"]:focus,
+        .mailerlite-embed-container input[type="text"]:focus {
+          border-color: #FFB90F !important;
+          outline: none !important;
+          box-shadow: 0 0 0 2px rgba(255, 185, 15, 0.2) !important;
+        }
+        .mailerlite-embed-container button[type="submit"] {
+          background: #FFB90F !important;
+          color: black !important;
+          border: none !important;
+          border-radius: 8px !important;
+          padding: 12px 24px !important;
+          font-weight: 500 !important;
+          width: 100% !important;
+          cursor: pointer !important;
+          transition: all 0.3s ease !important;
+          font-size: 14px !important;
+        }
+        .mailerlite-embed-container button[type="submit"]:hover {
+          background: rgba(255, 185, 15, 0.9) !important;
+          transform: translateY(-1px) !important;
+        }
+        .mailerlite-embed-container .ml-form-successMessage {
+          color: #10B981 !important;
+          background: rgba(16, 185, 129, 0.1) !important;
+          border: 1px solid rgba(16, 185, 129, 0.3) !important;
+          border-radius: 8px !important;
+          padding: 12px !important;
+          margin-top: 12px !important;
+        }
+        .mailerlite-embed-container .ml-form-errorMessage {
+          color: #EF4444 !important;
+          background: rgba(239, 68, 68, 0.1) !important;
+          border: 1px solid rgba(239, 68, 68, 0.3) !important;
+          border-radius: 8px !important;
+          padding: 12px !important;
+          margin-top: 12px !important;
+        }
+        `
+      }} />
     </div>
   );
 }
 
-// Helper function to get appropriate button text based on form
-function getButtonText(formId: string): string {
-  switch (formId) {
-    case '28257750': // Home page
-      return 'Reserve Your Investigation';
-    case '28258222': // Platform page  
-      return 'Join the Event';
-    case '28314007': // Vessel page
-      return 'Get Early Access';
-    default:
-      return 'Submit';
+// Extend window for MailerLite global
+declare global {
+  interface Window {
+    ml: any;
   }
 }

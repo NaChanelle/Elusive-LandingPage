@@ -3,11 +3,10 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
-import { useMutation } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
+// Removed API mutation imports - using only MailerLite forms
 import { Link } from "wouter";
 import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, Eye } from "lucide-react";
-import { insertReservationSchema, type InsertReservation } from "@shared/schema";
+// Removed database schema import - using only MailerLite forms
 import MailerLiteForm from "@/components/MailerLiteForm";
 
 // Define TypeScript interfaces for the landing page content
@@ -132,47 +131,7 @@ export default function Landing() {
   }, [content?.carousel_images]);
 
 
-  // Mutation for form submission
-  const reservationMutation = useMutation({
-    mutationFn: (data: InsertReservation) =>
-      apiRequest("POST", "/api/rsvps", data),
-    onSuccess: () => {
-      toast({
-        title: "Success!",
-        description: "Your reservation has been submitted successfully.",
-      });
-      setEmail("");
-      setFirstName("");
-    },
-    onError: (error: any) => {
-      toast({
-        title: "Error",
-        description: error.message || "Something went wrong. Please try again.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email) {
-      toast({
-        title: "Error",
-        description: "Email is required",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const reservationData: InsertReservation = {
-      email,
-      firstName: firstName || undefined,
-      investigationInterests: selectedTier ? [selectedTier] : [],
-      preferredRole: selectedTier || undefined,
-    };
-
-    reservationMutation.mutate(reservationData);
-  };
+  // Removed form submission logic - using only MailerLite forms
 
   // Conditional rendering for loading and error states
   if (loading) {
