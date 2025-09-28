@@ -81,6 +81,7 @@ declare global {
   interface Window {
     mailerlite?: any;
     MailerLiteObject?: any;
+    ml?: any;
   }
 }
 
@@ -120,24 +121,22 @@ export default function VesselTeaser() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // MailerLite Script Injection
+  // MailerLite initialization effect
   useEffect(() => {
-    if (content?.mailerlite_form_id && content.mailerlite_form_id !== 'your-tally-form-id') {
-      if (!document.querySelector('script[src*="static.mailerlite.com"]')) {
-        const script = document.createElement('script');
-        script.src = 'https://static.mailerlite.com/js/universal.js';
-        script.async = true;
-        script.onload = () => {
-          // Initialize MailerLite forms after script loads
-          if (window.MailerLiteObject) {
-            window.MailerLiteObject.q = window.MailerLiteObject.q || [];
-            window.MailerLiteObject.q.push(['init', { embedMode: true }]);
-          }
-        };
-        document.head.appendChild(script);
+    // Wait a bit for the DOM to be ready and script to load
+    const timer = setTimeout(() => {
+      if (window.ml && typeof window.ml === 'function') {
+        try {
+          // Initialize the form after ensuring the script is loaded
+          window.ml('embedForm', 'evBTcL', '.ml-embedded[data-form="evBTcL"]');
+        } catch (error) {
+          console.log('MailerLite initialization pending...');
+        }
       }
-    }
-  }, [content?.mailerlite_form_id]);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // State for fallback form
   const [email, setEmail] = useState('');
