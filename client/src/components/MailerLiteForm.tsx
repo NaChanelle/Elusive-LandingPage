@@ -11,21 +11,41 @@ export default function MailerLiteForm({ formId, className = '' }: MailerLiteFor
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Create the proper MailerLite embed structure
-    containerRef.current.innerHTML = `<div class="ml-embedded" data-form="${formId}"></div>`;
+    // Try the updated MailerLite integration approach
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://static.mailerlite.com/js/w/webforms.min.js?v${Date.now()}`;
     
-    // Debug logging to check what's happening
-    console.log(`MailerLite form ${formId} container created`);
+    // Create the embed structure with additional attributes
+    containerRef.current.innerHTML = `
+      <div class="ml-form-embed" 
+           data-account="1605566" 
+           data-form="${formId}"
+           id="mlb2-${formId}">
+      </div>
+    `;
     
-    // Check if MailerLite universal script is loaded
+    // Add script to head if not already present
+    if (!document.querySelector(`script[src*="webforms.min.js"]`)) {
+      document.head.appendChild(script);
+    }
+    
+    // Force re-initialization after a delay
     setTimeout(() => {
-      console.log('MailerLite check:', {
-        formId,
-        mlAvailable: !!window.ml,
-        container: containerRef.current?.innerHTML,
-        embedFound: !!document.querySelector(`[data-form="${formId}"]`)
-      });
-    }, 2000);
+      if (window.ml && window.ml.show) {
+        try {
+          window.ml.show({
+            webforms: {
+              'form': formId
+            }
+          });
+        } catch (e) {
+          console.log(`Attempting alternate initialization for form ${formId}`);
+        }
+      }
+    }, 1000);
+
+    console.log(`MailerLite form ${formId} updated integration attempt`);
 
   }, [formId]);
 
@@ -33,14 +53,9 @@ export default function MailerLiteForm({ formId, className = '' }: MailerLiteFor
     <div 
       ref={containerRef}
       className={`mailerlite-form ${className}`}
-      style={{ minHeight: '120px' }} // Ensure space for the form
+      style={{ minHeight: '120px' }}
     />
   );
 }
 
-// Extend window type for MailerLite
-declare global {
-  interface Window {
-    ml: any;
-  }
-}
+// MailerLite types already declared globally
