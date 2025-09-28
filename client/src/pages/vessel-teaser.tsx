@@ -442,64 +442,7 @@ export default function VesselTeaser() {
             <p className="text-sm text-gray-400 mb-6">{content.feature_voting_description}</p>
 
             {/* Email Signup Form */}
-            <div className="ml-subscribe-form-28314007">
-              <form className="ml-block-form" action="https://assets.mailerlite.com/jsonp/28314007/forms/129542913683537542/subscribe" data-code="28314007" method="post" target="_blank">
-                <div className="ml-form-formContent">
-                  <div className="ml-form-fieldRow">
-                    <div className="ml-field-group ml-field-email ml-validate-email ml-validate-required">
-                      <input 
-                        aria-label="Email" 
-                        aria-required="true" 
-                        type="email" 
-                        className="ml-form-fieldInput" 
-                        data-inputmask="" 
-                        name="fields[email]" 
-                        placeholder="Enter your email address" 
-                        autoComplete="email" 
-                        required
-                        style={{
-                          background: 'rgba(255, 255, 255, 0.1)',
-                          border: '1px solid rgba(255, 255, 255, 0.2)',
-                          borderRadius: '8px',
-                          color: 'white',
-                          padding: '12px 16px',
-                          width: '100%',
-                          fontSize: '14px',
-                          marginBottom: '12px'
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="ml-form-fieldRow ml-last-item">
-                    <div className="ml-field-group ml-field-button">
-                      <button 
-                        type="submit" 
-                        className="primary"
-                        style={{
-                          background: '#FFB90F',
-                          color: 'black',
-                          border: 'none',
-                          borderRadius: '8px',
-                          padding: '12px 24px',
-                          fontWeight: '500',
-                          width: '100%',
-                          cursor: 'pointer',
-                          transition: 'all 0.3s ease'
-                        }}
-                        onMouseOver={(e) => (e.target as HTMLButtonElement).style.background = 'rgba(255, 185, 15, 0.9)'}
-                        onMouseOut={(e) => (e.target as HTMLButtonElement).style.background = '#FFB90F'}
-                      >
-                        Join the Waitlist
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <input type="hidden" name="ml-submit" value="1" />
-                <div className="ml-mobileButton-horizontal">
-                  <input type="hidden" name="anticsrf" value="true" />
-                </div>
-              </form>
-            </div>
+            <div className="ml-embedded" data-form="evBTcL"></div>
 
             {message && (
               <p className={`text-center text-sm transition-all ${
