@@ -584,8 +584,8 @@ export default function Landing() {
                           cursor: 'pointer',
                           transition: 'all 0.3s ease'
                         }}
-                        onMouseOver={(e) => e.target.style.background = 'rgba(255, 185, 15, 0.9)'}
-                        onMouseOut={(e) => e.target.style.background = '#FFB90F'}
+                        onMouseOver={(e) => (e.target as HTMLButtonElement).style.background = 'rgba(255, 185, 15, 0.9)'}
+                        onMouseOut={(e) => (e.target as HTMLButtonElement).style.background = '#FFB90F'}
                       >
                         Reserve Your Spot
                       </button>
