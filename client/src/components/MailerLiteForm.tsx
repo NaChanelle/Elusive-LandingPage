@@ -7,24 +7,28 @@ interface MailerLiteFormProps {
 
 export default function MailerLiteForm({ formId, className = '' }: MailerLiteFormProps) {
   useEffect(() => {
-    // Load MailerLite Universal Script exactly as provided by MailerLite
-    if (!document.querySelector('script[src*="universal.js"]')) {
-      const script = document.createElement('script');
-      script.innerHTML = `
-        (function(w,d,e,u,f,l,n){w[f]=w[f]||function(){(w[f].q=w[f].q||[])
-        .push(arguments);},l=d.createElement(e),l.async=1,l.src=u,
-        n=d.getElementsByTagName(e)[0],n.parentNode.insertBefore(l,n);})
-        (window,document,'script','https://assets.mailerlite.com/js/universal.js','ml');
-        ml('account', '1605566');
-      `;
-      document.head.appendChild(script);
-    }
-  }, []);
+    // Ensure MailerLite script renders the form after component mounts
+    const renderForm = () => {
+      if (typeof window !== 'undefined' && (window as any).ml) {
+        // Initialize MailerLite forms using the correct API
+        try {
+          (window as any).ml('forms');
+        } catch (error) {
+          console.log('MailerLite form initialization:', error);
+        }
+      }
+    };
+
+    // Small delay to ensure DOM is ready and script loaded
+    const timer = setTimeout(renderForm, 200);
+    
+    return () => clearTimeout(timer);
+  }, [formId]);
 
   return (
     <div className={`w-full ${className}`}>
-      {/* Use exact MailerLite embed structure */}
-      <div className="ml-embedded" data-form={formId}></div>
+      {/* Use exact MailerLite embed structure with proper IDs */}
+      <div id={`mlb2-${formId}`} className="ml-form-embedContainer"></div>
     </div>
   );
 }
