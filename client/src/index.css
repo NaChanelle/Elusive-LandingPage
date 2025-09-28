@@ -208,3 +208,70 @@
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }
+
+/* MailerLite Embedded Form Styling to Match Dark Theme */
+.ml-embedded iframe {
+  border-radius: 8px;
+}
+
+/* Override MailerLite default styles to match our dark theme */
+.ml-embedded .ml-form-embedContent {
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 8px !important;
+  padding: 24px !important;
+}
+
+.ml-embedded input[type="text"],
+.ml-embedded input[type="email"] {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 8px !important;
+  color: white !important;
+  padding: 12px 16px !important;
+  width: 100% !important;
+  font-size: 14px !important;
+  margin-bottom: 12px !important;
+}
+
+.ml-embedded input[type="text"]::placeholder,
+.ml-embedded input[type="email"]::placeholder {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.ml-embedded input[type="text"]:focus,
+.ml-embedded input[type="email"]:focus {
+  outline: none !important;
+  border-color: #FFB90F !important;
+  box-shadow: 0 0 0 2px rgba(255, 185, 15, 0.2) !important;
+}
+
+.ml-embedded button[type="submit"],
+.ml-embedded .ml-button {
+  background: #FFB90F !important;
+  color: black !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 24px !important;
+  font-weight: 500 !important;
+  width: 100% !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease !important;
+  font-size: 14px !important;
+}
+
+.ml-embedded button[type="submit"]:hover,
+.ml-embedded .ml-button:hover {
+  background: rgba(255, 185, 15, 0.9) !important;
+  transform: translateY(-1px) !important;
+}
+
+.ml-embedded .ml-form-embedContent p {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.ml-embedded .ml-form-embedContent .ml-form-embedPermissions {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-size: 12px !important;
+}
