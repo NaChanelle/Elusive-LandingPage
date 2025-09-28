@@ -82,6 +82,7 @@ declare global {
   interface Window {
     mailerlite?: any;
     MailerLiteObject?: any;
+    ml?: any;
   }
 }
 
@@ -130,24 +131,22 @@ export default function Landing() {
     return () => clearInterval(interval);
   }, [content?.carousel_images]);
 
-  // MailerLite script injection
+  // MailerLite initialization effect
   useEffect(() => {
-    if (content?.mailerlite_form1_id && content.mailerlite_form1_id !== 'your-mailerlite-form-id') {
-      if (!document.querySelector('script[src*="static.mailerlite.com"]')) {
-        const script = document.createElement('script');
-        script.src = 'https://static.mailerlite.com/js/universal.js';
-        script.async = true;
-        script.onload = () => {
-          // Initialize MailerLite forms after script loads
-          if (window.MailerLiteObject) {
-            window.MailerLiteObject.q = window.MailerLiteObject.q || [];
-            window.MailerLiteObject.q.push(['init', { embedMode: true }]);
-          }
-        };
-        document.head.appendChild(script);
+    // Wait a bit for the DOM to be ready and script to load
+    const timer = setTimeout(() => {
+      if (window.ml && typeof window.ml === 'function') {
+        try {
+          // Initialize the form after ensuring the script is loaded
+          window.ml('embedForm', 'qp06KG', '.ml-embedded[data-form="qp06KG"]');
+        } catch (error) {
+          console.log('MailerLite initialization pending...');
+        }
       }
-    }
-  }, [content?.mailerlite_form1_id]);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Mutation for form submission
   const reservationMutation = useMutation({
