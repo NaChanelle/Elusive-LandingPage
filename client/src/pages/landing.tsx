@@ -132,30 +132,6 @@ export default function Landing() {
     return () => clearInterval(interval);
   }, [content?.carousel_images]);
 
-  // MailerLite debugging and status checking
-  useEffect(() => {
-    const checkFormLoading = () => {
-      console.log('Platform page - checking MailerLite form status...');
-      console.log('Window.ml available:', !!window.ml);
-      
-      const formContainer = document.querySelector('.ml-embedded[data-form="qp06KG"]');
-      if (formContainer) {
-        console.log('Platform form container found:', formContainer);
-        console.log('Platform container innerHTML:', formContainer.innerHTML);
-        console.log('Platform container children count:', formContainer.children.length);
-        
-        if (formContainer.innerHTML.trim() === '') {
-          console.warn('Platform MailerLite form not loading - container empty');
-        }
-      } else {
-        console.error('Platform MailerLite form container not found');
-      }
-    };
-
-    setTimeout(checkFormLoading, 1000);
-    setTimeout(checkFormLoading, 3000);
-    setTimeout(checkFormLoading, 5000);
-  }, []);
 
   // Mutation for form submission
   const reservationMutation = useMutation({

@@ -122,30 +122,6 @@ export default function VesselTeaser() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // MailerLite debugging and status checking
-  useEffect(() => {
-    const checkFormLoading = () => {
-      console.log('Vessel page - checking MailerLite form status...');
-      console.log('Window.ml available:', !!window.ml);
-      
-      const formContainer = document.querySelector('.ml-embedded[data-form="evBTcL"]');
-      if (formContainer) {
-        console.log('Vessel form container found:', formContainer);
-        console.log('Vessel container innerHTML:', formContainer.innerHTML);
-        console.log('Vessel container children count:', formContainer.children.length);
-        
-        if (formContainer.innerHTML.trim() === '') {
-          console.warn('Vessel MailerLite form not loading - container empty');
-        }
-      } else {
-        console.error('Vessel MailerLite form container not found');
-      }
-    };
-
-    setTimeout(checkFormLoading, 1000);
-    setTimeout(checkFormLoading, 3000);
-    setTimeout(checkFormLoading, 5000);
-  }, []);
 
   // State for fallback form
   const [email, setEmail] = useState('');

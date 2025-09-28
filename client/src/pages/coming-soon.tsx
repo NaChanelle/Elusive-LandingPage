@@ -341,33 +341,6 @@ export default function ComingSoon() {
     );
   };
 
-  // MailerLite debugging and fallback initialization
-  useEffect(() => {
-    const checkFormLoading = () => {
-      console.log('Checking MailerLite form status...');
-      console.log('Window.ml available:', !!window.ml);
-      console.log('MailerLiteObject available:', !!window.MailerLiteObject);
-      
-      const formContainer = document.querySelector('.ml-embedded[data-form="4f8mQz"]');
-      if (formContainer) {
-        console.log('Form container found:', formContainer);
-        console.log('Container innerHTML:', formContainer.innerHTML);
-        console.log('Container children count:', formContainer.children.length);
-        
-        // If container is empty after 5 seconds, something is wrong
-        if (formContainer.innerHTML.trim() === '') {
-          console.warn('MailerLite form not loading - container empty after 5 seconds');
-        }
-      } else {
-        console.error('MailerLite form container not found');
-      }
-    };
-
-    // Check immediately and after delay
-    setTimeout(checkFormLoading, 1000);
-    setTimeout(checkFormLoading, 3000);
-    setTimeout(checkFormLoading, 5000);
-  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
