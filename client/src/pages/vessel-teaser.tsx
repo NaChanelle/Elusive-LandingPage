@@ -142,6 +142,7 @@ export default function VesselTeaser() {
   // State for fallback form
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [message, setMessage] = useState('');
 
   // Handle fallback form submission
   const handleFallbackSubmit = async (e: React.FormEvent) => {
@@ -172,66 +173,46 @@ export default function VesselTeaser() {
     }
   };
 
-  // Helper to render MailerLite forms with proper typing
+  // Helper to render MailerLite forms with iframe embed
   const renderMailerLiteForm = (formId: string, embedDivId: string) => {
+    if (!formId || formId === 'your-tally-form-id') {
+      // Return a fallback form if no MailerLite ID is configured
+      return (
+        <form onSubmit={handleFallbackSubmit} className="space-y-4">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your email"
+            required
+            className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F]"
+          />
+          <Button 
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg"
+          >
+            {isSubmitting ? 'Joining...' : 'Get Early Access'}
+          </Button>
+        </form>
+      );
+    }
+
     return (
-      <div id={embedDivId} className="mailerlite-form-wrapper">
-        <div 
-          className="ml-embedded" 
-          data-form={formId}
-        ></div>
-        <style dangerouslySetInnerHTML={{
-          __html: `
-          .mailerlite-form-wrapper .ml-form-embedContainer {
-            background: transparent !important;
-            border: none !important;
-            width: 100% !important;
-          }
-          .mailerlite-form-wrapper .ml-form-embedWrapper {
-            background: transparent !important;
-            border: none !important;
-            padding: 0 !important;
-          }
-          .mailerlite-form-wrapper .ml-form-embedBody {
-            padding: 0 !important;
-            background: transparent !important;
-          }
-          .mailerlite-form-wrapper input[type="email"],
-          .mailerlite-form-wrapper input[type="text"] {
-            background: rgba(255, 255, 255, 0.1) !important;
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            border-radius: 8px !important;
-            color: white !important;
-            padding: 12px 16px !important;
-            width: 100% !important;
-            font-size: 14px !important;
-            margin-bottom: 12px !important;
-          }
-          .mailerlite-form-wrapper input[type="email"]::placeholder,
-          .mailerlite-form-wrapper input[type="text"]::placeholder {
-            color: rgba(255, 255, 255, 0.6) !important;
-          }
-          .mailerlite-form-wrapper input[type="email"]:focus,
-          .mailerlite-form-wrapper input[type="text"]:focus {
-            border-color: #FFB90F !important;
-            outline: none !important;
-          }
-          .mailerlite-form-wrapper button[type="submit"] {
-            background: #FFB90F !important;
-            color: black !important;
-            border: none !important;
-            border-radius: 8px !important;
-            padding: 12px 24px !important;
-            font-weight: 500 !important;
-            width: 100% !important;
-            cursor: pointer !important;
-            transition: all 0.3s ease !important;
-          }
-          .mailerlite-form-wrapper button[type="submit"]:hover {
-            background: rgba(255, 185, 15, 0.9) !important;
-          }
-          `
-        }} />
+      <div id={embedDivId} className="w-full">
+        <iframe
+          src={`https://landing.mailerlite.com/webforms/landing/${formId}`}
+          width="100%"
+          height="400"
+          style={{
+            border: 'none',
+            borderRadius: '8px',
+            background: 'transparent'
+          }}
+          title="Email Signup Form"
+          loading="lazy"
+          data-testid="mailerlite-vessel-form"
+        />
       </div>
     );
   };
@@ -460,8 +441,38 @@ export default function VesselTeaser() {
             <p className="text-gray-300 mb-4">{content.cta_early_access_description}</p>
             <p className="text-sm text-gray-400 mb-6">{content.feature_voting_description}</p>
 
-            {/* MailerLite Form */}
-            {renderMailerLiteForm(content.mailerlite_form_id, 'vessel-early-access-form')}
+            {/* Email Signup Form */}
+            <form onSubmit={handleFallbackSubmit} className="space-y-4" data-testid="vessel-signup-form">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                required
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F]"
+                data-testid="input-email"
+              />
+              <Button 
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg"
+                data-testid="button-submit"
+              >
+                {isSubmitting ? 'Joining Waitlist...' : 'Join the Waitlist'}
+              </Button>
+              {message && (
+                <p className={`text-center text-sm transition-all ${
+                  message.includes('Success') || message.includes('Thank you') 
+                    ? 'text-green-400' 
+                    : 'text-red-400'
+                }`} data-testid="form-message">
+                  {message}
+                </p>
+              )}
+              <p className="text-xs text-gray-400 text-center">
+                Be among the first to test new features and access hidden content.
+              </p>
+            </form>
           </div>
         </div>
       </section>

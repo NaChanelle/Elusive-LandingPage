@@ -152,7 +152,7 @@ export default function Landing() {
   // Mutation for form submission
   const reservationMutation = useMutation({
     mutationFn: (data: InsertReservation) =>
-      apiRequest("/api/reservations", "POST", data),
+      apiRequest("POST", "/api/rsvps", data),
     onSuccess: () => {
       toast({
         title: "Success!",
@@ -517,70 +517,39 @@ export default function Landing() {
               <p className="text-gray-300">{content.signup_form_description}</p>
             </div>
 
-            <div className="mailerlite-form-wrapper">
-              <div 
-                className="ml-embedded" 
-                data-form={content.mailerlite_form1_id}
-              ></div>
-              <style dangerouslySetInnerHTML={{
-                __html: `
-                .mailerlite-form-wrapper .ml-form-embedContainer {
-                  background: transparent !important;
-                  border: none !important;
-                  width: 100% !important;
-                }
-                .mailerlite-form-wrapper .ml-form-embedWrapper {
-                  background: transparent !important;
-                  border: none !important;
-                  padding: 0 !important;
-                }
-                .mailerlite-form-wrapper .ml-form-embedBody {
-                  padding: 0 !important;
-                  background: transparent !important;
-                }
-                .mailerlite-form-wrapper input[type="email"],
-                .mailerlite-form-wrapper input[type="text"] {
-                  background: rgba(255, 255, 255, 0.1) !important;
-                  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-                  border-radius: 8px !important;
-                  color: white !important;
-                  padding: 12px 16px !important;
-                  width: 100% !important;
-                  font-size: 14px !important;
-                  margin-bottom: 12px !important;
-                }
-                .mailerlite-form-wrapper input[type="email"]::placeholder,
-                .mailerlite-form-wrapper input[type="text"]::placeholder {
-                  color: rgba(255, 255, 255, 0.6) !important;
-                }
-                .mailerlite-form-wrapper input[type="email"]:focus,
-                .mailerlite-form-wrapper input[type="text"]:focus {
-                  border-color: #FFB90F !important;
-                  outline: none !important;
-                }
-                .mailerlite-form-wrapper button[type="submit"] {
-                  background: #FFB90F !important;
-                  color: black !important;
-                  border: none !important;
-                  border-radius: 8px !important;
-                  padding: 12px 24px !important;
-                  font-weight: 500 !important;
-                  width: 100% !important;
-                  cursor: pointer !important;
-                  transition: all 0.3s ease !important;
-                }
-                .mailerlite-form-wrapper button[type="submit"]:hover {
-                  background: rgba(255, 185, 15, 0.9) !important;
-                }
-                `
-              }} />
+            <form onSubmit={handleSubmit} className="space-y-4" data-testid="platform-signup-form">
+              <Input
+                type="text"
+                placeholder={content.firstname_placeholder}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                data-testid="input-firstname"
+              />
+              <Input
+                type="email"
+                placeholder={content.email_placeholder}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="bg-white/10 border-white/20 text-white placeholder-gray-400"
+                data-testid="input-email"
+              />
+              <Button
+                type="submit"
+                disabled={reservationMutation.isPending}
+                className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3"
+                data-testid="button-submit"
+              >
+                {reservationMutation.isPending ? content.signup_button_pending_text : content.signup_button_text}
+              </Button>
               
               {selectedTier && (
                 <div className="text-sm text-gray-300 text-center mt-2">
                   Selected: <span className="text-[#FFB90F] font-medium">{selectedTier}</span>
                 </div>
               )}
-            </div>
+            </form>
 
             <p className="text-xs text-gray-400 text-center mt-4">
               {content.signup_form_footer_text}

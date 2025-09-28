@@ -173,27 +173,51 @@ export default function ComingSoon() {
     return () => clearInterval(timer);
   }, [content]);
 
-  // Helper to render MailerLite forms with proper typing
+  // Helper to render MailerLite forms with iframe embed
   const renderMailerLiteForm = (formId: string, embedDivId: string) => {
     if (!formId || formId === 'your-mailerlite-form-id') {
-      // Return a simple fallback form if no MailerLite ID is configured
+      // Return a fallback form if no MailerLite ID is configured
       return (
-        <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email"
+            required
             className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F]"
           />
-          <Button className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg">
-            Reserve Your Spot
+          <Button 
+            type="submit" 
+            disabled={isSubmitting}
+            className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg"
+          >
+            {isSubmitting ? 'Joining...' : 'Reserve Your Investigation'}
           </Button>
-        </div>
+          {message && (
+            <p className={`text-center text-sm ${message.includes('Success') ? 'text-green-400' : 'text-red-400'}`}>
+              {message}
+            </p>
+          )}
+        </form>
       );
     }
 
     return (
-      <div id={embedDivId}>
-        <div data-ml-form={formId}></div>
+      <div id={embedDivId} className="w-full">
+        <iframe
+          src={`https://landing.mailerlite.com/webforms/landing/${formId}`}
+          width="100%"
+          height="400"
+          style={{
+            border: 'none',
+            borderRadius: '8px',
+            background: 'transparent'
+          }}
+          title="Email Signup Form"
+          loading="lazy"
+          data-testid="mailerlite-signup-form"
+        />
       </div>
     );
   };
@@ -495,7 +519,46 @@ export default function ComingSoon() {
 
 
             {/* Enhanced MailerLite Form */}
-            {renderEnhancedMailerLiteForm()}
+            <form onSubmit={handleSubmit} className="space-y-4" data-testid="email-signup-form">
+              <input
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                placeholder="First Name (Optional)"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F]"
+                data-testid="input-firstname"
+              />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                required
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F]"
+                data-testid="input-email"
+              />
+              <Button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg transition-colors"
+                data-testid="button-submit"
+              >
+                {isSubmitting ? 'Joining the Investigation...' : 'Reserve Your Investigation'}
+              </Button>
+              {message && (
+                <p 
+                  className={`text-center text-sm transition-all ${
+                    message.includes('Success') ? 'text-green-400' : 'text-red-400'
+                  }`}
+                  data-testid="form-message"
+                >
+                  {message}
+                </p>
+              )}
+              <p className="text-xs text-gray-400 text-center">
+                Join 75+ investigators in our upcoming cultural mystery experience.
+              </p>
+            </form>
 
             <p className="text-xs text-gray-400 mt-3">
               {content.signup_form_footer_text}
