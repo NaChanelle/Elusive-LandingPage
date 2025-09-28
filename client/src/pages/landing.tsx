@@ -8,6 +8,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { Link } from "wouter";
 import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, Eye } from "lucide-react";
 import { insertReservationSchema, type InsertReservation } from "@shared/schema";
+import MailerLiteForm from "@/components/MailerLiteForm";
 
 // Define TypeScript interfaces for the landing page content
 interface TierFeature {
@@ -524,33 +525,8 @@ export default function Landing() {
               <p className="text-gray-300">{content.signup_form_description}</p>
             </div>
 
-            <div className="ml-embedded" data-form="qp06KG">
-              {/* Fallback HTML form for when MailerLite embed fails */}
-              <form action="https://landing.mailerlite.com/webforms/landing/qp06KG" method="post" target="_blank">
-                <input 
-                  type="text" 
-                  name="fields[first_name]" 
-                  placeholder="First Name (Optional)"
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F] mb-3"
-                  data-testid="input-first-name"
-                />
-                <input 
-                  type="email" 
-                  name="fields[email]" 
-                  placeholder="Enter your email"
-                  required
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F] mb-3"
-                  data-testid="input-email"
-                />
-                <button 
-                  type="submit"
-                  className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg transition-all duration-300"
-                  data-testid="button-submit"
-                >
-                  Reserve Your Spot
-                </button>
-              </form>
-            </div>
+            {/* MailerLite Form */}
+            <MailerLiteForm formId="qp06KG" className="w-full" />
             
             {selectedTier && (
               <div className="text-sm text-gray-300 text-center mt-4">

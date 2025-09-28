@@ -4,6 +4,7 @@ import { useLocation } from "wouter";
 import { ArrowLeft, Eye, Users, Zap, BookOpen, Lightbulb, MessageSquare, Play, ChevronRight, Mail, Globe, Database, Calendar } from "lucide-react";
 import SwipeableFeatureCarousel from "@/components/swipeable-feature-carousel";
 import { Button } from "@/components/ui/button";
+import MailerLiteForm from "@/components/MailerLiteForm";
 
 // Define TypeScript interfaces for vessel teaser content
 
@@ -449,33 +450,7 @@ export default function VesselTeaser() {
             <p className="text-sm text-gray-400 mb-6">{content.feature_voting_description}</p>
 
             {/* Email Signup Form */}
-            <div className="ml-embedded" data-form="evBTcL">
-              {/* Fallback HTML form for when MailerLite embed fails */}
-              <form action="https://landing.mailerlite.com/webforms/landing/evBTcL" method="post" target="_blank">
-                <input 
-                  type="text" 
-                  name="fields[name]" 
-                  placeholder="Name (Optional)"
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F] mb-3"
-                  data-testid="input-name"
-                />
-                <input 
-                  type="email" 
-                  name="fields[email]" 
-                  placeholder="Enter your email"
-                  required
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F] mb-3"
-                  data-testid="input-email"
-                />
-                <button 
-                  type="submit"
-                  className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg transition-all duration-300"
-                  data-testid="button-submit"
-                >
-                  Get Early Access
-                </button>
-              </form>
-            </div>
+            <MailerLiteForm formId="evBTcL" className="w-full" />
 
             {message && (
               <p className={`text-center text-sm transition-all ${

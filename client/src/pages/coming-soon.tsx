@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Clock, Mail, Menu, ChevronUp, Users } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import MailerLiteForm from "@/components/MailerLiteForm";
 
 // Define TypeScript interfaces for the content
 interface FooterLink {
@@ -528,27 +529,8 @@ export default function ComingSoon() {
 
 
 
-            {/* MailerLite Form with HTML Fallback */}
-            <div className="ml-embedded" data-form="4f8mQz" id="ml-embed-home">
-              {/* Fallback HTML form for when MailerLite embed fails */}
-              <form action="https://landing.mailerlite.com/webforms/landing/4f8mQz" method="post" target="_blank">
-                <input 
-                  type="email" 
-                  name="fields[email]" 
-                  placeholder="Enter your email"
-                  required
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#FFB90F] mb-3"
-                  data-testid="input-email"
-                />
-                <button 
-                  type="submit"
-                  className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-medium py-3 rounded-lg transition-all duration-300"
-                  data-testid="button-submit"
-                >
-                  Reserve Your Investigation
-                </button>
-              </form>
-            </div>
+            {/* MailerLite Form */}
+            <MailerLiteForm formId="4f8mQz" className="w-full" />
             
             <p className="text-xs text-gray-400 text-center mt-4">
               Join 75+ investigators in our upcoming cultural mystery experience.
