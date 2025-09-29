@@ -23,20 +23,8 @@ app.post('/api/subscribe', async (req: Request, res: Response) => {
       return res.status(500).json({ error: 'MailerLite API token not configured' });
     }
 
-    // Map form IDs to group IDs
-    const groupMapping: Record<string, string> = {
-      '4f8mQz': '128257750', // Home page form
-      'qp06KG': '128258222', // Platform page form  
-      'evBTcL': '128314007'  // Vessel page form
-    };
-
-    const groupId = groupMapping[formId];
-    if (!groupId) {
-      return res.status(400).json({ error: 'Invalid form ID' });
-    }
-
-    // Submit to MailerLite API using the correct Classic API endpoint
-    const response = await fetch(`https://api.mailerlite.com/api/v2/groups/${groupId}/subscribers`, {
+    // Submit to MailerLite API using subscribers endpoint
+    const response = await fetch(`https://api.mailerlite.com/api/v2/subscribers`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
