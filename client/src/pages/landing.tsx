@@ -1,13 +1,30 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye } from "lucide-react";
+import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye, ChevronLeft, Play, Zap, Heart } from "lucide-react";
 import MailerLiteForm from "@/components/MailerLiteForm";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
 export default function Landing() {
   const [selectedTier, setSelectedTier] = useState<string>('');
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [currentEventImageIndex, setCurrentEventImageIndex] = useState(0);
+
+  // Past event carousel images
+  const pastEventImages = [
+    { 
+      src: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=600&h=400&fit=crop",
+      alt: "Mystery Investigation Scene 1" 
+    },
+    { 
+      src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop", 
+      alt: "Mystery Investigation Scene 2" 
+    },
+    { 
+      src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop", 
+      alt: "Mystery Investigation Scene 3" 
+    }
+  ];
 
   // Show back to top button when scrolled down
   useEffect(() => {
@@ -133,6 +150,130 @@ export default function Landing() {
                 <div className="bg-gradient-to-r from-[#FFB90F] to-[#FFA500] h-3 rounded-full" style={{width: '15%'}}></div>
               </div>
               <p className="text-sm text-gray-400">Join the investigation</p>
+            </div>
+          </div>
+        </section>
+
+        {/* Event Description Section */}
+        <section className="px-6 py-16">
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700">
+              <h2 className="text-2xl font-bold mb-4 text-[#FFB90F]">The Grey Key Revelation</h2>
+              <p className="text-gray-300 mb-4">
+                The first chapter of "The Grey Key Revelation" is unfolding in Columbus, OH. 
+                Local forensic science students are finding evidence related to the events of 1993, 
+                where important cultural data was reportedly stolen and then lost. 75+ investigators 
+                have joined the investigation, but truth remains obscured.
+              </p>
+              <p className="text-gray-300">
+                Join a burgeoning community to help solve this collaborative mystery and shed light on these stolen truths.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Past Mystery Event Section */}
+        <section className="px-6 py-16">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Past Mystery Event August 2024 - #Burglary20</h2>
+            </div>
+            
+            <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 overflow-hidden group">
+              <div className="relative h-96">
+                <img 
+                  src={pastEventImages[currentEventImageIndex].src}
+                  alt={pastEventImages[currentEventImageIndex].alt}
+                  className="w-full h-full object-cover transition-all duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                
+                {/* Event overlay content */}
+                <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <h3 className="text-2xl font-bold text-white mb-2">Mystery Investigation Skills</h3>
+                  <p className="text-gray-200 mb-4">Master investigation through mystery experience.</p>
+                  <div className="flex items-center gap-4">
+                    <div className="flex -space-x-2">
+                      <div className="w-8 h-8 bg-[#FFB90F] rounded-full border-2 border-white flex items-center justify-center">
+                        <span className="text-xs font-bold text-black">A</span>
+                      </div>
+                      <div className="w-8 h-8 bg-[#8B0000] rounded-full border-2 border-white flex items-center justify-center">
+                        <span className="text-xs font-bold text-white">B</span>
+                      </div>
+                      <div className="w-8 h-8 bg-gray-600 rounded-full border-2 border-white flex items-center justify-center">
+                        <span className="text-xs font-bold text-white">C</span>
+                      </div>
+                    </div>
+                    <span className="text-sm text-gray-300">3 of 4</span>
+                  </div>
+                </div>
+                
+                {/* Navigation arrows */}
+                <button 
+                  onClick={() => setCurrentEventImageIndex((prev) => prev === 0 ? pastEventImages.length - 1 : prev - 1)}
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button 
+                  onClick={() => setCurrentEventImageIndex((prev) => prev === pastEventImages.length - 1 ? 0 : prev + 1)}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+                
+                {/* Dots indicator */}
+                <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+                  {pastEventImages.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentEventImageIndex(index)}
+                      className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                        index === currentEventImageIndex ? 'bg-[#FFB90F]' : 'bg-white/40'
+                      }`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* What's Coming Next Section */}
+        <section className="px-6 py-16">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">What's Coming Next</h2>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
+                <div className="w-16 h-16 bg-[#FFB90F] rounded-lg flex items-center justify-center mx-auto mb-6">
+                  <Search className="w-8 h-8 text-black" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-[#FFB90F]">Investigation Tools</h3>
+                <p className="text-gray-300">
+                  Our research demands collaborative detective methodology and deeper community involvement.
+                </p>
+              </div>
+              
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
+                <div className="w-16 h-16 bg-[#8B0000] rounded-lg flex items-center justify-center mx-auto mb-6">
+                  <Heart className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-[#8B0000]">Companion App</h3>
+                <p className="text-gray-300">
+                  The Vessel App helps track clues, build theories and stay connected during each mystery and beyond.
+                </p>
+              </div>
+              
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
+                <div className="w-16 h-16 bg-gradient-to-r from-[#FFB90F] to-[#8B0000] rounded-lg flex items-center justify-center mx-auto mb-6">
+                  <Play className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#8B0000]">Connect</h3>
+                <p className="text-gray-300">
+                  Serialized video production focused on the real cultural mysteries we're uncovering.
+                </p>
+              </div>
             </div>
           </div>
         </section>
@@ -264,22 +405,66 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* FAQ Section */}
+        {/* The Briefing Section */}
         <section className="px-6 py-16">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.faq_title}</h2>
-            <Accordion type="single" collapsible className="space-y-4">
-              {content.faq_items.map((item, index) => (
-                <AccordionItem key={index} value={`item-${index}`} className="border border-gray-700 rounded-lg px-6">
-                  <AccordionTrigger className="text-white hover:text-[#FFB90F]">
-                    {item.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-300">
-                    {item.answer}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">The Briefing</h2>
+            
+            <div className="space-y-8">
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">Our need to find more clues before the event?</h3>
+                <p className="text-gray-300">
+                  With each mystery we're bringing to light, we uncover new truths and elements that help us piece together what was lost. 
+                  Each clue we collect will expand our story and enhance our investigation strategies. But it's never enough and that 
+                  there's always more we can discover, as one reveal only leads us on the next investigation in our quest.
+                </p>
+              </div>
+              
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">Is this a performance or a panel?</h3>
+                <p className="text-gray-300">
+                  Our events are real-time collaborative mysteries and cultural investigations. 
+                  We're not hosting traditional panels or conferences, but actual investigative experiences where you work with other participants 
+                  to uncover truths, analyze evidence, and contribute to ongoing cultural preservation efforts.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">What should I wear?</h3>
+                <p className="text-gray-300">
+                  Come as comfortable as possible! We recommend wearing clothes you can move in. 
+                  Some investigations involve physical elements or may require you to examine materials closely. 
+                  Think practical detective gear rather than formal attire. Dark colors can help you blend into mystery atmospheres.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">Can I come alone?</h3>
+                <p className="text-gray-300">
+                  Absolutely! Many of our best investigators arrive solo and form incredible collaborative partnerships during the experience. 
+                  Our mysteries are designed to bring people together around shared curiosity and investigation goals. 
+                  You'll be working with others regardless of whether you arrive with a team.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">Will you return to Burglary?</h3>
+                <p className="text-gray-300">
+                  The Burglary investigation opened many doors and revealed several ongoing cultural mysteries that demand further exploration. 
+                  While we can't spoil what's next, the threads we pulled during Burglary have led to larger questions about cultural preservation 
+                  and stolen narratives that will definitely inform future investigations.
+                </p>
+              </div>
+
+              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">Pricing</h3>
+                <p className="text-gray-300">
+                  Our pricing reflects the comprehensive nature of these cultural investigation experiences. 
+                  Each tier provides different levels of access to investigation tools, community features, and behind-the-scenes content. 
+                  We believe in making cultural discovery accessible while ensuring sustainable, quality investigations.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
       </main>
