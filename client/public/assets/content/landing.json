@@ -1,13 +1,20 @@
 {
-  "tally_form1_id": "your-tally-form-id",
   "reserve_spot_button_text": "Reserve Your Spot",
   "signup_form_title": "Ready to Be Part of the Mystery?",
   "curator_tier_title": "Memory Holder",
+
   "value_proposition_text": "The first live chapter of *The Ones Who Remember* is unfolding in Columbia, SC. This immersive microfilm experience blends documentary, fiction, and physical mystery to explore what's remembered, what's erased, and who decides.\n\nThis isn't just a screening—it's a cipher, a ceremony, and a confrontation with the silence we've inherited.",
   "detective_tier_title": "Observer",
   "header_title": "ELUSIVE",
   "curator_tier_tag": "Most Popular",
   "signup_form_description": "This isn't just another event. It's a ceremony. A cipher. A cultural awakening. Seats are limited and each role is tied to the story. Reserve now to receive your briefing and prepare for what's to come.",
+
+  "value_proposition_text": "The first live chapter of *The Ones Who Remember* is unfolding in Columbia, SC. This immersive microfilm experience blends documentary, fiction, and physical mystery to explore what’s remembered, what’s erased, and who decides.\n\nThis isn’t just a screening—it’s a cipher, a ceremony, and a confrontation with the silence we’ve inherited.",
+  "detective_tier_title": "Observer",
+  "header_title": "ELUSIVE",
+  "curator_tier_tag": "Most Popular",
+  "signup_form_description": "This isn’t just another event. It’s a ceremony. A cipher. A cultural awakening. Seats are limited and each role is tied to the story. Reserve now to receive your briefing and prepare for what’s to come.",
+
   "curator_tier_description": "For dedicated narrative enthusiasts and story creators. Everything in Observer, plus:",
   "detective_tier_description": "Perfect for curious investigators ready to explore.",
   "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
@@ -25,6 +32,9 @@
     }
   ],
   "learn_more_button_text": "Learn More",
+  
+  "countdown_target_date": "2025-08-31T23:59:59",
+
   "accomplice_tier_description": "For those ready to shape the narrative and lead investigations. Everything in Memory-Holder, plus:",
   "firstname_placeholder": "First Name",
   "access_tiers_title": "Choose Your Investigation Level",
@@ -63,6 +73,13 @@
   "hero_main_headline_part2": "Event",
   "feature3_title": "Vessel - Cultural Mystery Companion App",
   "detective_tier_price": "$25",
+  "feature2_title": "Seasonal Immersive Events",
+  "curator_tier_price": "$35",
+  "hero_main_headline": "Next Event",
+  "event_launch_description": "Early Access gets first look at event date once launched.",
+  "feature3_title": "Vessel - Cultural Mystery Companion App",
+  "detective_tier_price": "$15",
+
   "faq_items": [
     {
       "question": "Do I need to have seen anything before this event?",
@@ -79,6 +96,17 @@
     {
       "question": "Can I come alone?",
       "answer": "Absolutely. Many do. You'll be welcomed into a community of co-investigators. Some moments are meant to be experienced solo; others are designed to connect you with new people."
+
+      "answer": "It’s both—and more. Expect storytelling, interactive moments, and surprises. This is a choose-your-level experience, not a sit-back show."
+    },
+    {
+      "question": "What should I wear?",
+      "answer": "Dress comfortably—but if you’re someone who loves to match the vibe, style-guides are always provided pre-event. Think: underground ritual meets community remembrance. Mindful tones, cultural accessories, story-worthy fits."
+    },
+    {
+      "question": "Can I come alone?",
+      "answer": "Absolutely. Many do. You’ll be welcomed into a community of co-investigators. Some moments are meant to be experienced solo; others are designed to connect you with new people."
+
     },
     {
       "question": "Will this event be filmed?",
@@ -126,6 +154,11 @@
   "feature3_description": "Where Stories Are Shared and Debated\nJoin a growing digital space for breaking down evidence, crafting your own character theories, and reading what others believe is really going on.",
   "signup_button_pending_text": "Reserving...",
   "accomplice_tier_price": "$75",
+  "mailerlite_form1_id": "your-mailerlite-form-id",
+  "feature3_description": "Where Stories Are Shared and Debated\nJoin a growing digital space for breaking down evidence, crafting your own character theories, and reading what others believe is really going on.",
+  "signup_button_pending_text": "Reserving...",
+  "accomplice_tier_price": "$55",
+
   "image_carousel_title": "Past Mystery Event August 2024 - #Burglary30",
   "signup_form_footer_text": "We'll never share your information. Only mystery updates and event invitations. Only those who register will receive the pre-event clues.",
   "accomplice_tier_selection": "accomplice",
