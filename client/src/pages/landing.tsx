@@ -1,595 +1,287 @@
-// src/pages/landing.tsx
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/hooks/use-toast";
-// Removed API mutation imports - using only MailerLite forms
 import { Link } from "wouter";
-import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, Eye } from "lucide-react";
-// Removed database schema import - using only MailerLite forms
-import MailerLiteForm from "@/components/MailerLiteForm";
 import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye } from "lucide-react";
-import { insertReservationSchema, type InsertReservation } from "@shared/schema";
+import MailerLiteForm from "@/components/MailerLiteForm";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-// Declare global MailerLite object for TypeScript
-declare global {
-  interface Window {
-    ml_jQuery: any;
-    jQuery: any;
-    mailerlite: {
-      load: () => void;
-      [key: string]: any; // Allow other properties
-    };
-    ml_webform_success_28257750: () => void; // Declare the global callback for MailerLite form 28257750
-  }
-}
-
-// Define the type for the content structure
-interface TierFeature {
-  feature: string;
-}
-
-interface FAQItem {
-  question: string;
-  answer: string;
-}
-
-interface LandingContent {
-  header_title: string;
-  back_to_coming_soon_text: string;
-  hero_main_headline: string; // Changed to single string
-  hero_sub_headline: string;
-  event_date_text: string;
-  event_launch_description: string;
-  current_rsvps: number;
-  target_rsvps: number;
-  value_proposition_text: string;
-  countdown_target_date: string; // Added for countdown logic
-  reserve_spot_button_text: string;
-  learn_more_button_text: string;
-  image_carousel_title: string;
-  carousel_images: Array<{
-    id: number;
-    alt: string;
-    placeholder: string;
-    image?: string;
-  }>;
-  whats_coming_next_title: string;
-  feature1_title: string;
-  feature1_description: string;
-  feature2_title: string;
-  feature2_description: string;
-  feature3_title: string;
-  feature3_description: string;
-  access_tiers_title: string;
-  detective_tier_title: string;
-  detective_tier_price: string;
-  detective_tier_selection: string;
-  detective_tier_description: string;
-  detective_tier_features: TierFeature[];
-  curator_tier_tag: string;
-  curator_tier_title: string;
-  curator_tier_price: string;
-  curator_tier_description: string;
-  curator_tier_selection: string;
-  curator_tier_features: TierFeature[];
-  accomplice_tier_title: string;
-  accomplice_tier_price: string;
-  accomplice_tier_description: string;
-  accomplice_tier_selection: string;
-  accomplice_tier_features: TierFeature[];
-  signup_form_title: string;
-  signup_form_description: string;
-  firstname_placeholder: string;
-  email_placeholder: string;
-  signup_button_pending_text: string;
-  signup_button_text: string;
-  signup_form_footer_text: string;
-  mailerlite_form1_id: string; // Keep MailerLite ID
-  faq_title: string;
-  faq_items: FAQItem[];
-  footer_copyright_text: string;
-  contact_us_link_text: string;
-  footer_links: { text: string; url: string }[];
-}
-
-declare global {
-  interface Window {
-    mailerlite?: any;
-    MailerLiteObject?: any;
-  }
-}
-
-// Helper Check icon for features list
-const Check = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"></path>
-  </svg>
-);
-
 export default function Landing() {
-  const [email, setEmail] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [currentImageIndex, setCurrentImageIndex] = useState(0); // For image carousel
+  const [selectedTier, setSelectedTier] = useState<string>('');
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
-  const [content, setContent] = useState<LandingContent | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const [timeLeft, setTimeLeft] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-  const { toast } = useToast();
-
-  // Fetch content specific to the landing page from JSON
+  // Show back to top button when scrolled down
   useEffect(() => {
-    fetch('/assets/content/landing.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((data: LandingContent) => {
-        setContent(data);
-        setLoading(false);
-      })
-      .catch((err: Error) => {
-        console.error("Error loading Landing page content:", err);
-        setError(err);
-        setLoading(false);
-      });
+    const handleScroll = () => {
+      setShowBackToTop(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Image carousel auto-rotation
-  useEffect(() => {
-    // Ensure content and carousel_images exist and have length before setting up interval
-    if (!content?.carousel_images || content.carousel_images.length === 0) return;
-
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prev) =>
-        (prev + 1) % content.carousel_images.length
-      );
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [content?.carousel_images]); // Depend on content.carousel_images to re-run if it changes
-
-
-
-  // Removed form submission logic - using only MailerLite forms
-  
-  // Countdown timer logic
-  useEffect(() => {
-    if (!content || !content.countdown_target_date) return;
-
-    const targetDate = new Date(content.countdown_target_date);
-
-    const calculateTimeLeft = () => {
-      const now = new Date();
-      const difference = targetDate.getTime() - now.getTime();
-
-      if (difference > 0) {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-        });
-      } else {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      }
-    };
-
-    calculateTimeLeft();
-    const timer = setInterval(calculateTimeLeft, 1000);
-
-    return () => clearInterval(timer);
-  }, [content]); // Depend on content to re-run if it changes
-
-  // MailerLite script injection
-  useEffect(() => {
-    const mailerliteScriptId = 'mailerlite-webforms-script';
-    if (!document.getElementById(mailerliteScriptId)) {
-      const script = document.createElement('script');
-      script.id = mailerliteScriptId;
-      script.src = 'https://groot.mailerlite.com/js/w/webforms.min.js?v176e10baa5e7ed80d35ae235be3d5024';
-      script.async = true;
-      document.body.appendChild(script);
-    }
-
-    // Define MailerLite success callback globally
-    (window as any).ml_webform_success_28257750 = function() {
-      const $ = (window as any).ml_jQuery || (window as any).jQuery;
-      if ($) {
-        $('.ml-subscribe-form-28257750 .row-success').show();
-        $('.ml-subscribe-form-28257750 .row-form').hide();
-      }
-    };
-
-    // Cleanup function
-    return () => {
-      const script = document.getElementById(mailerliteScriptId);
-      if (script) script.remove();
-      delete (window as any).ml_webform_success_28257750; // Clean up the global function
-    };
-  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
-
-  const signupMutation = useMutation({
-    mutationFn: async (data: { email: string; firstName?: string }) => {
-      const reservationData: InsertReservation = {
-        email: data.email,
-        firstName: data.firstName || "",
-        lastName: "",
-        investigationInterests: ["Cultural Mysteries"],
-        preferredRole: "Detective"
-      };
-
-      const response = await apiRequest("POST", "/api/reservations", reservationData);
-
-      if (!response.ok) {
-        const error = await response.text();
-        throw new Error(error);
-      }
-
-      return response.json();
-    },
-    onSuccess: () => {
-      toast({
-        title: "Welcome to the Investigation!",
-        description: "You're now on the list for exclusive event updates and early access.",
-        variant: "default",
-      });
-      setEmail("");
-      setFirstName("");
-    },
-    onError: (error: Error) => {
-      toast({
-        title: "Something went wrong",
-        description: error.message || "Please try again or contact us for help.",
-        variant: "destructive",
-      });
-    },
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    signupMutation.mutate({ email, firstName });
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-
-  // MailerLite embed rendering helper (no script injection, just the HTML structure)
-  const renderMailerLiteForm = (formId: string, embedDivId: string) => {
-    if (!formId) return null;
-    return (
-      <div id={embedDivId} className="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-28257750">
-        <div className="ml-form-embedWrapper embedForm">
-          <div className="ml-form-embedBody ml-form-embedBodyHorizontal row-form">
-            <div className="ml-form-embedContent" style={{ marginBottom: 0 }}>
-              <h4>Join Our Waitlist</h4>
-              <p>Be the first to know when we launch and get exclusive updates.</p>
-            </div>
-            {/* This div with data-ml-form is what MailerLite's script looks for */}
-            <div data-ml-form={formId}></div>
-          </div>
-          <div className="ml-form-successBody row-success" style={{ display: 'none' }}>
-            <div className="ml-form-successContent">
-              <h4>Thank you!</h4>
-              <p>You have successfully joined our subscriber list.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+  // Static content for the landing page
+  const content = {
+    header_title: "ELUSIVE",
+    back_to_coming_soon_text: "← Coming Soon",
+    hero_main_headline: "Next Event",
+    hero_sub_headline: "History is now.",
+    event_date_text: "Live Event Launch: Private",
+    event_launch_description: "Early Access gets first look at event date once launched.",
+    current_rsvps: 75,
+    target_rsvps: 500,
+    detective_tier_title: "Detective",
+    detective_tier_price: "$15",
+    detective_tier_description: "Essential access to the mystery",
+    detective_tier_selection: "Detective - $15",
+    detective_tier_features: [
+      { feature: "Event access" },
+      { feature: "Basic clues" },
+      { feature: "Community access" }
+    ],
+    curator_tier_title: "Curator",
+    curator_tier_price: "$35", 
+    curator_tier_description: "Enhanced investigation tools",
+    curator_tier_selection: "Curator - $35",
+    curator_tier_features: [
+      { feature: "Everything in Detective" },
+      { feature: "Advanced clues" },
+      { feature: "Early access" }
+    ],
+    accomplice_tier_title: "Accomplice",
+    accomplice_tier_price: "$75",
+    accomplice_tier_description: "Full behind-the-scenes access", 
+    accomplice_tier_selection: "Accomplice - $75",
+    accomplice_tier_features: [
+      { feature: "Everything in Curator" },
+      { feature: "Creator tools" },
+      { feature: "Priority support" }
+    ],
+    access_tiers_title: "Choose Your Investigation Level",
+    signup_form_title: "Reserve Your Investigation",
+    signup_form_description: "Join the growing community of truth-seekers",
+    footer_copyright_text: "2025 ELUSIVE. All rights reserved.",
+    contact_us_link_text: "Contact",
+    faq_title: "Frequently Asked Questions",
+    faq_items: [
+      {
+        question: "When will the event happen?",
+        answer: "The live event will be announced once we reach 500 RSVPs. Early access members get first notification."
+      },
+      {
+        question: "What's included in my access?",
+        answer: "Each tier includes different levels of access to clues, community features, and behind-the-scenes content."
+      },
+      {
+        question: "Can I upgrade later?",
+        answer: "Yes, you can upgrade your access level at any time before the event launches."
+      }
+    ]
   };
-
-  // --- Start of Robust Content Handling ---
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
-        Loading content...
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-red-600">
-        Error loading content: {error.message}
-      </div>
-    );
-  }
-
-  // Crucial check: only render the main content if 'content' is not null
-  if (!content) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white">
-        Content not available. Please check your JSON file.
-      </div>
-    );
-  }
-  // --- End of Robust Content Handling ---
-
-  // Split hero_main_headline into parts for gradient effect
-  const heroHeadlineParts = content.hero_main_headline.split(' ');
-  const heroHeadlinePart1 = heroHeadlineParts[0];
-  const heroHeadlinePart2 = heroHeadlineParts.slice(1).join(' ');
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white font-inter">
       {/* Header */}
-      <header className="p-6">
-        <div className="flex items-center justify-between max-w-6xl mx-auto">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
-              <div className="w-2 h-2 bg-[#FFB90F] rounded-full"></div>
-            </div>
-            <span className="text-xl font-bold tracking-wider">{content.header_title}</span>
-          </div>
+      <header className="fixed top-0 w-full z-50 bg-black/80 backdrop-blur-sm border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/">
-            <Button variant="ghost" className="text-gray-400 hover:text-white">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 relative">
+                <div className="absolute inset-1 bg-[#FFB90F]/20 rotate-45"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#FFB90F] rounded-full"></div>
+              </div>
+              <span className="text-xl font-bold text-[#FFB90F]">{content.header_title}</span>
+            </div>
+          </Link>
+          
+          <Link href="/">
+            <Button variant="ghost" className="text-gray-300 hover:text-[#FFB90F]">
               {content.back_to_coming_soon_text}
             </Button>
           </Link>
         </div>
       </header>
 
-      {/* Hero Event Section */}
-      <main className="relative px-6 py-12">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-32 h-32 border border-[#FFB90F] rotate-45"></div>
-          <div className="absolute bottom-40 right-32 w-24 h-24 border border-[#8B0000] rotate-12"></div>
-          <div className="absolute top-1/3 right-20 w-16 h-16 bg-[#FFB90F] opacity-20 rounded-full"></div>
-        </div>
-
-        <div className="max-w-5xl mx-auto text-center space-y-12 relative z-10">
-          {/* Main Event Hero */}
-          <div className="space-y-8">
-            {/* Pulsing Logo */}
-            <div className="flex justify-center">
-              <div className="w-20 h-20 border-4 border-[#FFB90F] rotate-45 mx-auto mb-8 relative animate-pulse-glow">
-                <div className="absolute inset-3 bg-[#FFB90F]/20 rotate-45"></div>
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#FFB90F] rounded-full"></div>
-              </div>
+      <main className="pt-20">
+        {/* Hero Section */}
+        <section className="relative px-6 py-16">
+          <div className="max-w-4xl mx-auto text-center">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
+              <span className="text-white">Next </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">Event</span>
+            </h1>
+            
+            <p className="text-xl text-gray-300 mb-8">{content.hero_sub_headline}</p>
+            
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 mb-8 border border-gray-700">
+              <p className="text-[#FFB90F] font-medium mb-2">{content.event_date_text}</p>
+              <p className="text-gray-300">{content.event_launch_description}</p>
             </div>
 
-            <div className="space-y-6">
-              <h1 className="text-6xl md:text-8xl font-bold leading-tight">
-                {heroHeadlinePart1}{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">
-                  {heroHeadlinePart2}
-                </span>
-              </h1>
-              <p className="text-2xl md:text-3xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                {content.hero_sub_headline}
-              </p>
-              <div className="text-xl text-[#FFB90F] font-semibold">
-                {content.event_date_text}
+            {/* RSVP Progress */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 mb-8 border border-gray-700">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Users className="w-6 h-6 text-[#FFB90F]" />
+                <h2 className="text-xl font-semibold text-[#FFB90F]">Community Interest</h2>
               </div>
-            </div>
-
-            {/* Value Proposition */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-4xl mx-auto">
-              <p className="text-xl md:text-2xl text-gray-100 leading-relaxed" dangerouslySetInnerHTML={{ __html: content.value_proposition_text }}></p>
-            </div>
-
-            {/* Countdown Timer */}
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-3xl mx-auto">
-              <div className="flex items-center justify-center mb-6">
-                <Clock className="w-8 h-8 text-[#FFB90F] mr-3" />
-                <h3 className="text-2xl font-semibold">Event Launches In</h3>
+              <h3 className="text-3xl font-bold text-[#FFB90F] mb-2">Growing Community</h3>
+              <p className="text-gray-300 mb-4">Investigators are joining the mystery. Reserve your spot to be notified when we launch.</p>
+              <div className="w-full bg-gray-700 rounded-full h-3 mb-2">
+                <div className="bg-gradient-to-r from-[#FFB90F] to-[#FFA500] h-3 rounded-full" style={{width: '15%'}}></div>
               </div>
-              <div className="grid grid-cols-4 gap-4 text-center">
-                <div className="bg-white/10 rounded-lg p-4">
-                  <div className="text-3xl font-bold text-[#FFB90F]">{timeLeft.days}</div>
-                  <div className="text-sm text-gray-400">Days</div>
-                </div>
-                <div className="bg-white/10 rounded-lg p-4">
-                  <div className="text-3xl font-bold text-[#FFB90F]">{timeLeft.hours}</div>
-                  <div className="text-sm text-gray-400">Hours</div>
-                </div>
-                <div className="bg-white/10 rounded-lg p-4">
-                  <div className="text-3xl font-bold text-[#FFB90F]">{timeLeft.minutes}</div>
-                  <div className="text-sm text-gray-400">Minutes</div>
-                </div>
-                <div className="bg-white/10 rounded-lg p-4">
-                  <div className="text-3xl font-bold text-[#FFB90F]">{timeLeft.seconds}</div>
-                  <div className="text-sm text-gray-400">Seconds</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Primary CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-md mx-auto">
-              <Button 
-                onClick={() => document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-full sm:w-auto bg-[#8B0000] hover:bg-[#8B0000]/90 text-white px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200"
-              >
-                {content.reserve_spot_button_text}
-                <ChevronRight className="w-5 h-5 ml-2" />
-              </Button>
-              <Button 
-                onClick={() => document.getElementById('what-to-expect')?.scrollIntoView({ behavior: 'smooth' })}
-                variant="outline"
-                className="w-full sm:w-auto border-[#FFB90F] text-[#FFB90F] hover:bg-[#FFB90F] hover:text-black px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-200"
-              >
-                {content.learn_more_button_text}
-              </Button>
+              <p className="text-sm text-gray-400">Join the investigation</p>
             </div>
           </div>
+        </section>
 
-          {/* Brief What to Expect Section */}
-          <div id="what-to-expect" className="mt-20 pt-8 border-t border-white/10 max-w-4xl mx-auto">
-            <h3 className="text-3xl font-bold mb-8">{content.whats_coming_next_title}</h3>
+        {/* Access Tiers Section */}
+        <section className="px-6 py-16" id="signup">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.access_tiers_title}</h2>
             <div className="grid md:grid-cols-3 gap-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-8 h-8 text-[#FFB90F]" />
-                </div>
-                <h4 className="text-xl font-semibold mb-3">{content.feature1_title}</h4>
-                <p className="text-gray-300">{content.feature1_description}</p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Sparkles className="w-8 h-8 text-[#FFB90F]" />
-                </div>
-                <h4 className="text-xl font-semibold mb-3">{content.feature2_title}</h4>
-                <p className="text-gray-300">{content.feature2_description}</p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-[#FFB90F]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Mail className="w-8 h-8 text-[#FFB90F]" />
-                </div>
-                <h4 className="text-xl font-semibold mb-3">{content.feature3_title}</h4>
-                <p className="text-gray-300">{content.feature3_description}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Access Tiers Section */}
-          <div className="mt-20 pt-8 border-t border-white/10 max-w-4xl mx-auto">
-            <h3 className="text-3xl font-bold mb-8 text-center">{content.access_tiers_title}</h3>
-            <div className="grid md:grid-cols-3 gap-6">
               {/* Detective Tier */}
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-[#FFB90F]/50 transition-all duration-300">
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Search className="w-6 h-6 text-[#FFB90F]" />
-                  </div>
-                  <h4 className="text-xl font-bold mb-2">{content.detective_tier_title}</h4>
-                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">{content.detective_tier_price}</div>
-                  <p className="text-gray-300 mb-6 text-sm">
-                    {content.detective_tier_description}
-                  </p>
-                  <ul className="text-left space-y-2 mb-6">
-                    {content.detective_tier_features.map((feature, index) => (
-                      <li key={index} className="flex items-center text-sm">
-                        <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                        {feature.feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
+                selectedTier === content.detective_tier_selection 
+                  ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
+                  : 'border-white/10 hover:border-white/20'
+              }`}>
+                <h3 className="text-xl font-semibold mb-2">{content.detective_tier_title}</h3>
+                <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.detective_tier_price}</div>
+                <p className="text-gray-300 mb-6">{content.detective_tier_description}</p>
+                <ul className="space-y-2 mb-6">
+                  {content.detective_tier_features.map((feature, index) => (
+                    <li key={index} className="flex items-center text-sm text-gray-300">
+                      <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                      {feature.feature}
+                    </li>
+                  ))}
+                </ul>
+                <Button 
+                  onClick={() => {
+                    setSelectedTier(content.detective_tier_selection);
+                    document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className={`w-full transition-all duration-300 ${
+                    selectedTier === content.detective_tier_selection
+                      ? 'bg-[#FFB90F] text-black'
+                      : 'bg-white/10 text-white hover:bg-white/20'
+                  }`}
+                >
+                  Select Detective
+                </Button>
               </div>
 
               {/* Curator Tier */}
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border-2 border-[#FFB90F] hover:border-[#FFB90F]/80 transition-all duration-300 relative">
-                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <span className="bg-[#FFB90F] text-black px-3 py-1 rounded-full text-xs font-semibold">
-                    {content.curator_tier_tag}
-                  </span>
-                </div>
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-[#FFB90F]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Users className="w-6 h-6 text-[#FFB90F]" />
-                  </div>
-                  <h4 className="text-xl font-bold mb-2">{content.curator_tier_title}</h4>
-                  <div className="text-3xl font-bold text-[#FFB90F] mb-4">{content.curator_tier_price}</div>
-                  <p className="text-gray-300 mb-6 text-sm">
-                    {content.curator_tier_description}
-                  </p>
-                  <ul className="text-left space-y-2 mb-6">
-                    {content.curator_tier_features.map((feature, index) => (
-                      <li key={index} className="flex items-center text-sm">
-                        <div className="w-2 h-2 bg-[#FFB90F] rounded-full mr-3"></div>
-                        {feature.feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
+                selectedTier === content.curator_tier_selection 
+                  ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
+                  : 'border-white/10 hover:border-white/20'
+              }`}>
+                <h3 className="text-xl font-semibold mb-2">{content.curator_tier_title}</h3>
+                <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.curator_tier_price}</div>
+                <p className="text-gray-300 mb-6">{content.curator_tier_description}</p>
+                <ul className="space-y-2 mb-6">
+                  {content.curator_tier_features.map((feature, index) => (
+                    <li key={index} className="flex items-center text-sm text-gray-300">
+                      <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                      {feature.feature}
+                    </li>
+                  ))}
+                </ul>
+                <Button 
+                  onClick={() => {
+                    setSelectedTier(content.curator_tier_selection);
+                    document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className={`w-full transition-all duration-300 ${
+                    selectedTier === content.curator_tier_selection
+                      ? 'bg-[#FFB90F] text-black'
+                      : 'bg-white/10 text-white hover:bg-white/20'
+                  }`}
+                >
+                  Select Curator
+                </Button>
               </div>
 
               {/* Accomplice Tier */}
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 hover:border-[#8B0000]/50 transition-all duration-300">
-                <div className="text-center">
-                  <div className="w-12 h-12 bg-[#8B0000]/20 rounded-lg flex items-center justify-center mx-auto mb-4">
-                    <Crown className="w-6 h-6 text-[#8B0000]" />
-                  </div>
-                  <h4 className="text-xl font-bold mb-2">{content.accomplice_tier_title}</h4>
-                  <div className="text-3xl font-bold text-[#8B0000] mb-4">{content.accomplice_tier_price}</div>
-                  <p className="text-gray-300 mb-6 text-sm">
-                    {content.accomplice_tier_description}
-                  </p>
-                  <ul className="text-left space-y-2 mb-6">
-                    {content.accomplice_tier_features.map((feature, index) => (
-                      <li key={index} className="flex items-center text-sm">
-                        <div className="w-2 h-2 bg-[#8B0000] rounded-full mr-3"></div>
-                        {feature.feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
+                selectedTier === content.accomplice_tier_selection 
+                  ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
+                  : 'border-white/10 hover:border-white/20'
+              }`}>
+                <h3 className="text-xl font-semibold mb-2">{content.accomplice_tier_title}</h3>
+                <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.accomplice_tier_price}</div>
+                <p className="text-gray-300 mb-6">{content.accomplice_tier_description}</p>
+                <ul className="space-y-2 mb-6">
+                  {content.accomplice_tier_features.map((feature, index) => (
+                    <li key={index} className="flex items-center text-sm text-gray-300">
+                      <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
+                      {feature.feature}
+                    </li>
+                  ))}
+                </ul>
+                <Button 
+                  onClick={() => {
+                    setSelectedTier(content.accomplice_tier_selection);
+                    document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className={`w-full transition-all duration-300 ${
+                    selectedTier === content.accomplice_tier_selection
+                      ? 'bg-[#FFB90F] text-black'
+                      : 'bg-white/10 text-white hover:bg-white/20'
+                  }`}
+                >
+                  Select Accomplice
+                </Button>
               </div>
             </div>
           </div>
+        </section>
 
-          {/* Streamlined Email Signup Form (Original form, text now dynamic) */}
-          <div id="signup-form" className="mt-20 pt-8 border-t border-white/10 max-w-2xl mx-auto">
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10">
-              <h3 className="text-3xl font-bold mb-4 text-center">{content.signup_form_title}</h3>
-              <p className="text-gray-300 mb-8 text-center">
-                {content.signup_form_description}
-              </p>
+        {/* Signup Form Section */}
+        <section className="px-6 py-16" id="signup-form">
+          <div className="max-w-2xl mx-auto">
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Mail className="w-6 h-6 text-[#FFB90F]" />
+                <h2 className="text-2xl font-semibold text-[#FFB90F]">{content.signup_form_title}</h2>
+              </div>
               
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <Input
-                    type="text"
-                    placeholder={content.firstname_placeholder}
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-xl h-12"
-                  />
-                  <Input
-                    type="email"
-                    placeholder={content.email_placeholder}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="bg-white/10 border-white/20 text-white placeholder:text-gray-400 rounded-xl h-12"
-                    required
-                  />
+              <p className="text-gray-300 mb-6">{content.signup_form_description}</p>
+              
+              {/* MailerLite Form */}
+              <MailerLiteForm formId="qp06KG" className="w-full" />
+              
+              {selectedTier && (
+                <div className="text-sm text-gray-300 text-center mt-4">
+                  Selected: <span className="text-[#FFB90F] font-medium">{selectedTier}</span>
                 </div>
-                <Button
-                  type="submit"
-                  disabled={signupMutation.isPending}
-                  className="w-full bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black font-semibold rounded-xl h-12 text-lg transition-all duration-200"
-                >
-                  {signupMutation.isPending ? content.signup_button_pending_text : content.signup_button_text}
-                  <ChevronRight className="w-5 h-5 ml-2" />
-                </Button>
-              </form>
-              
-              <p className="text-xs text-gray-400 mt-4 text-center">
-                {content.signup_form_footer_text}
-              </p>
+              )}
             </div>
           </div>
+        </section>
 
-          {/* MailerLite Form 1 (Additional) */}
-          <div className="mt-16 bg-white/5 backdrop-blur-sm rounded-xl p-8 border border-white/10 max-w-2xl mx-auto">
-            <h3 className="text-3xl font-bold mb-4 text-center">MailerLite Form</h3>
-            {renderMailerLiteForm(content.mailerlite_form1_id, 'landing-mailerlite-form-1')}
-          </div>
-
-          {/* Brief FAQ */}
-          <div className="mt-16 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-semibold mb-6 text-center">{content.faq_title}</h3>
+        {/* FAQ Section */}
+        <section className="px-6 py-16">
+          <div className="max-w-4xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.faq_title}</h2>
             <Accordion type="single" collapsible className="space-y-4">
-              {content.faq_items?.map((item, index) => (
-                <AccordionItem key={index} value={`item-${index + 1}`} className="bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden">
-                  <AccordionTrigger className="px-6 py-4 text-left text-white hover:text-[#FFB90F] transition-colors font-semibold text-lg hover:no-underline">
+              {content.faq_items.map((item, index) => (
+                <AccordionItem key={index} value={`item-${index}`} className="border border-gray-700 rounded-lg px-6">
+                  <AccordionTrigger className="text-white hover:text-[#FFB90F]">
                     {item.question}
                   </AccordionTrigger>
-                  <AccordionContent className="px-6 pb-4 text-gray-300 text-sm" dangerouslySetInnerHTML={{ __html: item.answer }}></AccordionContent>
+                  <AccordionContent className="text-gray-300">
+                    {item.answer}
+                  </AccordionContent>
                 </AccordionItem>
               ))}
             </Accordion>
           </div>
-        </div>
+        </section>
       </main>
 
       {/* Minimal Footer */}
@@ -605,198 +297,19 @@ export default function Landing() {
                 {content.back_to_coming_soon_text}
               </Link>
             </div>
-            
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-center">
-              <div className="w-12 h-12 bg-[#8B0000] rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Sparkles className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">{content.feature2_title}</h3>
-              <p className="text-gray-300">{content.feature2_description}</p>
-            </div>
-            <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 text-center">
-              <div className="w-12 h-12 bg-[#4B0082] rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Search className="w-6 h-6 text-white" />
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">{content.feature3_title}</h3>
-              <p className="text-gray-300">{content.feature3_description}</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Access Tiers Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.access_tiers_title}</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Detective Tier */}
-            <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
-              selectedTier === content.detective_tier_selection 
-                ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
-                : 'border-white/10 hover:border-white/20'
-            }`}>
-              <h3 className="text-xl font-semibold mb-2">{content.detective_tier_title}</h3>
-              <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.detective_tier_price}</div>
-              <p className="text-gray-300 mb-6">{content.detective_tier_description}</p>
-              <ul className="space-y-2 mb-6">
-                {content.detective_tier_features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
-                    {feature.feature}
-                  </li>
-                ))}
-              </ul>
-              <Button 
-                onClick={() => {
-                  setSelectedTier(content.detective_tier_selection);
-                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className={`w-full transition-all duration-300 ${
-                  selectedTier === content.detective_tier_selection
-                    ? 'bg-[#FFB90F] text-black'
-                    : 'bg-white/10 hover:bg-white/20 text-white border border-white/20'
-                }`}
-              >
-                {selectedTier === content.detective_tier_selection ? '✓ Selected' : 'Choose Detective'}
-              </Button>
-            </div>
-
-            {/* Curator Tier */}
-            <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border-2 relative transition-all duration-300 cursor-pointer ${
-              selectedTier === content.curator_tier_selection 
-                ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
-                : 'border-[#FFB90F] hover:bg-[#FFB90F]/5'
-            }`}>
-              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-[#FFB90F] text-black px-4 py-1 rounded-full text-sm font-medium">
-                {content.curator_tier_tag}
-              </div>
-              <h3 className="text-xl font-semibold mb-2">{content.curator_tier_title}</h3>
-              <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.curator_tier_price}</div>
-              <p className="text-gray-300 mb-6">{content.curator_tier_description}</p>
-              <ul className="space-y-2 mb-6">
-                {content.curator_tier_features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
-                    {feature.feature}
-                  </li>
-                ))}
-              </ul>
-              <Button 
-                onClick={() => {
-                  setSelectedTier(content.curator_tier_selection);
-                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className={`w-full transition-all duration-300 ${
-                  selectedTier === content.curator_tier_selection
-                    ? 'bg-[#FFB90F] text-black ring-2 ring-[#FFB90F]/50'
-                    : 'bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black'
-                }`}
-              >
-                {selectedTier === content.curator_tier_selection ? '✓ Selected' : 'Choose Curator'}
-              </Button>
-            </div>
-
-            {/* Accomplice Tier */}
-            <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
-              selectedTier === content.accomplice_tier_selection 
-                ? 'border-[#8B0000] bg-[#8B0000]/10' 
-                : 'border-white/10 hover:border-[#8B0000]/50'
-            }`}>
-              <div className="flex items-center mb-2">
-                <Crown className="w-5 h-5 text-[#FFB90F] mr-2" />
-                <h3 className="text-xl font-semibold">{content.accomplice_tier_title}</h3>
-              </div>
-              <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.accomplice_tier_price}</div>
-              <p className="text-gray-300 mb-6">{content.accomplice_tier_description}</p>
-              <ul className="space-y-2 mb-6">
-                {content.accomplice_tier_features.map((feature, index) => (
-                  <li key={index} className="flex items-center text-sm text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
-                    {feature.feature}
-                  </li>
-                ))}
-              </ul>
-              <Button 
-                onClick={() => {
-                  setSelectedTier(content.accomplice_tier_selection);
-                  document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className={`w-full transition-all duration-300 ${
-                  selectedTier === content.accomplice_tier_selection
-                    ? 'bg-[#8B0000] text-white ring-2 ring-[#8B0000]/50'
-                    : 'bg-[#8B0000] hover:bg-[#8B0000]/90 text-white'
-                }`}
-              >
-                {selectedTier === content.accomplice_tier_selection ? '✓ Selected' : 'Choose Accomplice'}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Signup Section */}
-      <section id="signup" className="px-6 py-16">
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold mb-2">{content.signup_form_title}</h2>
-              <p className="text-gray-300">{content.signup_form_description}</p>
-            </div>
-
-            {/* MailerLite Form */}
-            <MailerLiteForm formId="qp06KG" className="w-full" />
-            
-            {selectedTier && (
-              <div className="text-sm text-gray-300 text-center mt-4">
-                Selected: <span className="text-[#FFB90F] font-medium">{selectedTier}</span>
-              </div>
-            )}
-
-            <p className="text-xs text-gray-400 text-center mt-4">
-              {content.signup_form_footer_text}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.faq_title}</h2>
-          <div className="space-y-6">
-            {content.faq_items.map((item, index) => (
-              <div key={index} className="bg-white/5 backdrop-blur-sm rounded-lg p-6 border border-white/10">
-                <h3 className="text-lg font-semibold mb-3 text-[#FFB90F]">{item.question}</h3>
-                <div 
-                  className="text-gray-300"
-                  dangerouslySetInnerHTML={{ 
-                    __html: item.answer.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') 
-                  }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="px-6 py-12 border-t border-white/10">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="flex items-center justify-center space-x-3 mb-4">
-            <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 flex items-center justify-center">
-              <div className="w-2 h-2 bg-[#FFB90F] rounded-full"></div>
-            </div>
-            <span className="text-xl font-bold tracking-wider">{content.header_title}</span>
-          </div>
-          <div className="text-sm text-gray-400 space-x-4">
-            <span>{content.footer_copyright_text}</span>
-            <a href="/contact" className="hover:text-[#FFB90F] transition-colors">
-              {content.contact_us_link_text}
-            </a>
-
           </div>
         </div>
       </footer>
+
+      {/* Back to Top Button */}
+      {showBackToTop && (
+        <Button
+          onClick={scrollToTop}
+          className="fixed bottom-6 right-6 z-50 bg-[#FFB90F] hover:bg-[#FFB90F]/90 text-black p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110"
+        >
+          <ChevronRight className="w-5 h-5 rotate-[-90deg]" />
+        </Button>
+      )}
     </div>
   );
 }
