@@ -346,31 +346,43 @@ export default function Landing() {
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{(content as any)?.faq_title || "The Briefing"}</h2>
             
-            <div className="space-y-8">
+            <Accordion type="single" collapsible className="space-y-4">
               {((content as any)?.faq_items || []).map((item: any, index: number) => (
-                <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                  <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">{item.question}</h3>
-                  <p className="text-gray-300">
+                <AccordionItem key={`item-${index}`} value={`item-${index}`} className="border border-gray-700 rounded-lg px-6">
+                  <AccordionTrigger className="text-white hover:text-[#FFB90F]">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-300">
                     {item.answer}
-                  </p>
-                </div>
+                  </AccordionContent>
+                </AccordionItem>
               ))}
-            </div>
+            </Accordion>
           </div>
         </section>
       </main>
 
-      {/* Minimal Footer */}
+      {/* Footer */}
       <footer className="relative mt-16 py-8 border-t border-white/10">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 relative">
+                <div className="absolute inset-1 bg-[#FFB90F]/20 rotate-45"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#FFB90F] rounded-full"></div>
+              </div>
+              <span className="text-xl font-bold text-[#FFB90F]">ELUSIVE</span>
+            </div>
             <p className="text-sm text-gray-400">&copy; {(content as any)?.footer_copyright_text || "2025 Elusive Origin. All rights reserved."}</p>
             <div className="flex items-center space-x-6">
               <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
-                {(content as any)?.contact_us_link_text || "Contact Us"}
+                Contact
               </a>
               <Link href="/" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
-                {(content as any)?.back_to_coming_soon_text || "← Coming Soon"}
+                Privacy
+              </Link>
+              <Link href="/" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
+                Terms
               </Link>
             </div>
           </div>

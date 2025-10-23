@@ -302,16 +302,22 @@ export default function ComingSoon() {
       </section>
 
       {/* Footer */}
-      <footer className="mt-16 pt-8 border-t border-gray-800 text-center">
+      <footer className="mt-16 pt-8 border-t border-gray-800">
         <div className="max-w-4xl mx-auto">
-          <div className="flex justify-center space-x-8 mb-6 text-sm text-gray-400">
-            <Link href="/platform" className="hover:text-[#FFB90F] transition-colors">Event Updates</Link>
-            <Link href="/vessel" className="hover:text-[#FFB90F] transition-colors">Vessel Preview</Link>
-            <a href="mailto:hello@elusive.io" className="hover:text-[#FFB90F] transition-colors">Contact</a>
-          </div>
-          
-          <div className="text-xs text-gray-500 space-y-2">
-            <p>&copy; 2025 ELUSIVE. All rights reserved.</p>
+          <div className="flex flex-col items-center space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 relative">
+                <div className="absolute inset-1 bg-[#FFB90F]/20 rotate-45"></div>
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#FFB90F] rounded-full"></div>
+              </div>
+              <span className="text-xl font-bold text-[#FFB90F]">ELUSIVE</span>
+            </div>
+            <p className="text-sm text-gray-400">&copy; 2025 Elusive Origin. All rights reserved.</p>
+            <div className="flex justify-center space-x-8 text-sm text-gray-400">
+              <a href="mailto:hello@elusive.io" className="hover:text-[#FFB90F] transition-colors">Contact</a>
+              <Link href="/" className="hover:text-[#FFB90F] transition-colors">Privacy</Link>
+              <Link href="/" className="hover:text-[#FFB90F] transition-colors">Terms</Link>
+            </div>
           </div>
         </div>
       </footer>
