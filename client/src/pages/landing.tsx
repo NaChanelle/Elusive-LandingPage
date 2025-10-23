@@ -4,27 +4,20 @@ import { Link } from "wouter";
 import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye, ChevronLeft, Play, Zap, Heart } from "lucide-react";
 import MailerLiteForm from "@/components/MailerLiteForm";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Landing() {
   const [selectedTier, setSelectedTier] = useState<string>('');
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [currentEventImageIndex, setCurrentEventImageIndex] = useState(0);
 
-  // Past event carousel images
-  const pastEventImages = [
-    { 
-      src: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=600&h=400&fit=crop",
-      alt: "Mystery Investigation Scene 1" 
-    },
-    { 
-      src: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=400&fit=crop", 
-      alt: "Mystery Investigation Scene 2" 
-    },
-    { 
-      src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&h=400&fit=crop", 
-      alt: "Mystery Investigation Scene 3" 
-    }
-  ];
+  // Load content from JSON file
+  const { data: content } = useQuery({
+    queryKey: ['/assets/content/landing.json'],
+  });
+
+  // Get carousel images from loaded content or use defaults
+  const pastEventImages = (content as any)?.carousel_images || [];
 
   // Show back to top button when scrolled down
   useEffect(() => {
@@ -40,65 +33,6 @@ export default function Landing() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Static content for the landing page
-  const content = {
-    header_title: "ELUSIVE",
-    back_to_coming_soon_text: "← Coming Soon",
-    hero_main_headline: "Next Event",
-    hero_sub_headline: "History is now.",
-    event_date_text: "Live Event Launch: Private",
-    event_launch_description: "Early Access gets first look at event date once launched.",
-    current_rsvps: 75,
-    target_rsvps: 500,
-    detective_tier_title: "Detective",
-    detective_tier_price: "$15",
-    detective_tier_description: "Essential access to the mystery",
-    detective_tier_selection: "Detective - $15",
-    detective_tier_features: [
-      { feature: "Event access" },
-      { feature: "Basic clues" },
-      { feature: "Community access" }
-    ],
-    curator_tier_title: "Curator",
-    curator_tier_price: "$35", 
-    curator_tier_description: "Enhanced investigation tools",
-    curator_tier_selection: "Curator - $35",
-    curator_tier_features: [
-      { feature: "Everything in Detective" },
-      { feature: "Advanced clues" },
-      { feature: "Early access" }
-    ],
-    accomplice_tier_title: "Accomplice",
-    accomplice_tier_price: "$75",
-    accomplice_tier_description: "Full behind-the-scenes access", 
-    accomplice_tier_selection: "Accomplice - $75",
-    accomplice_tier_features: [
-      { feature: "Everything in Curator" },
-      { feature: "Creator tools" },
-      { feature: "Priority support" }
-    ],
-    access_tiers_title: "Choose Your Investigation Level",
-    signup_form_title: "Reserve Your Investigation",
-    signup_form_description: "Join the growing community of truth-seekers",
-    footer_copyright_text: "2025 ELUSIVE. All rights reserved.",
-    contact_us_link_text: "Contact",
-    faq_title: "Frequently Asked Questions",
-    faq_items: [
-      {
-        question: "When will the event happen?",
-        answer: "The live event will be announced once we reach 500 RSVPs. Early access members get first notification."
-      },
-      {
-        question: "What's included in my access?",
-        answer: "Each tier includes different levels of access to clues, community features, and behind-the-scenes content."
-      },
-      {
-        question: "Can I upgrade later?",
-        answer: "Yes, you can upgrade your access level at any time before the event launches."
-      }
-    ]
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0A0A0A] via-[#1a1a1a] to-[#2a2a2a] text-white font-inter">
       {/* Header */}
@@ -110,13 +44,13 @@ export default function Landing() {
                 <div className="absolute inset-1 bg-[#FFB90F]/20 rotate-45"></div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#FFB90F] rounded-full"></div>
               </div>
-              <span className="text-xl font-bold text-[#FFB90F]">{content.header_title}</span>
+              <span className="text-xl font-bold text-[#FFB90F]">{(content as any)?.header_title || "ELUSIVE"}</span>
             </div>
           </Link>
           
           <Link href="/">
             <Button variant="ghost" className="text-gray-300 hover:text-[#FFB90F]">
-              {content.back_to_coming_soon_text}
+              {(content as any)?.back_to_coming_soon_text || "← Coming Soon"}
             </Button>
           </Link>
         </div>
@@ -131,11 +65,11 @@ export default function Landing() {
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">Event</span>
             </h1>
             
-            <p className="text-xl text-gray-300 mb-8">{content.hero_sub_headline}</p>
+            <p className="text-xl text-gray-300 mb-8">{(content as any)?.hero_sub_headline || "History is now."}</p>
             
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 mb-8 border border-gray-700">
-              <p className="text-[#FFB90F] font-medium mb-2">{content.event_date_text}</p>
-              <p className="text-gray-300">{content.event_launch_description}</p>
+              <p className="text-[#FFB90F] font-medium mb-2">{(content as any)?.event_date_text || "Live Event Launch: Private"}</p>
+              <p className="text-gray-300">{(content as any)?.event_launch_description || "Early Access gets first look at event date once launched."}</p>
             </div>
 
             {/* RSVP Progress */}
@@ -181,11 +115,13 @@ export default function Landing() {
             
             <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 overflow-hidden group">
               <div className="relative h-96">
-                <img 
-                  src={pastEventImages[currentEventImageIndex].src}
-                  alt={pastEventImages[currentEventImageIndex].alt}
-                  className="w-full h-full object-cover transition-all duration-500"
-                />
+                {pastEventImages.length > 0 && (
+                  <img 
+                    src={pastEventImages[currentEventImageIndex]?.image || pastEventImages[currentEventImageIndex]?.url}
+                    alt={pastEventImages[currentEventImageIndex]?.alt || "Event Scene"}
+                    className="w-full h-full object-contain bg-gray-900 transition-all duration-500"
+                  />
+                )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 
                 {/* Event overlay content */}
@@ -224,7 +160,7 @@ export default function Landing() {
                 
                 {/* Dots indicator */}
                 <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                  {pastEventImages.map((_, index) => (
+                  {pastEventImages.map((_: any, index: number) => (
                     <button
                       key={index}
                       onClick={() => setCurrentEventImageIndex(index)}
@@ -281,19 +217,19 @@ export default function Landing() {
         {/* Access Tiers Section */}
         <section className="px-6 py-16" id="signup">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.access_tiers_title}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{(content as any)?.access_tiers_title || "Choose Your Investigation Level"}</h2>
             <div className="grid md:grid-cols-3 gap-8">
               {/* Detective Tier */}
               <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
-                selectedTier === content.detective_tier_selection 
+                selectedTier === (content as any)?.detective_tier_selection 
                   ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
                   : 'border-white/10 hover:border-white/20'
               }`}>
-                <h3 className="text-xl font-semibold mb-2">{content.detective_tier_title}</h3>
-                <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.detective_tier_price}</div>
-                <p className="text-gray-300 mb-6">{content.detective_tier_description}</p>
+                <h3 className="text-xl font-semibold mb-2">{(content as any)?.detective_tier_title || "Observer"}</h3>
+                <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{(content as any)?.detective_tier_price || "$15"}</div>
+                <p className="text-gray-300 mb-6">{(content as any)?.detective_tier_description || "Perfect for curious investigators ready to explore."}</p>
                 <ul className="space-y-2 mb-6">
-                  {content.detective_tier_features.map((feature, index) => (
+                  {((content as any)?.detective_tier_features || []).map((feature: any, index: number) => (
                     <li key={index} className="flex items-center text-sm text-gray-300">
                       <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
                       {feature.feature}
@@ -302,30 +238,30 @@ export default function Landing() {
                 </ul>
                 <Button 
                   onClick={() => {
-                    setSelectedTier(content.detective_tier_selection);
+                    setSelectedTier((content as any)?.detective_tier_selection || "observer");
                     document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className={`w-full transition-all duration-300 ${
-                    selectedTier === content.detective_tier_selection
+                    selectedTier === (content as any)?.detective_tier_selection
                       ? 'bg-[#FFB90F] text-black'
                       : 'bg-white/10 text-white hover:bg-white/20'
                   }`}
                 >
-                  Select Detective
+                  Select Observer
                 </Button>
               </div>
 
               {/* Curator Tier */}
               <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
-                selectedTier === content.curator_tier_selection 
+                selectedTier === (content as any)?.curator_tier_selection 
                   ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
                   : 'border-white/10 hover:border-white/20'
               }`}>
-                <h3 className="text-xl font-semibold mb-2">{content.curator_tier_title}</h3>
-                <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.curator_tier_price}</div>
-                <p className="text-gray-300 mb-6">{content.curator_tier_description}</p>
+                <h3 className="text-xl font-semibold mb-2">{(content as any)?.curator_tier_title || "Memory Holder"}</h3>
+                <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{(content as any)?.curator_tier_price || "$35"}</div>
+                <p className="text-gray-300 mb-6">{(content as any)?.curator_tier_description || "For dedicated narrative enthusiasts and story creators."}</p>
                 <ul className="space-y-2 mb-6">
-                  {content.curator_tier_features.map((feature, index) => (
+                  {((content as any)?.curator_tier_features || []).map((feature: any, index: number) => (
                     <li key={index} className="flex items-center text-sm text-gray-300">
                       <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
                       {feature.feature}
@@ -334,30 +270,30 @@ export default function Landing() {
                 </ul>
                 <Button 
                   onClick={() => {
-                    setSelectedTier(content.curator_tier_selection);
+                    setSelectedTier((content as any)?.curator_tier_selection || "Memory Holder");
                     document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className={`w-full transition-all duration-300 ${
-                    selectedTier === content.curator_tier_selection
+                    selectedTier === (content as any)?.curator_tier_selection
                       ? 'bg-[#FFB90F] text-black'
                       : 'bg-white/10 text-white hover:bg-white/20'
                   }`}
                 >
-                  Select Curator
+                  Select Memory Holder
                 </Button>
               </div>
 
               {/* Accomplice Tier */}
               <div className={`bg-white/5 backdrop-blur-sm rounded-xl p-6 border transition-all duration-300 cursor-pointer ${
-                selectedTier === content.accomplice_tier_selection 
+                selectedTier === (content as any)?.accomplice_tier_selection 
                   ? 'border-[#FFB90F] bg-[#FFB90F]/10' 
                   : 'border-white/10 hover:border-white/20'
               }`}>
-                <h3 className="text-xl font-semibold mb-2">{content.accomplice_tier_title}</h3>
-                <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{content.accomplice_tier_price}</div>
-                <p className="text-gray-300 mb-6">{content.accomplice_tier_description}</p>
+                <h3 className="text-xl font-semibold mb-2">{(content as any)?.accomplice_tier_title || "Accomplice"}</h3>
+                <div className="text-3xl font-bold mb-4 text-[#FFB90F]">{(content as any)?.accomplice_tier_price || "$75"}</div>
+                <p className="text-gray-300 mb-6">{(content as any)?.accomplice_tier_description || "For those ready to shape the narrative and lead investigations."}</p>
                 <ul className="space-y-2 mb-6">
-                  {content.accomplice_tier_features.map((feature, index) => (
+                  {((content as any)?.accomplice_tier_features || []).map((feature: any, index: number) => (
                     <li key={index} className="flex items-center text-sm text-gray-300">
                       <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-2" />
                       {feature.feature}
@@ -366,11 +302,11 @@ export default function Landing() {
                 </ul>
                 <Button 
                   onClick={() => {
-                    setSelectedTier(content.accomplice_tier_selection);
+                    setSelectedTier((content as any)?.accomplice_tier_selection || "accomplice");
                     document.getElementById('signup-form')?.scrollIntoView({ behavior: 'smooth' });
                   }}
                   className={`w-full transition-all duration-300 ${
-                    selectedTier === content.accomplice_tier_selection
+                    selectedTier === (content as any)?.accomplice_tier_selection
                       ? 'bg-[#FFB90F] text-black'
                       : 'bg-white/10 text-white hover:bg-white/20'
                   }`}
@@ -388,10 +324,10 @@ export default function Landing() {
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Mail className="w-6 h-6 text-[#FFB90F]" />
-                <h2 className="text-2xl font-semibold text-[#FFB90F]">{content.signup_form_title}</h2>
+                <h2 className="text-2xl font-semibold text-[#FFB90F]">{(content as any)?.signup_form_title || "Ready to Be Part of the Mystery?"}</h2>
               </div>
               
-              <p className="text-gray-300 mb-6">{content.signup_form_description}</p>
+              <p className="text-gray-300 mb-6">{(content as any)?.signup_form_description || "This isn't just another event. It's a ceremony. A cipher. A cultural awakening."}</p>
               
               {/* MailerLite Form */}
               <MailerLiteForm formId="qp06KG" className="w-full" />
@@ -408,62 +344,17 @@ export default function Landing() {
         {/* The Briefing Section */}
         <section className="px-6 py-16">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">The Briefing</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{(content as any)?.faq_title || "The Briefing"}</h2>
             
             <div className="space-y-8">
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">Our need to find more clues before the event?</h3>
-                <p className="text-gray-300">
-                  With each mystery we're bringing to light, we uncover new truths and elements that help us piece together what was lost. 
-                  Each clue we collect will expand our story and enhance our investigation strategies. But it's never enough and that 
-                  there's always more we can discover, as one reveal only leads us on the next investigation in our quest.
-                </p>
-              </div>
-              
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">Is this a performance or a panel?</h3>
-                <p className="text-gray-300">
-                  Our events are real-time collaborative mysteries and cultural investigations. 
-                  We're not hosting traditional panels or conferences, but actual investigative experiences where you work with other participants 
-                  to uncover truths, analyze evidence, and contribute to ongoing cultural preservation efforts.
-                </p>
-              </div>
-
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">What should I wear?</h3>
-                <p className="text-gray-300">
-                  Come as comfortable as possible! We recommend wearing clothes you can move in. 
-                  Some investigations involve physical elements or may require you to examine materials closely. 
-                  Think practical detective gear rather than formal attire. Dark colors can help you blend into mystery atmospheres.
-                </p>
-              </div>
-
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">Can I come alone?</h3>
-                <p className="text-gray-300">
-                  Absolutely! Many of our best investigators arrive solo and form incredible collaborative partnerships during the experience. 
-                  Our mysteries are designed to bring people together around shared curiosity and investigation goals. 
-                  You'll be working with others regardless of whether you arrive with a team.
-                </p>
-              </div>
-
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">Will you return to Burglary?</h3>
-                <p className="text-gray-300">
-                  The Burglary investigation opened many doors and revealed several ongoing cultural mysteries that demand further exploration. 
-                  While we can't spoil what's next, the threads we pulled during Burglary have led to larger questions about cultural preservation 
-                  and stolen narratives that will definitely inform future investigations.
-                </p>
-              </div>
-
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
-                <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">Pricing</h3>
-                <p className="text-gray-300">
-                  Our pricing reflects the comprehensive nature of these cultural investigation experiences. 
-                  Each tier provides different levels of access to investigation tools, community features, and behind-the-scenes content. 
-                  We believe in making cultural discovery accessible while ensuring sustainable, quality investigations.
-                </p>
-              </div>
+              {((content as any)?.faq_items || []).map((item: any, index: number) => (
+                <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
+                  <h3 className="text-xl font-semibold mb-3 text-[#FFB90F]">{item.question}</h3>
+                  <p className="text-gray-300">
+                    {item.answer}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -473,13 +364,13 @@ export default function Landing() {
       <footer className="relative mt-16 py-8 border-t border-white/10">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <p className="text-sm text-gray-400">&copy; {content.footer_copyright_text}</p>
+            <p className="text-sm text-gray-400">&copy; {(content as any)?.footer_copyright_text || "2025 Elusive Origin. All rights reserved."}</p>
             <div className="flex items-center space-x-6">
               <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
-                {content.contact_us_link_text}
+                {(content as any)?.contact_us_link_text || "Contact Us"}
               </a>
               <Link href="/" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
-                {content.back_to_coming_soon_text}
+                {(content as any)?.back_to_coming_soon_text || "← Coming Soon"}
               </Link>
             </div>
           </div>
