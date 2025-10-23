@@ -3,10 +3,19 @@ import { Button } from "@/components/ui/button";
 import MailerLiteForm from "@/components/MailerLiteForm";
 import { Link } from "wouter";
 import { Eye, Users, Calendar, Database, BookOpen, MessageSquare, Play, Globe, Zap, Lightbulb, ChevronUp, ChevronRight, ChevronLeft, Mail } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 
 export default function VesselTeaser() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
+
+  // Load content from JSON file
+  const { data: content } = useQuery({
+    queryKey: ['/assets/content/vessel.json'],
+  });
+
+  // Get MVP features from loaded content or use defaults
+  const mvpFeatures = (content as any)?.mvp_features || [];
 
   // Show back to top button when scrolled down
   useEffect(() => {
@@ -20,63 +29,6 @@ export default function VesselTeaser() {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Static content for the vessel teaser page
-  const content = {
-    header_logo_text: "ELUSIVE",
-    platform_button_text: "Home",
-    hero_main_headline_part1: "Vessel",
-    hero_main_headline_part2: "App",
-    hero_sub_headline: "Introducing the Vessel: Elusive's digital storytelling companion app.",
-    discover_features_button_text: "Discover Features",
-    vessel_intro_title_part1: "Your phone is no longer just a device",
-    vessel_intro_title_part2: "— it's a key.",
-    vessel_intro_description: "Whether you're attending in person or decoding from afar, the Vessel App helps you stay immersed, connected, and informed. Track theories, collect clues, and engage with fellow investigators in real-time.",
-    mvp_features_title: "Core Features",
-    mvp_features: [
-      {
-        id: "theory-boards",
-        title: "Theory Boards",
-        description: "Organize your investigation theories with visual boards, connect clues, and share insights with the community.",
-        icon_name: "Database",
-        gradient: "from-blue-500 to-purple-600"
-      },
-      {
-        id: "clue-tracker",
-        title: "Live Clue Feed",
-        description: "Real-time updates as mysteries unfold, with timestamps and location data for comprehensive tracking.",
-        icon_name: "Eye",
-        gradient: "from-green-500 to-teal-600"
-      },
-      {
-        id: "community-hub",
-        title: "Community Theories",
-        description: "Connect with fellow investigators, share theories, and collaborate on solving the mystery together.",
-        icon_name: "Users",
-        gradient: "from-orange-500 to-red-600"
-      },
-      {
-        id: "story-studio",
-        title: "Story Studio",
-        description: "Create and share your own mystery stories using our intuitive storytelling tools and templates.",
-        icon_name: "BookOpen",
-        gradient: "from-purple-500 to-pink-600"
-      }
-    ],
-    freemium_section_title: "Free to Start, Premium to Master",
-    freemium_description: "Begin your investigation journey at no cost, then unlock advanced features as you dive deeper.",
-    freemium_features: [
-      { feature: "Basic theory boards" },
-      { feature: "Community access" },
-      { feature: "Live clue feed" }
-    ],
-    premium_upgrade_text: "Upgrade for unlimited boards, priority support, and exclusive content.",
-    cta_early_access_title: "Get Early Access",
-    cta_early_access_description: "Be among the first to experience the Vessel app and shape its development.",
-    feature_voting_description: "Your feedback directly influences which features we build next.",
-    footer_copyright_text: "2025 ELUSIVE. All rights reserved.",
-    contact_us_link_text: "Contact"
   };
 
   // Get icon component by name
@@ -107,13 +59,13 @@ export default function VesselTeaser() {
                 <div className="absolute inset-1 bg-[#FFB90F]/20 rotate-45"></div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#FFB90F] rounded-full"></div>
               </div>
-              <span className="text-xl font-bold text-[#FFB90F]">{content.header_logo_text}</span>
+              <span className="text-xl font-bold text-[#FFB90F]">{(content as any)?.header_logo_text || "ELUSIVE"}</span>
             </div>
           </Link>
           
           <Link href="/">
             <Button className="bg-[#FFB90F] hover:bg-[#e6a50e] text-black font-medium px-4 py-2 text-sm">
-              {content.platform_button_text}
+              {(content as any)?.platform_button_text || "Home"}
             </Button>
           </Link>
         </div>
@@ -124,17 +76,17 @@ export default function VesselTeaser() {
         <section className="relative px-6 py-16">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">{content.hero_main_headline_part1}</span>
-              <span className="text-white"> {content.hero_main_headline_part2}</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">{(content as any)?.hero_main_headline_part1 || "Vessel"}</span>
+              <span className="text-white"> {(content as any)?.hero_main_headline_part2 || "App"}</span>
             </h1>
             
-            <p className="text-xl text-gray-300 mb-8">{content.hero_sub_headline}</p>
+            <p className="text-xl text-gray-300 mb-8">{(content as any)?.hero_sub_headline || "Introducing the Vessel: Elusive's digital storytelling companion app."}</p>
             
             <Button 
               onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
               className="bg-[#FFB90F] hover:bg-[#e6a50e] text-black font-medium px-8 py-3 rounded-lg transition-all duration-300 hover:scale-105"
             >
-              {content.discover_features_button_text}
+              {(content as any)?.discover_features_button_text || "Discover Features"}
             </Button>
           </div>
         </section>
@@ -143,34 +95,36 @@ export default function VesselTeaser() {
         <section className="px-6 py-16">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
-              <span className="text-white">{content.vessel_intro_title_part1}</span>
+              <span className="text-white">{(content as any)?.vessel_intro_title_part1 || "Your phone is no longer just a device—"}</span>
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B0000] to-[#FF6B6B]">{content.vessel_intro_title_part2}</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#8B0000] to-[#FF6B6B]">{(content as any)?.vessel_intro_title_part2 || "it's a key."}</span>
             </h2>
             
-            <p className="text-xl text-gray-300 leading-relaxed">{content.vessel_intro_description}</p>
+            <p className="text-xl text-gray-300 leading-relaxed">{(content as any)?.vessel_intro_description || "Whether you're attending in person or decoding from afar, the Vessel App helps you stay immersed, connected, and informed."}</p>
           </div>
         </section>
 
         {/* Features Section */}
         <section className="px-6 py-16" id="features">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{content.mvp_features_title}</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{(content as any)?.mvp_features_title || "Core Features"}</h2>
             
             {/* Swipeable Feature Carousel */}
             <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-xl border border-gray-700 overflow-hidden">
               <div className="relative h-96">
-                {/* Feature card content */}
-                <div className="h-full bg-gradient-to-br from-[#FFB90F] to-[#FFA500] p-8 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-4 mb-6">
-                      <div className="w-12 h-12 bg-black/20 rounded-lg flex items-center justify-center">
-                        <Database className="w-6 h-6 text-black" />
-                      </div>
-                      <h3 className="text-2xl font-bold text-black">{content.mvp_features[currentFeatureIndex].title}</h3>
-                    </div>
-                    
-                    <p className="text-black/80 text-lg mb-6">{content.mvp_features[currentFeatureIndex].description}</p>
+                {mvpFeatures.length > 0 && (
+                  <>
+                    {/* Feature card content */}
+                    <div className={`h-full ${mvpFeatures[currentFeatureIndex]?.gradient || 'bg-gradient-to-br from-[#FFB90F] to-[#FFA500]'} p-8 flex flex-col justify-between`}>
+                      <div>
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-12 h-12 bg-black/20 rounded-lg flex items-center justify-center">
+                            <Database className="w-6 h-6 text-black" />
+                          </div>
+                          <h3 className="text-2xl font-bold text-black">{mvpFeatures[currentFeatureIndex]?.title}</h3>
+                        </div>
+                        
+                        <p className="text-black/80 text-lg mb-6">{mvpFeatures[currentFeatureIndex]?.description}</p>
                     
                     {/* Visual mockup for Theory Boards */}
                     {currentFeatureIndex === 0 && (
@@ -186,35 +140,37 @@ export default function VesselTeaser() {
                     )}
                   </div>
                   
-                  <div className="flex items-center justify-between">
-                    <div className="flex space-x-2">
-                      {content.mvp_features.map((_, index) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentFeatureIndex(index)}
-                          className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                            index === currentFeatureIndex ? 'bg-black' : 'bg-black/40'
-                          }`}
-                        />
-                      ))}
+                      <div className="flex items-center justify-between">
+                        <div className="flex space-x-2">
+                          {mvpFeatures.map((_: any, index: number) => (
+                            <button
+                              key={index}
+                              onClick={() => setCurrentFeatureIndex(index)}
+                              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                                index === currentFeatureIndex ? 'bg-black' : 'bg-black/40'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-black/60 text-sm">{currentFeatureIndex + 1} of {mvpFeatures.length}</span>
+                      </div>
                     </div>
-                    <span className="text-black/60 text-sm">{currentFeatureIndex + 1} of {content.mvp_features.length}</span>
-                  </div>
-                </div>
-                
-                {/* Navigation arrows */}
-                <button 
-                  onClick={() => setCurrentFeatureIndex((prev) => prev === 0 ? content.mvp_features.length - 1 : prev - 1)}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/20 hover:bg-black/40 text-black p-2 rounded-full transition-all duration-300"
-                >
-                  <ChevronLeft className="w-5 h-5" />
-                </button>
-                <button 
-                  onClick={() => setCurrentFeatureIndex((prev) => prev === content.mvp_features.length - 1 ? 0 : prev + 1)}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/20 hover:bg-black/40 text-black p-2 rounded-full transition-all duration-300"
-                >
-                  <ChevronRight className="w-5 h-5" />
-                </button>
+                    
+                    {/* Navigation arrows */}
+                    <button 
+                      onClick={() => setCurrentFeatureIndex((prev) => prev === 0 ? mvpFeatures.length - 1 : prev - 1)}
+                      className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/20 hover:bg-black/40 text-black p-2 rounded-full transition-all duration-300"
+                    >
+                      <ChevronLeft className="w-5 h-5" />
+                    </button>
+                    <button 
+                      onClick={() => setCurrentFeatureIndex((prev) => prev === mvpFeatures.length - 1 ? 0 : prev + 1)}
+                      className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/20 hover:bg-black/40 text-black p-2 rounded-full transition-all duration-300"
+                    >
+                      <ChevronRight className="w-5 h-5" />
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -327,10 +283,10 @@ export default function VesselTeaser() {
       <footer className="relative mt-16 py-8 border-t border-white/10">
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <p className="text-sm text-gray-400">&copy; {content.footer_copyright_text}</p>
+            <p className="text-sm text-gray-400">&copy; {(content as any)?.footer_copyright_text || "2025 Elusive Origin. All rights reserved."}</p>
             <div className="flex items-center space-x-6">
               <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
-                {content.contact_us_link_text}
+                Contact
               </a>
               <Link href="/" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
                 Home

@@ -18,8 +18,7 @@
       "timeline": "2026"
     }
   ],
-
-  "mailerlite_form_id": "28314007",
+  "mailerlite_form_id": "evBTcL",
   "tally_form_id": "your-tally-form-id",
   "cta_early_access_title": "Join the Waitlist",
   "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
@@ -89,11 +88,6 @@
   "roadmap_features_title": "Future Features",
   "vessel_intro_title_part1": "Your phone is no longer just a device—",
   "vessel_intro_title_part2": "it's a key.",
-  "hero_sub_headline": "Introducing the Vessel: Elusive’s digital storytelling companion app.",
-  "premium_upgrade_text": "Upgrade for commentary features, advanced tools, and exclusive content.",
-  "roadmap_features_title": "Future Features",
-  "vessel_intro_title_part1": "Your phone is no longer just a device—",
-  "vessel_intro_title_part2": "it’s a key.",
   "freemium_features": [
     "Basic theory board (view-only)",
     "Cultural library access (view-only)",
@@ -102,7 +96,4 @@
   "footer_logo_text": "ELUSIVE",
   "freemium_description": "Start investigating for free with essential tools, then upgrade for advanced features.",
   "freemium_section_title": "Vessel Freemium Features"
-
-}
-
 }
