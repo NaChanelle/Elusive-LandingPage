@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import MailerLiteForm from "@/components/MailerLiteForm";
+import MailerLiteEmbed from "@/components/MailerLiteEmbed";
 import { Link } from "wouter";
 import { Eye, Users, Calendar, Database, BookOpen, MessageSquare, Play, Globe, Zap, Lightbulb, ChevronUp, ChevronRight, ChevronLeft, Mail } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -273,7 +273,7 @@ export default function VesselTeaser() {
               <p className="text-sm text-gray-400 mb-6">We typically respond within 48-72 hours after launch.</p>
               
               {/* Email Signup Form */}
-              <MailerLiteForm formId="evBTcL" className="w-full" />
+              <MailerLiteEmbed formType="vessel" className="w-full" />
             </div>
           </div>
         </section>

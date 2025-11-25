@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye, ChevronLeft, Play, Zap, Heart } from "lucide-react";
-import MailerLiteForm from "@/components/MailerLiteForm";
+import MailerLiteEmbed from "@/components/MailerLiteEmbed";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useQuery } from "@tanstack/react-query";
 
@@ -323,7 +323,7 @@ export default function Landing() {
               <p className="text-gray-300 mb-6">{(content as any)?.signup_form_description || "This isn't just another event. It's a ceremony. A cipher. A cultural awakening."}</p>
               
               {/* MailerLite Form */}
-              <MailerLiteForm formId="qp06KG" className="w-full" />
+              <MailerLiteEmbed formType="platform" className="w-full" />
               
               {selectedTier && (
                 <div className="text-sm text-gray-300 text-center mt-4">

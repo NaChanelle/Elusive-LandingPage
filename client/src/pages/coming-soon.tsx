@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Clock, Mail, Menu, ChevronUp, Users, ChevronLeft, ChevronRight, Quote, Shield, Lightbulb, Crown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import MailerLiteForm from "@/components/MailerLiteForm";
+import MailerLiteEmbed from "@/components/MailerLiteEmbed";
 
 export default function ComingSoon() {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -124,7 +124,7 @@ export default function ComingSoon() {
             <p className="text-gray-300 mb-6">Get early access, behind-the-scenes clues, and a first look at the story before it unfolds.</p>
             
             {/* MailerLite Form */}
-            <MailerLiteForm formId="4f8mQz" className="w-full" />
+            <MailerLiteEmbed formType="home" className="w-full" />
             
             <p className="text-xs text-gray-400 text-center mt-4">
               Join 75+ investigators in our upcoming cultural mystery experience.
