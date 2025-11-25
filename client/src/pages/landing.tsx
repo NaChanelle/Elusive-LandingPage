@@ -72,7 +72,18 @@ export default function Landing() {
               <p className="text-gray-300">{(content as any)?.event_launch_description || "Early Access gets first look at event date once launched."}</p>
             </div>
 
-            {/* RSVP Progress */}
+            {/* Event Description - Above Community Interest */}
+            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 mb-8 border border-gray-700 text-left">
+              <h2 className="text-2xl font-bold mb-4 text-[#FFB90F]">{(content as any)?.event_description_title || "The Ones Who Remember"}</h2>
+              <p className="text-gray-300 mb-4">
+                {(content as any)?.event_description_paragraph_1 || "The first chapter is unfolding. Local investigators are finding evidence related to events where important cultural data was reportedly stolen and then lost. 75+ investigators have joined the investigation, but truth remains obscured."}
+              </p>
+              <p className="text-gray-300">
+                {(content as any)?.event_description_paragraph_2 || "Join a burgeoning community to help solve this collaborative mystery and shed light on these stolen truths."}
+              </p>
+            </div>
+
+            {/* RSVP Progress / Community Interest */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 mb-8 border border-gray-700">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Users className="w-6 h-6 text-[#FFB90F]" />
@@ -84,24 +95,6 @@ export default function Landing() {
                 <div className="bg-gradient-to-r from-[#FFB90F] to-[#FFA500] h-3 rounded-full" style={{width: '15%'}}></div>
               </div>
               <p className="text-sm text-gray-400">Join the investigation</p>
-            </div>
-          </div>
-        </section>
-
-        {/* Event Description Section */}
-        <section className="px-6 py-16">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700">
-              <h2 className="text-2xl font-bold mb-4 text-[#FFB90F]">The Grey Key Revelation</h2>
-              <p className="text-gray-300 mb-4">
-                The first chapter of "The Grey Key Revelation" is unfolding in Columbus, OH. 
-                Local forensic science students are finding evidence related to the events of 1993, 
-                where important cultural data was reportedly stolen and then lost. 75+ investigators 
-                have joined the investigation, but truth remains obscured.
-              </p>
-              <p className="text-gray-300">
-                Join a burgeoning community to help solve this collaborative mystery and shed light on these stolen truths.
-              </p>
             </div>
           </div>
         </section>
