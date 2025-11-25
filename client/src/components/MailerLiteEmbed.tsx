@@ -8,16 +8,19 @@ interface MailerLiteEmbedProps {
 const formConfigs = {
   home: {
     formId: '28258222',
+    formHash: '159585664828966487',
     fetchUrl: 'https://assets.mailerlite.com/jsonp/1605566/forms/159585664828966487/takel',
     buttonText: 'Get Event Updates'
   },
   platform: {
     formId: '28314007',
+    formHash: '159733317043749917',
     fetchUrl: 'https://assets.mailerlite.com/jsonp/1605566/forms/159733317043749917/takel',
     buttonText: 'Join Waitlist'
   },
   vessel: {
     formId: '28257750',
+    formHash: '159584146254988833',
     fetchUrl: 'https://assets.mailerlite.com/jsonp/1605566/forms/159584146254988833/takel',
     buttonText: 'Notify Me'
   }
@@ -195,48 +198,41 @@ export default function MailerLiteEmbed({ formType, className = '' }: MailerLite
       }
     };
 
-    // Initialize form
+    // Initialize form (MailerLite tracking)
     fetch(config.fetchUrl);
 
-    // Add form submit handler after a short delay to ensure DOM is ready
+    // Create hidden iframe for form submission (allows cross-origin POST without redirect)
+    const iframeName = `ml-iframe-${formId}`;
+    if (!document.getElementById(iframeName)) {
+      const iframe = document.createElement('iframe');
+      iframe.id = iframeName;
+      iframe.name = iframeName;
+      iframe.style.cssText = 'display:none;width:0;height:0;border:0;';
+      document.body.appendChild(iframe);
+    }
+
+    // Set up form to target the hidden iframe
     setTimeout(() => {
       const form = document.querySelector(`#mlb2-${formId} form`) as HTMLFormElement;
       if (form && !form.dataset.handlerAttached) {
         form.dataset.handlerAttached = 'true';
-        form.addEventListener('submit', async (e) => {
-          e.preventDefault();
-          
+        
+        // Point form to hidden iframe
+        form.target = iframeName;
+        
+        // Listen for form submission to show loading state
+        form.addEventListener('submit', () => {
           const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
           const loadingBtn = form.querySelector('button.loading') as HTMLButtonElement;
-          const emailInput = form.querySelector('input[type="email"]') as HTMLInputElement;
-          const nameInput = form.querySelector('input[name="fields[name]"]') as HTMLInputElement;
-          
-          if (!emailInput?.value) return;
           
           // Show loading state
           if (submitBtn) submitBtn.style.display = 'none';
           if (loadingBtn) loadingBtn.style.display = 'inline-flex';
           
-          try {
-            const formData = new FormData();
-            formData.append('fields[email]', emailInput.value);
-            if (nameInput?.value) formData.append('fields[name]', nameInput.value);
-            formData.append('ml-submit', '1');
-            formData.append('anticsrf', 'true');
-            
-            await fetch(form.action, {
-              method: 'POST',
-              body: formData,
-              mode: 'no-cors'
-            });
-            
-            // Show success message
+          // Show success after a delay (iframe load is cross-origin, can't detect directly)
+          setTimeout(() => {
             (window as any)[`ml_webform_success_${formId}`]();
-          } catch (error) {
-            // Even if there's a CORS error, the submission likely went through
-            // Show success message anyway
-            (window as any)[`ml_webform_success_${formId}`]();
-          }
+          }, 1500);
         });
       }
     }, 100);
@@ -245,13 +241,14 @@ export default function MailerLiteEmbed({ formType, className = '' }: MailerLite
 
   const config = formConfigs[formType];
   const formId = config.formId;
+  const formHash = config.formHash;
 
   const formHtml = `
     <div id="mlb2-${formId}" class="ml-form-embedContainer ml-subscribe-form ml-subscribe-form-${formId}">
       <div class="ml-form-align-center">
         <div class="ml-form-embedWrapper embedForm">
           <div class="ml-form-embedBody ml-form-embedBodyDefault row-form">
-            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/1605566/forms/${formId}/subscribe" data-form="${formId}" data-code="" method="post">
+            <form class="ml-block-form" action="https://assets.mailerlite.com/jsonp/1605566/forms/${formHash}/subscribe" data-form="${formId}" data-code="" method="post">
               <div class="ml-form-formContent">
                 <div class="ml-form-fieldRow">
                   <div class="ml-field-group ml-field-name ml-validate-required">
