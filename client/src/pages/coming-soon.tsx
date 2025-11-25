@@ -94,11 +94,11 @@ export default function ComingSoon() {
         </div>
 
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
-          {/* Pulsing Logo */}
+          {/* Pulsing Logo with Glow */}
           <div className="flex justify-center mb-8">
-            <div className="w-20 h-20 border-4 border-[#FFB90F] rotate-45 mx-auto mb-8 relative animate-pulse">
-              <div className="absolute inset-3 bg-[#FFB90F]/20 rotate-45"></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#FFB90F] rounded-full"></div>
+            <div className="w-20 h-20 border-4 border-[#FFB90F] mx-auto mb-8 relative animate-pulse-glow">
+              <div className="absolute inset-3 bg-[#FFB90F]/20"></div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 w-4 h-4 bg-[#FFB90F] rounded-full"></div>
             </div>
           </div>
 
@@ -150,74 +150,35 @@ export default function ComingSoon() {
         </div>
       </section>
 
-      {/* Image Carousel Section */}
-      <section className="px-6 py-16">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {/* Static brand cards */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-12 h-12 border-2 border-[#FFB90F] rotate-45 mx-auto mb-4 relative">
-                  <div className="absolute inset-2 bg-[#FFB90F]/20 rotate-45"></div>
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-[#FFB90F] rounded-full"></div>
+      {/* Logo Marquee & Image Carousel Section */}
+      <section className="py-16 overflow-hidden">
+        {/* Horizontally Scrolling Logo Marquee */}
+        <div className="relative w-full overflow-hidden mb-12">
+          <div className="animate-scroll flex gap-8" style={{ width: 'max-content' }}>
+            {/* First set of logos */}
+            {[...Array(6)].map((_, i) => (
+              <div key={`logo-1-${i}`} className="flex-shrink-0 w-48 h-48 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 flex items-center justify-center">
+                <div className="text-center">
+                  <div className={`w-12 h-12 border-2 ${i % 2 === 0 ? 'border-[#FFB90F]' : 'border-[#8B0000]'} rotate-45 mx-auto mb-4 relative`}>
+                    <div className={`absolute inset-2 ${i % 2 === 0 ? 'bg-[#FFB90F]/20' : 'bg-[#8B0000]/20'}`}></div>
+                    <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 w-3 h-3 ${i % 2 === 0 ? 'bg-[#FFB90F]' : 'bg-[#8B0000]'} rounded-full`}></div>
+                  </div>
+                  <span className={`${i % 2 === 0 ? 'text-[#FFB90F]' : 'text-[#8B0000]'} font-bold text-lg`}>ELUSIVE</span>
                 </div>
-                <span className="text-[#FFB90F] font-bold text-lg">ELUSIVE</span>
               </div>
-            </div>
-            
-            {/* Interactive carousel */}
-            <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 overflow-hidden group">
-              <div className="relative h-64">
-                {carouselImages.length > 0 && (
-                  <>
-                    <img 
-                      src={carouselImages[currentImageIndex]?.image || carouselImages[currentImageIndex]?.url}
-                      alt={carouselImages[currentImageIndex]?.alt || "Elusive Experience"}
-                      className="w-full h-full object-contain bg-gray-900 transition-all duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                    
-                    {/* Navigation arrows */}
-                    <button 
-                      onClick={prevImage}
-                      className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                    </button>
-                    <button 
-                      onClick={nextImage}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                    
-                    {/* Dots indicator */}
-                    <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                      {carouselImages.map((_: any, index: number) => (
-                        <button
-                          key={index}
-                          onClick={() => setCurrentImageIndex(index)}
-                          className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                            index === currentImageIndex ? 'bg-[#FFB90F]' : 'bg-white/40'
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-            
-            {/* Third brand card */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-12 h-12 border-2 border-[#8B0000] rotate-45 mx-auto mb-4 relative">
-                  <div className="absolute inset-2 bg-[#8B0000]/20 rotate-45"></div>
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-[#8B0000] rounded-full"></div>
+            ))}
+            {/* Duplicate set for seamless loop */}
+            {[...Array(6)].map((_, i) => (
+              <div key={`logo-2-${i}`} className="flex-shrink-0 w-48 h-48 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 flex items-center justify-center">
+                <div className="text-center">
+                  <div className={`w-12 h-12 border-2 ${i % 2 === 0 ? 'border-[#FFB90F]' : 'border-[#8B0000]'} rotate-45 mx-auto mb-4 relative`}>
+                    <div className={`absolute inset-2 ${i % 2 === 0 ? 'bg-[#FFB90F]/20' : 'bg-[#8B0000]/20'}`}></div>
+                    <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 w-3 h-3 ${i % 2 === 0 ? 'bg-[#FFB90F]' : 'bg-[#8B0000]'} rounded-full`}></div>
+                  </div>
+                  <span className={`${i % 2 === 0 ? 'text-[#FFB90F]' : 'text-[#8B0000]'} font-bold text-lg`}>ELUSIVE</span>
                 </div>
-                <span className="text-[#8B0000] font-bold text-lg">ELUSIVE</span>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
