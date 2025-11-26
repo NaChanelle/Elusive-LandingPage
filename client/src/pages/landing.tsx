@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye, ChevronLeft, Play, Zap, Heart } from "lucide-react";
 import MailerLiteEmbed from "@/components/MailerLiteEmbed";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useQuery } from "@tanstack/react-query";
 
 export default function Landing() {
@@ -329,18 +328,18 @@ export default function Landing() {
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{(content as any)?.faq_title || "The Briefing"}</h2>
             
-            <Accordion type="single" collapsible className="space-y-4">
+            <div className="space-y-8">
               {((content as any)?.faq_items || []).map((item: any, index: number) => (
-                <AccordionItem key={`item-${index}`} value={`item-${index}`} className="border border-gray-700 rounded-lg px-6">
-                  <AccordionTrigger className="text-white hover:text-[#FFB90F]">
+                <div key={`item-${index}`} className="border-b border-gray-700 pb-6">
+                  <h3 className="text-lg font-semibold text-[#FFB90F] mb-3">
                     {item.question}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-300">
+                  </h3>
+                  <p className="text-white leading-relaxed">
                     {item.answer}
-                  </AccordionContent>
-                </AccordionItem>
+                  </p>
+                </div>
               ))}
-            </Accordion>
+            </div>
           </div>
         </section>
       </main>
