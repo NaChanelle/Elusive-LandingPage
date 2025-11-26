@@ -150,33 +150,29 @@ export default function ComingSoon() {
         </div>
       </section>
 
-      {/* Logo Marquee & Image Carousel Section */}
+      {/* Image Gallery Marquee Section */}
       <section className="py-16 overflow-hidden">
-        {/* Horizontally Scrolling Logo Marquee */}
+        {/* Horizontally Scrolling Image Marquee */}
         <div className="relative w-full overflow-hidden mb-12">
           <div className="animate-scroll flex gap-8" style={{ width: 'max-content' }}>
-            {/* First set of logos */}
-            {[...Array(6)].map((_, i) => (
-              <div key={`logo-1-${i}`} className="flex-shrink-0 w-48 h-48 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 flex items-center justify-center">
-                <div className="text-center">
-                  <div className={`w-12 h-12 border-2 ${i % 2 === 0 ? 'border-[#FFB90F]' : 'border-[#8B0000]'} rotate-45 mx-auto mb-4 relative`}>
-                    <div className={`absolute inset-2 ${i % 2 === 0 ? 'bg-[#FFB90F]/20' : 'bg-[#8B0000]/20'}`}></div>
-                    <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 w-3 h-3 ${i % 2 === 0 ? 'bg-[#FFB90F]' : 'bg-[#8B0000]'} rounded-full`}></div>
-                  </div>
-                  <span className={`${i % 2 === 0 ? 'text-[#FFB90F]' : 'text-[#8B0000]'} font-bold text-lg`}>ELUSIVE</span>
-                </div>
+            {/* First set of images from CMS */}
+            {carouselImages.map((img: any, i: number) => (
+              <div key={`img-1-${i}`} className="flex-shrink-0 w-48 h-48 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 overflow-hidden">
+                <img 
+                  src={img.image || img.url} 
+                  alt={img.alt || "Gallery image"}
+                  className="w-full h-full object-cover"
+                />
               </div>
             ))}
             {/* Duplicate set for seamless loop */}
-            {[...Array(6)].map((_, i) => (
-              <div key={`logo-2-${i}`} className="flex-shrink-0 w-48 h-48 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 flex items-center justify-center">
-                <div className="text-center">
-                  <div className={`w-12 h-12 border-2 ${i % 2 === 0 ? 'border-[#FFB90F]' : 'border-[#8B0000]'} rotate-45 mx-auto mb-4 relative`}>
-                    <div className={`absolute inset-2 ${i % 2 === 0 ? 'bg-[#FFB90F]/20' : 'bg-[#8B0000]/20'}`}></div>
-                    <div className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 w-3 h-3 ${i % 2 === 0 ? 'bg-[#FFB90F]' : 'bg-[#8B0000]'} rounded-full`}></div>
-                  </div>
-                  <span className={`${i % 2 === 0 ? 'text-[#FFB90F]' : 'text-[#8B0000]'} font-bold text-lg`}>ELUSIVE</span>
-                </div>
+            {carouselImages.map((img: any, i: number) => (
+              <div key={`img-2-${i}`} className="flex-shrink-0 w-48 h-48 bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 overflow-hidden">
+                <img 
+                  src={img.image || img.url} 
+                  alt={img.alt || "Gallery image"}
+                  className="w-full h-full object-cover"
+                />
               </div>
             ))}
           </div>

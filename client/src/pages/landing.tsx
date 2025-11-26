@@ -114,23 +114,16 @@ export default function Landing() {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                 
-                {/* Event overlay content */}
+                {/* Event overlay content - reads from CMS */}
                 <div className="absolute bottom-0 left-0 right-0 p-8">
-                  <h3 className="text-2xl font-bold text-white mb-2">Mystery Investigation Skills</h3>
-                  <p className="text-gray-200 mb-4">Master investigation through mystery experience.</p>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {pastEventImages[currentEventImageIndex]?.alt || "Event Scene"}
+                  </h3>
+                  <p className="text-gray-200 mb-4">
+                    {pastEventImages[currentEventImageIndex]?.placeholder || "Cultural investigation experience"}
+                  </p>
                   <div className="flex items-center gap-4">
-                    <div className="flex -space-x-2">
-                      <div className="w-8 h-8 bg-[#FFB90F] rounded-full border-2 border-white flex items-center justify-center">
-                        <span className="text-xs font-bold text-black">A</span>
-                      </div>
-                      <div className="w-8 h-8 bg-[#8B0000] rounded-full border-2 border-white flex items-center justify-center">
-                        <span className="text-xs font-bold text-white">B</span>
-                      </div>
-                      <div className="w-8 h-8 bg-gray-600 rounded-full border-2 border-white flex items-center justify-center">
-                        <span className="text-xs font-bold text-white">C</span>
-                      </div>
-                    </div>
-                    <span className="text-sm text-gray-300">3 of 4</span>
+                    <span className="text-sm text-gray-300">{currentEventImageIndex + 1} of {pastEventImages.length}</span>
                   </div>
                 </div>
                 
