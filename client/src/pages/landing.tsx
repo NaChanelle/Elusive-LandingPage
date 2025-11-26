@@ -72,9 +72,9 @@ export default function Landing() {
             </div>
 
             {/* Event Description - Above Community Interest */}
-            <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 mb-8 border border-gray-700 text-left">
+            <div className="mb-8 text-left">
               <h2 className="text-2xl font-bold mb-4 text-[#FFB90F]">The Ones Who Remember</h2>
-              <p className="text-gray-300 whitespace-pre-line">
+              <p className="text-white whitespace-pre-line leading-relaxed">
                 {(content as any)?.value_proposition_text || "The first chapter is unfolding. Local investigators are finding evidence related to events where important cultural data was reportedly stolen and then lost. 75+ investigators have joined the investigation, but truth remains obscured.\n\nJoin a burgeoning community to help solve this collaborative mystery and shed light on these stolen truths."}
               </p>
             </div>
@@ -328,9 +328,9 @@ export default function Landing() {
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{(content as any)?.faq_title || "The Briefing"}</h2>
             
-            <div className="space-y-8">
+            <div className="space-y-6">
               {((content as any)?.faq_items || []).map((item: any, index: number) => (
-                <div key={`item-${index}`} className="border-b border-gray-700 pb-6">
+                <div key={`item-${index}`} className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-6 border border-gray-700">
                   <h3 className="text-lg font-semibold text-[#FFB90F] mb-3">
                     {item.question}
                   </h3>
