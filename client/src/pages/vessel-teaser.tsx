@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import MailerLiteEmbed from "@/components/MailerLiteEmbed";
 import { Link } from "wouter";
-import { Eye, Users, Calendar, Database, BookOpen, MessageSquare, Play, Globe, Zap, Lightbulb, ChevronUp, ChevronRight, ChevronLeft, Mail } from "lucide-react";
+import { Eye, Users, Calendar, Database, BookOpen, MessageSquare, Play, Globe, Zap, Lightbulb, ChevronUp, ChevronRight, ChevronLeft, Mail, Home } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 export default function VesselTeaser() {
@@ -56,7 +56,6 @@ export default function VesselTeaser() {
           <Link href="/">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 relative">
-                <div className="absolute inset-1 bg-[#FFB90F]/20 rotate-45"></div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#FFB90F] rounded-full"></div>
               </div>
               <span className="text-xl font-bold text-[#FFB90F]">{(content as any)?.header_logo_text || "ELUSIVE"}</span>
@@ -64,8 +63,8 @@ export default function VesselTeaser() {
           </Link>
           
           <Link href="/">
-            <Button className="bg-[#FFB90F] hover:bg-[#e6a50e] text-black font-medium px-4 py-2 text-sm">
-              {(content as any)?.platform_button_text || "Home"}
+            <Button className="bg-[#FFB90F] hover:bg-[#e6a50e] text-black p-2.5 rounded-lg" title="Home">
+              <Home className="w-5 h-5" />
             </Button>
           </Link>
         </div>

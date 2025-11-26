@@ -66,7 +66,6 @@ export default function ComingSoon() {
           <Link href="/">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 relative">
-                <div className="absolute inset-1 bg-[#FFB90F]/20 rotate-45"></div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#FFB90F] rounded-full"></div>
               </div>
               <span className="text-xl font-bold text-[#FFB90F]">ELUSIVE</span>
@@ -158,9 +157,8 @@ export default function ComingSoon() {
         <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
           {/* Pulsing Logo with Glow */}
           <div className="flex justify-center mb-8">
-            <div className="w-20 h-20 border-4 border-[#FFB90F] mx-auto mb-8 relative animate-pulse-glow">
-              <div className="absolute inset-3 bg-[#FFB90F]/20"></div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -rotate-45 w-4 h-4 bg-[#FFB90F] rounded-full"></div>
+            <div className="w-20 h-20 border-4 border-[#FFB90F] rotate-45 mx-auto mb-8 relative animate-pulse-glow">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-[#FFB90F] rounded-full"></div>
             </div>
           </div>
 
