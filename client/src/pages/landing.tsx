@@ -61,8 +61,8 @@ export default function Landing() {
         <section className="relative px-6 py-16">
           <div className="max-w-4xl mx-auto text-center">
             <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              <span className="text-white">Next </span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">Event</span>
+              <span className="text-white">{(content as any)?.hero_main_headline_part1 || "Next"} </span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">{(content as any)?.hero_main_headline_part2 || "Event"}</span>
             </h1>
             
             <p className="text-xl text-gray-300 mb-8">{(content as any)?.hero_sub_headline || "History is now."}</p>
@@ -74,12 +74,9 @@ export default function Landing() {
 
             {/* Event Description - Above Community Interest */}
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 mb-8 border border-gray-700 text-left">
-              <h2 className="text-2xl font-bold mb-4 text-[#FFB90F]">{(content as any)?.event_description_title || "The Ones Who Remember"}</h2>
-              <p className="text-gray-300 mb-4">
-                {(content as any)?.event_description_paragraph_1 || "The first chapter is unfolding. Local investigators are finding evidence related to events where important cultural data was reportedly stolen and then lost. 75+ investigators have joined the investigation, but truth remains obscured."}
-              </p>
-              <p className="text-gray-300">
-                {(content as any)?.event_description_paragraph_2 || "Join a burgeoning community to help solve this collaborative mystery and shed light on these stolen truths."}
+              <h2 className="text-2xl font-bold mb-4 text-[#FFB90F]">The Ones Who Remember</h2>
+              <p className="text-gray-300 whitespace-pre-line">
+                {(content as any)?.value_proposition_text || "The first chapter is unfolding. Local investigators are finding evidence related to events where important cultural data was reportedly stolen and then lost. 75+ investigators have joined the investigation, but truth remains obscured.\n\nJoin a burgeoning community to help solve this collaborative mystery and shed light on these stolen truths."}
               </p>
             </div>
 
@@ -103,7 +100,7 @@ export default function Landing() {
         <section className="px-6 py-16">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Past Mystery Event August 2024 - #Burglary20</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">{(content as any)?.image_carousel_title || "Past Mystery Event August 2024 - #Burglary20"}</h2>
             </div>
             
             <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-lg border border-gray-700 overflow-hidden group">
@@ -171,16 +168,16 @@ export default function Landing() {
         {/* What's Coming Next Section */}
         <section className="px-6 py-16">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">What's Coming Next</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{(content as any)?.whats_coming_next_title || "What's Coming Next"}</h2>
             
             <div className="grid md:grid-cols-3 gap-8">
               <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
                 <div className="w-16 h-16 bg-[#FFB90F] rounded-lg flex items-center justify-center mx-auto mb-6">
                   <Search className="w-8 h-8 text-black" />
                 </div>
-                <h3 className="text-xl font-semibold mb-4 text-[#FFB90F]">Investigation Tools</h3>
+                <h3 className="text-xl font-semibold mb-4 text-[#FFB90F]">{(content as any)?.feature1_title || "Investigation Tools"}</h3>
                 <p className="text-gray-300">
-                  Our research demands collaborative detective methodology and deeper community involvement.
+                  {(content as any)?.feature1_description || "Our research demands collaborative detective methodology and deeper community involvement."}
                 </p>
               </div>
               
@@ -188,9 +185,9 @@ export default function Landing() {
                 <div className="w-16 h-16 bg-[#8B0000] rounded-lg flex items-center justify-center mx-auto mb-6">
                   <Heart className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-4 text-[#8B0000]">Companion App</h3>
+                <h3 className="text-xl font-semibold mb-4 text-[#8B0000]">{(content as any)?.feature2_title || "Companion App"}</h3>
                 <p className="text-gray-300">
-                  The Vessel App helps track clues, build theories and stay connected during each mystery and beyond.
+                  {(content as any)?.feature2_description || "The Vessel App helps track clues, build theories and stay connected during each mystery and beyond."}
                 </p>
               </div>
               
@@ -198,9 +195,9 @@ export default function Landing() {
                 <div className="w-16 h-16 bg-gradient-to-r from-[#FFB90F] to-[#8B0000] rounded-lg flex items-center justify-center mx-auto mb-6">
                   <Play className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#8B0000]">Connect</h3>
+                <h3 className="text-xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#8B0000]">{(content as any)?.feature3_title || "Connect"}</h3>
                 <p className="text-gray-300">
-                  Serialized video production focused on the real cultural mysteries we're uncovering.
+                  {(content as any)?.feature3_description || "Serialized video production focused on the real cultural mysteries we're uncovering."}
                 </p>
               </div>
             </div>
