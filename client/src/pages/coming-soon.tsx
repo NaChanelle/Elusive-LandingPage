@@ -324,7 +324,6 @@ export default function ComingSoon() {
           <div className="flex flex-col items-center space-y-4">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 border-2 border-[#FFB90F] rotate-45 relative">
-                <div className="absolute inset-1 bg-[#FFB90F]/20 rotate-45"></div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#FFB90F] rounded-full"></div>
               </div>
               <span className="text-xl font-bold text-[#FFB90F]">ELUSIVE</span>
