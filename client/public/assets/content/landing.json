@@ -2,7 +2,7 @@
   "reserve_spot_button_text": "Reserve Your Spot",
   "signup_form_title": "Ready to Be Part of the Mystery?",
   "curator_tier_title": "Memory Holder",
-  "value_proposition_text": "Where social commentary mingles with suspense, and strangers become accomplices in uncovering the truth about themselves and others. TEST",
+  "value_proposition_text": "Where social commentary mingles with suspense, and strangers become accomplices in uncovering the truth about themselves and others.",
   "detective_tier_title": "Observer",
   "header_title": "ELUSIVE",
   "curator_tier_tag": "Most Popular",
@@ -87,7 +87,7 @@
     },
     {
       "question": "What if I miss this one?",
-      "answer": "The next chapter may be in another city—but early members of the Witness Table will get first dibs on clues, locations, and future drops."
+      "answer": "The next chapter may be in another city—but early members of the Witness Table (coming soon) will get first dibs on clues, locations, and future drops."
     }
   ],
   "carousel_images": [
