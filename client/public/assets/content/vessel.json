@@ -1,5 +1,5 @@
 {
-  "vessel_intro_description": "Whether you're attending in person or decoding from afar, the Vessel App helps you stay immersed, connected, and informed. Track theories, collect evidence, and uncover exclusive story drops—all in one place.\n\nLaunching Fall 2025 on mobile and desktop.",
+  "vessel_intro_description": "Whether you're attending in person or decoding from afar, the Vessel App helps you stay immersed, connected, and informed. Track theories, collect evidence, and uncover exclusive story drops—all in one place.\n\nLaunching 2026 on mobile and desktop.",
   "roadmap_features": [
     {
       "id": "live-events",
@@ -18,10 +18,10 @@
       "timeline": "2026"
     }
   ],
-  "mailerlite_form_id": "evBTcL",
   "tally_form_id": "your-tally-form-id",
   "cta_early_access_title": "Join the Waitlist",
   "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
+  "mailerlite_form_id": "evBTcL",
   "cta_early_access_description": "Be the first to test the app, submit your own theories, and access hidden archives before the public launch.",
   "feature_voting_description": "Which features would you like to see prioritized?",
   "platform_button_text": "Home",
