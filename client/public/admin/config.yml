@@ -2,122 +2,303 @@ backend:
   name: git-gateway
   branch: main
 
-# Global settings to make fields optional by default  
 publish_mode: simple
 slug_encoding: "ascii"
 
-media_folder: "client/public/assets/uploads" # Where images uploaded via CMS will be stored
-public_folder: "/assets/uploads" # Public path to uploaded images
+media_folder: "client/public/assets/uploads"
+public_folder: "/assets/uploads"
 
 collections:
-  - name: "pages" # A label for the collection
-    label: "Website Pages" # How it appears in the CMS UI
+  - name: "pages"
+    label: "Website Pages"
     files:
-      - label: "Landing Page" # Corresponds to /platform
-        name: "landing"
-        file: "client/public/assets/content/landing.json" # Path to this page's content file
+      # ========================================
+      # COMING SOON PAGE (Home - /)
+      # ========================================
+      - label: "1. Home Page (Coming Soon)"
+        name: "coming_soon"
+        file: "client/public/assets/content/coming-soon.json"
         fields:
-          # Header Section
-          - label: "Header Title"
-            name: "header_title"
-            widget: "string"
-            required: false
-            hint: "Text for the header logo/brand."
-          - label: "Back to Coming Soon Link Text"
-            name: "back_to_coming_soon_text"
-            widget: "string"
-            required: false
-            hint: "Text for the link back to the coming soon page."
-          
-          # Hero Section
+          # --- HERO SECTION ---
           - label: "--- HERO SECTION ---"
             name: "hero_section_label"
             widget: "hidden"
             default: "Hero Section"
-          - label: "Hero Main Headline Part 1"
+          - label: "Main Headline Part 1"
+            name: "main_headline_part1"
+            widget: "string"
+            required: false
+            hint: "First word of headline (e.g., 'Mystery')"
+          - label: "Main Headline Part 2"
+            name: "main_headline_part2"
+            widget: "string"
+            required: false
+            hint: "Second word - highlighted in gold (e.g., 'Worth')"
+          - label: "Main Headline Part 3"
+            name: "main_headline_part3"
+            widget: "string"
+            required: false
+            hint: "Third word (e.g., 'Remembering')"
+          - label: "Hero Description"
+            name: "hero_description"
+            widget: "text"
+            required: false
+            hint: "Description paragraph below the main headline"
+          
+          # --- SIGNUP SECTION ---
+          - label: "--- SIGNUP SECTION ---"
+            name: "signup_label"
+            widget: "hidden"
+            default: "Signup Section"
+          - label: "Signup Section Title"
+            name: "signup_section_title"
+            widget: "string"
+            required: false
+            hint: "Title above the email signup form"
+          - label: "Signup Section Description"
+            name: "signup_section_description"
+            widget: "text"
+            required: false
+            hint: "Description below the signup title"
+          - label: "Signup Footer Line 1"
+            name: "signup_footer_line1"
+            widget: "text"
+            required: false
+            hint: "First line below signup form (e.g., 'Join 75+ investigators...')"
+          - label: "Signup Form Footer Text"
+            name: "signup_form_footer_text"
+            widget: "text"
+            required: false
+            hint: "Privacy text at the bottom of signup form"
+          
+          # --- TESTIMONIALS SECTION ---
+          - label: "--- TESTIMONIALS SECTION ---"
+            name: "testimonials_label"
+            widget: "hidden"
+            default: "Testimonials Section"
+          - label: "Testimonials Title"
+            name: "testimonials_title"
+            widget: "string"
+            required: false
+            hint: "Section title (e.g., 'What is Elusive?')"
+          - label: "Testimonials"
+            name: "testimonials"
+            widget: "list"
+            required: false
+            hint: "Add testimonial quotes from past participants"
+            fields:
+              - label: "Quote"
+                name: "quote"
+                widget: "text"
+                required: false
+              - label: "Name"
+                name: "name"
+                widget: "string"
+                required: false
+              - label: "Initials"
+                name: "initials"
+                widget: "string"
+                required: false
+              - label: "Role"
+                name: "role"
+                widget: "string"
+                required: false
+          
+          # --- GALLERY/MARQUEE SECTION ---
+          - label: "--- GALLERY SECTION ---"
+            name: "gallery_label"
+            widget: "hidden"
+            default: "Gallery Section"
+          - label: "Gallery Images (Scrolling Marquee)"
+            name: "gallery_images"
+            widget: "list"
+            required: false
+            hint: "Images that scroll horizontally across the page"
+            fields:
+              - label: "Image"
+                name: "image"
+                widget: "image"
+                required: false
+              - label: "Alt Text"
+                name: "alt"
+                widget: "string"
+                required: false
+              - label: "URL (optional fallback)"
+                name: "url"
+                widget: "string"
+                required: false
+          
+          # --- WHY JOIN SECTION ---
+          - label: "--- WHY JOIN SECTION ---"
+            name: "why_join_label"
+            widget: "hidden"
+            default: "Why Join Section"
+          - label: "Why Join Title"
+            name: "why_join_title"
+            widget: "string"
+            required: false
+            hint: "Section title (e.g., 'Why Join the Investigation?')"
+          - label: "Why Join Features"
+            name: "why_join_features"
+            widget: "list"
+            required: false
+            hint: "List of reasons to join with title and description"
+            fields:
+              - label: "Title"
+                name: "title"
+                widget: "string"
+                required: false
+              - label: "Description"
+                name: "description"
+                widget: "text"
+                required: false
+          
+          # --- FAQ SECTION ---
+          - label: "--- FAQ SECTION ---"
+            name: "faq_label"
+            widget: "hidden"
+            default: "FAQ Section"
+          - label: "FAQ Section Title"
+            name: "faq_section_title"
+            widget: "string"
+            required: false
+            hint: "Title for the FAQ section"
+          - label: "FAQ Items"
+            name: "faq_items"
+            widget: "list"
+            required: false
+            hint: "Questions and answers displayed on the page"
+            fields:
+              - label: "Question"
+                name: "question"
+                widget: "string"
+                required: false
+              - label: "Answer"
+                name: "answer"
+                widget: "markdown"
+                required: false
+          
+          # --- FOOTER SECTION ---
+          - label: "--- FOOTER SECTION ---"
+            name: "footer_label"
+            widget: "hidden"
+            default: "Footer Section"
+          - label: "Footer Copyright Text"
+            name: "footer_copyright_text"
+            widget: "string"
+            required: false
+
+      # ========================================
+      # PLATFORM PAGE (/platform)
+      # ========================================
+      - label: "2. Platform Page (Event Details)"
+        name: "landing"
+        file: "client/public/assets/content/landing.json"
+        fields:
+          # --- HEADER SECTION ---
+          - label: "--- HEADER SECTION ---"
+            name: "header_label"
+            widget: "hidden"
+            default: "Header Section"
+          - label: "Header Title"
+            name: "header_title"
+            widget: "string"
+            required: false
+            hint: "Logo text in the header"
+          - label: "Back Button Text"
+            name: "back_to_coming_soon_text"
+            widget: "string"
+            required: false
+            hint: "Text for the back link (e.g., '← Coming Soon')"
+          
+          # --- HERO SECTION ---
+          - label: "--- HERO SECTION ---"
+            name: "hero_section_label"
+            widget: "hidden"
+            default: "Hero Section"
+          - label: "Hero Headline Part 1"
             name: "hero_main_headline_part1"
             widget: "string"
             required: false
-            hint: "First part of the main headline (e.g., 'Next')."
-          - label: "Hero Main Headline Part 2"
+            hint: "First word (e.g., 'Next')"
+          - label: "Hero Headline Part 2"
             name: "hero_main_headline_part2"
             widget: "string"
             required: false
-            hint: "Second, highlighted part of the main headline (e.g., 'Event')."
+            hint: "Second word - highlighted in gold (e.g., 'Event')"
           - label: "Hero Sub Headline"
             name: "hero_sub_headline"
             widget: "string"
             required: false
-            hint: "The sub-headline below the main hero title."
+            hint: "Tagline below the headline"
           - label: "Event Date Text"
             name: "event_date_text"
             widget: "string"
             required: false
-            hint: "Text indicating the event date (e.g., 'August 2025 Event')."
+            hint: "Event timing info (e.g., 'Live Event Launch: Private')"
           - label: "Event Launch Description"
             name: "event_launch_description"
             widget: "text"
             required: false
-            hint: "Description of how the event will launch."
+            hint: "Description about event access"
           
-          # Value Proposition Section
+          # --- VALUE PROPOSITION SECTION ---
           - label: "--- VALUE PROPOSITION SECTION ---"
             name: "value_section_label"
             widget: "hidden"
             default: "Value Proposition Section"
-          - label: "The Ones Who Remember - Heading"
+          - label: "Section Heading"
             name: "ones_who_remember_heading"
             widget: "string"
             required: false
-            hint: "Heading for the value proposition section"
+            hint: "Heading for the value section (e.g., 'The Ones Who Remember')"
             default: "The Ones Who Remember"
           - label: "Value Proposition Text"
             name: "value_proposition_text"
             widget: "markdown"
             required: false
-            hint: "The main value proposition statement, supports markdown."
+            hint: "Main description text for this section"
           
-          # Past Event Section
-          - label: "--- PAST EVENT SECTION ---"
+          # --- PAST EVENT CAROUSEL ---
+          - label: "--- PAST EVENT CAROUSEL ---"
             name: "past_event_label"
             widget: "hidden"
             default: "Past Event Section"
-          - label: "Image Carousel Title"
+          - label: "Carousel Title"
             name: "image_carousel_title"
             widget: "string"
             required: false
-            hint: "Title for the past event carousel"
+            hint: "Title above the image carousel"
           - label: "Carousel Images"
             name: "carousel_images"
             widget: "list"
             required: false
-            hint: "Upload images from past mystery events"
+            hint: "Images from past events"
             fields:
               - label: "ID"
                 name: "id"
                 widget: "number"
                 required: false
-              - label: "Image Upload (1200x600px recommended)"
+              - label: "Image"
                 name: "image"
                 widget: "image"
                 required: false
-                hint: "Upload carousel image - recommended size: 1200x600 pixels for optimal display"
-              - label: "Alt Text"
+                hint: "Recommended: 1200x600px"
+              - label: "Alt Text (displays as title)"
                 name: "alt"
                 widget: "string"
                 required: false
-              - label: "Placeholder Description"
+              - label: "Description"
                 name: "placeholder"
                 widget: "string"
                 required: false
-                hint: "Description when no image is uploaded"
           
-          # What's Coming Next Section
+          # --- WHAT'S COMING NEXT SECTION ---
           - label: "--- WHAT'S COMING NEXT SECTION ---"
             name: "coming_next_label"
             widget: "hidden"
             default: "What's Coming Next Section"
-          - label: "What's Coming Next Title"
+          - label: "Section Title"
             name: "whats_coming_next_title"
             widget: "string"
             required: false
@@ -146,32 +327,33 @@ collections:
             widget: "text"
             required: false
           
-          # Access Tiers Section
+          # --- ACCESS TIERS SECTION ---
           - label: "--- ACCESS TIERS SECTION ---"
             name: "tiers_label"
             widget: "hidden"
             default: "Access Tiers Section"
-          - label: "Access Tiers Title"
+          - label: "Tiers Section Title"
             name: "access_tiers_title"
             widget: "string"
             required: false
-          - label: "Detective Tier Title"
+          - label: "Tier 1 (Observer) - Title"
             name: "detective_tier_title"
             widget: "string"
             required: false
-          - label: "Detective Tier Price"
+          - label: "Tier 1 (Observer) - Price"
             name: "detective_tier_price"
             widget: "string"
             required: false
-          - label: "Detective Tier Description"
+          - label: "Tier 1 (Observer) - Description"
             name: "detective_tier_description"
             widget: "text"
             required: false
-          - label: "Detective Tier Selection"
+          - label: "Tier 1 (Observer) - Selection Value"
             name: "detective_tier_selection"
             widget: "string"
             required: false
-          - label: "Detective Tier Features"
+            hint: "Internal value for form selection"
+          - label: "Tier 1 (Observer) - Features"
             name: "detective_tier_features"
             widget: "list"
             required: false
@@ -180,23 +362,23 @@ collections:
                 name: "feature"
                 widget: "string"
                 required: false
-          - label: "Curator Tier Title"
+          - label: "Tier 2 (Memory Holder) - Title"
             name: "curator_tier_title"
             widget: "string"
             required: false
-          - label: "Curator Tier Price"
+          - label: "Tier 2 (Memory Holder) - Price"
             name: "curator_tier_price"
             widget: "string"
             required: false
-          - label: "Curator Tier Description"
+          - label: "Tier 2 (Memory Holder) - Description"
             name: "curator_tier_description"
             widget: "text"
             required: false
-          - label: "Curator Tier Selection"
+          - label: "Tier 2 (Memory Holder) - Selection Value"
             name: "curator_tier_selection"
             widget: "string"
             required: false
-          - label: "Curator Tier Features"
+          - label: "Tier 2 (Memory Holder) - Features"
             name: "curator_tier_features"
             widget: "list"
             required: false
@@ -205,23 +387,23 @@ collections:
                 name: "feature"
                 widget: "string"
                 required: false
-          - label: "Accomplice Tier Title"
+          - label: "Tier 3 (Accomplice) - Title"
             name: "accomplice_tier_title"
             widget: "string"
             required: false
-          - label: "Accomplice Tier Price"
+          - label: "Tier 3 (Accomplice) - Price"
             name: "accomplice_tier_price"
             widget: "string"
             required: false
-          - label: "Accomplice Tier Description"
+          - label: "Tier 3 (Accomplice) - Description"
             name: "accomplice_tier_description"
             widget: "text"
             required: false
-          - label: "Accomplice Tier Selection"
+          - label: "Tier 3 (Accomplice) - Selection Value"
             name: "accomplice_tier_selection"
             widget: "string"
             required: false
-          - label: "Accomplice Tier Features"
+          - label: "Tier 3 (Accomplice) - Features"
             name: "accomplice_tier_features"
             widget: "list"
             required: false
@@ -231,7 +413,7 @@ collections:
                 widget: "string"
                 required: false
           
-          # Signup Form Section
+          # --- SIGNUP FORM SECTION ---
           - label: "--- SIGNUP FORM SECTION ---"
             name: "signup_label"
             widget: "hidden"
@@ -245,8 +427,8 @@ collections:
             widget: "text"
             required: false
           
-          # FAQ Section
-          - label: "--- FAQ SECTION ---"
+          # --- FAQ/BRIEFING SECTION ---
+          - label: "--- THE BRIEFING (FAQ) SECTION ---"
             name: "faq_label"
             widget: "hidden"
             default: "FAQ Section"
@@ -254,7 +436,7 @@ collections:
             name: "faq_title"
             widget: "string"
             required: false
-            hint: "Title for the FAQ/Briefing section"
+            hint: "Title for the FAQ section (e.g., 'The Briefing')"
           - label: "FAQ Items"
             name: "faq_items"
             widget: "list"
@@ -269,7 +451,7 @@ collections:
                 widget: "markdown"
                 required: false
           
-          # Footer Section
+          # --- FOOTER SECTION ---
           - label: "--- FOOTER SECTION ---"
             name: "footer_label"
             widget: "hidden"
@@ -279,201 +461,39 @@ collections:
             widget: "string"
             required: false
 
-      - label: "Coming Soon Page" # Corresponds to /
-        name: "coming_soon"
-        file: "client/public/assets/content/coming-soon.json" # Path to this page's content file
-        fields:
-          # Header Section
-          - label: "Header Logo Text"
-            name: "header_logo_text"
-            widget: "string"
-            required: false
-          
-          # Hero Section
-          - label: "--- HERO SECTION ---"
-            name: "hero_section_label"
-            widget: "hidden"
-            default: "Hero Section"
-          - label: "Main Headline Part 1"
-            name: "main_headline_part1"
-            widget: "string"
-            required: false
-          - label: "Main Headline Part 2"
-            name: "main_headline_part2"
-            widget: "string"
-            required: false
-          - label: "Main Headline Part 3"
-            name: "main_headline_part3"
-            widget: "string"
-            required: false
-          - label: "Hero Description"
-            name: "hero_description"
-            widget: "text"
-            required: false
-          
-          # Testimonials Section
-          - label: "--- TESTIMONIALS SECTION ---"
-            name: "testimonials_label"
-            widget: "hidden"
-            default: "Testimonials Section"
-          - label: "Testimonials Title"
-            name: "testimonials_title"
-            widget: "string"
-            required: false
-          - label: "Testimonials"
-            name: "testimonials"
-            widget: "list"
-            required: false
-            fields:
-              - label: "Quote"
-                name: "quote"
-                widget: "text"
-                required: false
-              - label: "Name"
-                name: "name"
-                widget: "string"
-                required: false
-              - label: "Initials"
-                name: "initials"
-                widget: "string"
-                required: false
-              - label: "Role"
-                name: "role"
-                widget: "string"
-                required: false
-          
-          # Gallery Section
-          - label: "--- GALLERY SECTION ---"
-            name: "gallery_label"
-            widget: "hidden"
-            default: "Gallery Section"
-          - label: "Gallery Images"
-            name: "gallery_images"
-            widget: "list"
-            required: false
-            fields:
-              - label: "URL"
-                name: "url"
-                widget: "string"
-                required: false
-              - label: "Alt Text"
-                name: "alt"
-                widget: "string"
-                required: false
-              - label: "Image"
-                name: "image"
-                widget: "image"
-                required: false
-          
-          # Why Join Section
-          - label: "--- WHY JOIN SECTION ---"
-            name: "why_join_label"
-            widget: "hidden"
-            default: "Why Join Section"
-          - label: "Why Join Title"
-            name: "why_join_title"
-            widget: "string"
-            required: false
-          - label: "Why Join Features"
-            name: "why_join_features"
-            widget: "list"
-            required: false
-            fields:
-              - label: "Title"
-                name: "title"
-                widget: "string"
-                required: false
-              - label: "Description"
-                name: "description"
-                widget: "text"
-                required: false
-          
-          # Signup Section
-          - label: "--- SIGNUP SECTION ---"
-            name: "signup_label"
-            widget: "hidden"
-            default: "Signup Section"
-          - label: "Signup Section Title"
-            name: "signup_section_title"
-            widget: "string"
-            required: false
-          - label: "Signup Section Description"
-            name: "signup_section_description"
-            widget: "text"
-            required: false
-          - label: "Signup Footer Line 1"
-            name: "signup_footer_line1"
-            widget: "text"
-            required: false
-            hint: "First line of text below signup form"
-          - label: "Signup Form Footer Text"
-            name: "signup_form_footer_text"
-            widget: "text"
-            required: false
-            hint: "Text at the bottom of signup form"
-          
-          # FAQ Section
-          - label: "--- FAQ SECTION ---"
-            name: "faq_label"
-            widget: "hidden"
-            default: "FAQ Section"
-          - label: "FAQ Section Title"
-            name: "faq_section_title"
-            widget: "string"
-            required: false
-          - label: "FAQ Items"
-            name: "faq_items"
-            widget: "list"
-            required: false
-            fields:
-              - label: "Question"
-                name: "question"
-                widget: "string"
-                required: false
-              - label: "Answer"
-                name: "answer"
-                widget: "markdown"
-                required: false
-          
-          # Footer Section
-          - label: "--- FOOTER SECTION ---"
-            name: "footer_label"
-            widget: "hidden"
-            default: "Footer Section"
-          - label: "Footer Copyright Text"
-            name: "footer_copyright_text"
-            widget: "string"
-            required: false
-          - label: "MailerLite Form ID"
-            name: "mailerlite_form_id"
-            widget: "string"
-            required: false
-            hint: "MailerLite form ID for signup"
-
-      - label: "Vessel Teaser Page" # Corresponds to /vessel
+      # ========================================
+      # VESSEL PAGE (/vessel)
+      # ========================================
+      - label: "3. Vessel App Page"
         name: "vessel"
-        file: "client/public/assets/content/vessel.json" # Path to this page's content file
+        file: "client/public/assets/content/vessel.json"
         fields:
-          # Header Section
+          # --- HEADER SECTION ---
+          - label: "--- HEADER SECTION ---"
+            name: "header_label"
+            widget: "hidden"
+            default: "Header Section"
           - label: "Header Logo Text"
             name: "header_logo_text"
             widget: "string"
             required: false
-          - label: "Platform Button Text"
+          - label: "Home Button Text"
             name: "platform_button_text"
             widget: "string"
             required: false
+            hint: "Text for the navigation button"
           
-          # Hero Section
+          # --- HERO SECTION ---
           - label: "--- HERO SECTION ---"
             name: "hero_section_label"
             widget: "hidden"
             default: "Hero Section"
-          - label: "Hero Main Headline Part 1"
+          - label: "Hero Headline Part 1"
             name: "hero_main_headline_part1"
             widget: "string"
             required: false
-          - label: "Hero Main Headline Part 2"
+            hint: "First word - highlighted in gold"
+          - label: "Hero Headline Part 2"
             name: "hero_main_headline_part2"
             widget: "string"
             required: false
@@ -481,42 +501,44 @@ collections:
             name: "hero_sub_headline"
             widget: "string"
             required: false
-          
-          # Vessel Intro Section
-          - label: "--- VESSEL INTRO SECTION ---"
-            name: "vessel_intro_label"
-            widget: "hidden"
-            default: "Vessel Intro Section"
-          - label: "Vessel Intro Title Part 1"
-            name: "vessel_intro_title_part1"
-            widget: "string"
-            required: false
-          - label: "Vessel Intro Title Part 2"
-            name: "vessel_intro_title_part2"
-            widget: "string"
-            required: false
-          - label: "Vessel Intro Description"
-            name: "vessel_intro_description"
-            widget: "text"
-            required: false
           - label: "Discover Features Button Text"
             name: "discover_features_button_text"
             widget: "string"
             required: false
           
-          # MVP Features Section
-          - label: "--- MVP FEATURES SECTION ---"
+          # --- VESSEL INTRO SECTION ---
+          - label: "--- VESSEL INTRO SECTION ---"
+            name: "vessel_intro_label"
+            widget: "hidden"
+            default: "Vessel Intro Section"
+          - label: "Intro Title Part 1"
+            name: "vessel_intro_title_part1"
+            widget: "string"
+            required: false
+          - label: "Intro Title Part 2"
+            name: "vessel_intro_title_part2"
+            widget: "string"
+            required: false
+            hint: "Highlighted in red gradient"
+          - label: "Intro Description"
+            name: "vessel_intro_description"
+            widget: "text"
+            required: false
+          
+          # --- MVP FEATURES SECTION ---
+          - label: "--- CORE FEATURES SECTION ---"
             name: "mvp_label"
             widget: "hidden"
             default: "MVP Features Section"
-          - label: "MVP Features Title"
+          - label: "Core Features Title"
             name: "mvp_features_title"
             widget: "string"
             required: false
-          - label: "MVP Features"
+          - label: "Core Features"
             name: "mvp_features"
             widget: "list"
             required: false
+            hint: "Main features of the Vessel app"
             fields:
               - label: "ID"
                 name: "id"
@@ -547,16 +569,16 @@ collections:
                 widget: "string"
                 required: false
           
-          # Roadmap Features Section
-          - label: "--- ROADMAP FEATURES SECTION ---"
+          # --- ROADMAP SECTION ---
+          - label: "--- FUTURE FEATURES SECTION ---"
             name: "roadmap_label"
             widget: "hidden"
             default: "Roadmap Features Section"
-          - label: "Roadmap Features Title"
+          - label: "Future Features Title"
             name: "roadmap_features_title"
             widget: "string"
             required: false
-          - label: "Roadmap Features"
+          - label: "Future Features"
             name: "roadmap_features"
             widget: "list"
             required: false
@@ -586,8 +608,8 @@ collections:
                 widget: "string"
                 required: false
           
-          # Freemium Section
-          - label: "--- FREEMIUM SECTION ---"
+          # --- FREEMIUM SECTION ---
+          - label: "--- FREEMIUM FEATURES SECTION ---"
             name: "freemium_label"
             widget: "hidden"
             default: "Freemium Section"
@@ -613,16 +635,16 @@ collections:
             widget: "string"
             required: false
           
-          # CTA Section
-          - label: "--- EARLY ACCESS CTA SECTION ---"
+          # --- EARLY ACCESS CTA SECTION ---
+          - label: "--- EARLY ACCESS SECTION ---"
             name: "cta_label"
             widget: "hidden"
             default: "Early Access CTA Section"
-          - label: "CTA Early Access Title"
+          - label: "Early Access Title"
             name: "cta_early_access_title"
             widget: "string"
             required: false
-          - label: "CTA Early Access Description"
+          - label: "Early Access Description"
             name: "cta_early_access_description"
             widget: "text"
             required: false
@@ -631,7 +653,7 @@ collections:
             widget: "text"
             required: false
           
-          # Footer Section
+          # --- FOOTER SECTION ---
           - label: "--- FOOTER SECTION ---"
             name: "footer_label"
             widget: "hidden"
