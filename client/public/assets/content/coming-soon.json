@@ -1,5 +1,6 @@
 {
   "event_updates_button_text": "Event Updates",
+  "signup_footer_line1": "Join investigators in our upcoming cultural mystery experience.",
   "gallery_images": [
     {
       "url": "/api/placeholder/300/200",
@@ -116,7 +117,6 @@
   ],
   "main_headline_part3": "Meaning",
   "signup_section_description": "Get early access, behind-the-scenes clues, and a first look at the story before it unfolds.",
-  "signup_footer_line1": "Join 75+ investigators in our upcoming cultural mystery experience.",
   "footer_logo_text": "ELUSIVE",
   "signup_form_footer_text": "No spam, just mysteries. Unsubscribe at any time."
 }
