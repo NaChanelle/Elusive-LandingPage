@@ -1,5 +1,11 @@
 {
   "event_updates_button_text": "Event Updates",
+  "glitch_image": "/assets/uploads/glitch-photo.png",
+  "glitch_title_part1": "The",
+  "glitch_title_part2": "Investigation",
+  "glitch_title_part3": "Awaits",
+  "glitch_description": "Every truth has layers. Every memory has gatekeepers. Elusive invites cultural investigators to decode stories hidden in plain sight—where art, identity, and mystery collide.",
+  "glitch_secondary_text": "The first clue drops soon. Will you be watching?",
   "signup_footer_line1": "Join investigators in our upcoming cultural mystery experience.",
   "gallery_images": [
     {
