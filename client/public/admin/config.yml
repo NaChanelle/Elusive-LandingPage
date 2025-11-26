@@ -89,45 +89,6 @@ collections:
             required: false
             hint: "Privacy text at the bottom of signup form"
           
-          # --- GLITCH IMAGE SECTION ---
-          - label: "--- GLITCH IMAGE SECTION ---"
-            name: "glitch_section_label"
-            widget: "hidden"
-            default: "Glitch Image Section"
-          - label: "Glitch Image"
-            name: "glitch_image"
-            widget: "image"
-            required: false
-            hint: "The image that will have the glitch effect applied"
-          - label: "Glitch Section Title Part 1"
-            name: "glitch_title_part1"
-            widget: "string"
-            required: false
-            hint: "First part of title (e.g., 'The')"
-            default: "The"
-          - label: "Glitch Section Title Part 2 (Highlighted)"
-            name: "glitch_title_part2"
-            widget: "string"
-            required: false
-            hint: "Highlighted word in gold (e.g., 'Investigation')"
-            default: "Investigation"
-          - label: "Glitch Section Title Part 3"
-            name: "glitch_title_part3"
-            widget: "string"
-            required: false
-            hint: "Last part of title (e.g., 'Awaits')"
-            default: "Awaits"
-          - label: "Glitch Section Description"
-            name: "glitch_description"
-            widget: "text"
-            required: false
-            hint: "Main description paragraph"
-          - label: "Glitch Section Secondary Text"
-            name: "glitch_secondary_text"
-            widget: "text"
-            required: false
-            hint: "Secondary/supporting text"
-          
           # --- TESTIMONIALS SECTION ---
           - label: "--- TESTIMONIALS SECTION ---"
             name: "testimonials_label"
@@ -184,6 +145,45 @@ collections:
                 name: "url"
                 widget: "string"
                 required: false
+          
+          # --- GLITCH IMAGE SECTION ---
+          - label: "--- GLITCH IMAGE SECTION ---"
+            name: "glitch_section_label"
+            widget: "hidden"
+            default: "Glitch Image Section"
+          - label: "Glitch Image"
+            name: "glitch_image"
+            widget: "image"
+            required: false
+            hint: "The image that will have the glitch effect applied"
+          - label: "Glitch Section Title Part 1"
+            name: "glitch_title_part1"
+            widget: "string"
+            required: false
+            hint: "First part of title (e.g., 'The')"
+            default: "The"
+          - label: "Glitch Section Title Part 2 (Highlighted)"
+            name: "glitch_title_part2"
+            widget: "string"
+            required: false
+            hint: "Highlighted word in gold (e.g., 'Investigation')"
+            default: "Investigation"
+          - label: "Glitch Section Title Part 3"
+            name: "glitch_title_part3"
+            widget: "string"
+            required: false
+            hint: "Last part of title (e.g., 'Awaits')"
+            default: "Awaits"
+          - label: "Glitch Section Description"
+            name: "glitch_description"
+            widget: "text"
+            required: false
+            hint: "Main description paragraph"
+          - label: "Glitch Section Secondary Text"
+            name: "glitch_secondary_text"
+            widget: "text"
+            required: false
+            hint: "Secondary/supporting text"
           
           # --- WHY JOIN SECTION ---
           - label: "--- WHY JOIN SECTION ---"

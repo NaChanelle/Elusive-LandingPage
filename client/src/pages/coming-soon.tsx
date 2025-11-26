@@ -250,26 +250,26 @@ export default function ComingSoon() {
             <div className="w-full md:w-1/2 glitch-container rounded-lg overflow-hidden border-2 border-[#FFB90F]/30">
               <div className="relative aspect-[3/4]">
                 <img 
-                  src="/assets/uploads/glitch-photo.png" 
-                  alt="The Investigation"
+                  src={(content as any)?.glitch_image || "/assets/uploads/glitch-photo.png"} 
+                  alt={`${(content as any)?.glitch_title_part1 || "The"} ${(content as any)?.glitch_title_part2 || "Investigation"}`}
                   className="w-full h-full object-cover glitch-active"
                   data-testid="glitch-image-main"
                 />
                 {/* Glitch overlay slices */}
                 <img 
-                  src="/assets/uploads/glitch-photo.png" 
+                  src={(content as any)?.glitch_image || "/assets/uploads/glitch-photo.png"} 
                   alt=""
                   className="glitch-slice glitch-slice-1 object-cover"
                   aria-hidden="true"
                 />
                 <img 
-                  src="/assets/uploads/glitch-photo.png" 
+                  src={(content as any)?.glitch_image || "/assets/uploads/glitch-photo.png"} 
                   alt=""
                   className="glitch-slice glitch-slice-2 object-cover"
                   aria-hidden="true"
                 />
                 <img 
-                  src="/assets/uploads/glitch-photo.png" 
+                  src={(content as any)?.glitch_image || "/assets/uploads/glitch-photo.png"} 
                   alt=""
                   className="glitch-slice glitch-slice-3 object-cover"
                   aria-hidden="true"
@@ -280,15 +280,15 @@ export default function ComingSoon() {
             {/* Text Content */}
             <div className="w-full md:w-1/2 space-y-6">
               <h2 className="text-3xl md:text-4xl font-bold">
-                <span className="text-white">The </span>
-                <span className="text-[#FFB90F]">Investigation</span>
-                <span className="text-white"> Awaits</span>
+                <span className="text-white">{(content as any)?.glitch_title_part1 || "The"} </span>
+                <span className="text-[#FFB90F]">{(content as any)?.glitch_title_part2 || "Investigation"}</span>
+                <span className="text-white"> {(content as any)?.glitch_title_part3 || "Awaits"}</span>
               </h2>
               <p className="text-gray-300 text-lg leading-relaxed">
-                Some truths are hidden in plain sight. Others require you to look closer, question deeper, and connect what others overlook.
+                {(content as any)?.glitch_description || "Every truth has layers. Every memory has gatekeepers. Elusive invites cultural investigators to decode stories hidden in plain sight—where art, identity, and mystery collide."}
               </p>
               <p className="text-gray-400">
-                Join a community of cultural investigators piecing together mysteries that matter.
+                {(content as any)?.glitch_secondary_text || "The first clue drops soon. Will you be watching?"}
               </p>
             </div>
           </div>
