@@ -48,7 +48,7 @@ export default function Landing() {
           </Link>
           
           <Link href="/">
-            <Button variant="ghost" className="text-gray-300 hover:text-[#FFB90F]">
+            <Button className="bg-[#FFB90F] hover:bg-[#e6a50e] text-black font-medium px-6 py-2">
               {(content as any)?.back_to_coming_soon_text || "← Coming Soon"}
             </Button>
           </Link>

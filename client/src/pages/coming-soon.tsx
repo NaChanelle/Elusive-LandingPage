@@ -9,6 +9,8 @@ import MailerLiteEmbed from "@/components/MailerLiteEmbed";
 export default function ComingSoon() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Load content from JSON
   const { data: content } = useQuery({
@@ -22,6 +24,7 @@ export default function ComingSoon() {
   useEffect(() => {
     const handleScroll = () => {
       setShowBackToTop(window.scrollY > 300);
+      setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -70,18 +73,63 @@ export default function ComingSoon() {
             </div>
           </Link>
           
-          <div className="flex gap-3">
-            <Link href="/platform">
-              <Button className="bg-[#FFB90F] hover:bg-[#e6a50e] text-black font-medium px-4 py-2 text-sm">
-                Event Updates
+          {/* Desktop Navigation - Hidden when scrolled */}
+          {!isScrolled && (
+            <div className="hidden md:flex gap-3">
+              <Link href="/platform">
+                <Button className="bg-[#FFB90F] hover:bg-[#e6a50e] text-black font-medium px-6 py-2 text-sm">
+                  Event Updates
+                </Button>
+              </Link>
+              <Link href="/vessel">
+                <Button className="bg-[#8B0000] hover:bg-[#a51c1c] text-white font-medium px-6 py-2 text-sm">
+                  Vessel Preview
+                </Button>
+              </Link>
+            </div>
+          )}
+
+          {/* Mobile Navigation - Always show, but buttons shrink or hamburger shows when scrolled */}
+          {!isScrolled ? (
+            <div className="flex md:hidden gap-2">
+              <Link href="/platform">
+                <Button className="bg-[#FFB90F] hover:bg-[#e6a50e] text-black font-medium px-3 py-1.5 text-xs">
+                  Event Updates
+                </Button>
+              </Link>
+              <Link href="/vessel">
+                <Button className="bg-[#8B0000] hover:bg-[#a51c1c] text-white font-medium px-3 py-1.5 text-xs">
+                  Vessel Preview
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <div className="relative">
+              <Button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                variant="ghost"
+                className="text-[#FFB90F] hover:text-white p-2"
+              >
+                <Menu className="w-6 h-6" />
               </Button>
-            </Link>
-            <Link href="/vessel">
-              <Button className="bg-[#8B0000] hover:bg-[#a51c1c] text-white font-medium px-4 py-2 text-sm">
-                Vessel Preview
-              </Button>
-            </Link>
-          </div>
+              
+              {/* Dropdown Menu */}
+              {mobileMenuOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-black/95 backdrop-blur-sm rounded-lg border border-gray-700 shadow-lg">
+                  <Link href="/platform" onClick={() => setMobileMenuOpen(false)}>
+                    <div className="block px-4 py-3 text-[#FFB90F] hover:bg-gray-800/50 border-b border-gray-700">
+                      Event Updates
+                    </div>
+                  </Link>
+                  <Link href="/vessel" onClick={() => setMobileMenuOpen(false)}>
+                    <div className="block px-4 py-3 text-[#8B0000] hover:bg-gray-800/50">
+                      Vessel Preview
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </header>
 
