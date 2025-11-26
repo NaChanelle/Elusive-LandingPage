@@ -4,11 +4,14 @@ import { Link } from "wouter";
 import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye, ChevronLeft, Play, Zap, Heart, Home } from "lucide-react";
 import MailerLiteEmbed from "@/components/MailerLiteEmbed";
 import { useQuery } from "@tanstack/react-query";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function Landing() {
   const [selectedTier, setSelectedTier] = useState<string>('');
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [currentEventImageIndex, setCurrentEventImageIndex] = useState(0);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
 
   // Load content from JSON file
   const { data: content } = useQuery({
@@ -355,19 +358,82 @@ export default function Landing() {
             </div>
             <p className="text-sm text-gray-400">&copy; {(content as any)?.footer_copyright_text || "2025 Elusive Origin. All rights reserved."}</p>
             <div className="flex items-center space-x-6">
-              <a href="mailto:hello@elusiveorigin.com" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
+              <a href="mailto:hello@elusive.quest" className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
                 Contact
               </a>
-              <Link href="/" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
+              <button onClick={() => setPrivacyOpen(true)} className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
                 Privacy
-              </Link>
-              <Link href="/" className="text-xs text-gray-500 hover:text-gray-400 transition-colors">
+              </button>
+              <button onClick={() => setTermsOpen(true)} className="text-sm text-gray-400 hover:text-[#FFB90F] transition-colors">
                 Terms
-              </Link>
+              </button>
             </div>
           </div>
         </div>
       </footer>
+
+      {/* Privacy Policy Dialog */}
+      <Dialog open={privacyOpen} onOpenChange={setPrivacyOpen}>
+        <DialogContent className="bg-[#1a1a1a] border-gray-700 text-white max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-[#FFB90F]">Privacy Policy</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 text-gray-300 text-sm">
+            <p><strong className="text-white">Last Updated:</strong> November 2025</p>
+            
+            <h3 className="text-lg font-semibold text-white">Information We Collect</h3>
+            <p>When you subscribe to our email list or register for events, we collect your email address and optionally your name. We use this information solely to send you updates about Elusive events, experiences, and related content.</p>
+            
+            <h3 className="text-lg font-semibold text-white">How We Use Your Information</h3>
+            <p>Your information is used to:</p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>Send event announcements and updates</li>
+              <li>Provide early access to new experiences</li>
+              <li>Share exclusive content and clues</li>
+              <li>Communicate important changes to our services</li>
+            </ul>
+            
+            <h3 className="text-lg font-semibold text-white">Data Protection</h3>
+            <p>We use MailerLite to manage our email subscriptions. Your data is stored securely and is never sold to third parties. You can unsubscribe at any time using the link in any of our emails.</p>
+            
+            <h3 className="text-lg font-semibold text-white">Contact Us</h3>
+            <p>For any privacy-related questions, contact us at <a href="mailto:hello@elusive.quest" className="text-[#FFB90F] hover:underline">hello@elusive.quest</a></p>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Terms of Service Dialog */}
+      <Dialog open={termsOpen} onOpenChange={setTermsOpen}>
+        <DialogContent className="bg-[#1a1a1a] border-gray-700 text-white max-w-2xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold text-[#FFB90F]">Terms of Service</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 text-gray-300 text-sm">
+            <p><strong className="text-white">Last Updated:</strong> November 2025</p>
+            
+            <h3 className="text-lg font-semibold text-white">Email Subscription Terms</h3>
+            <p>By subscribing to the Elusive mailing list, you agree to receive periodic emails about our events, experiences, and related content. You may unsubscribe at any time.</p>
+            
+            <h3 className="text-lg font-semibold text-white">Event Participation</h3>
+            <p>Participation in Elusive events and experiences is subject to:</p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>Availability and capacity limits</li>
+              <li>Age requirements (where applicable)</li>
+              <li>Event-specific terms announced prior to each experience</li>
+              <li>Respectful behavior toward other participants and staff</li>
+            </ul>
+            
+            <h3 className="text-lg font-semibold text-white">Intellectual Property</h3>
+            <p>All content, stories, puzzles, and materials associated with Elusive are the property of Elusive Origin. Participants may not reproduce, distribute, or create derivative works without written permission.</p>
+            
+            <h3 className="text-lg font-semibold text-white">Limitation of Liability</h3>
+            <p>Elusive Origin is not responsible for any damages arising from participation in our events or use of our digital platforms, except where required by law.</p>
+            
+            <h3 className="text-lg font-semibold text-white">Contact</h3>
+            <p>For questions about these terms, contact us at <a href="mailto:hello@elusive.quest" className="text-[#FFB90F] hover:underline">hello@elusive.quest</a></p>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Back to Top Button */}
       {showBackToTop && (
