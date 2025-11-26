@@ -1,12 +1,7 @@
 {
   "event_updates_button_text": "Event Updates",
-  "glitch_image": "/assets/uploads/glitch-photo.png",
-  "glitch_title_part1": "The",
-  "glitch_title_part2": "Investigation",
-  "glitch_title_part3": "Awaits",
-  "glitch_description": "Every truth has layers. Every memory has gatekeepers. Elusive invites cultural investigators to decode stories hidden in plain sight—where art, identity, and mystery collide.",
-  "glitch_secondary_text": "The first clue drops soon. Will you be watching?",
   "signup_footer_line1": "Join investigators in our upcoming cultural mystery experience.",
+  "glitch_secondary_text": "Become a contributor to truth soon. Ready to discover?",
   "gallery_images": [
     {
       "url": "/api/placeholder/300/200",
@@ -42,8 +37,13 @@
   "header_title": "ELUSIVE",
   "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
   "mailerlite_form_id": "4f8mQz",
+  "glitch_title_part1": "Origin",
   "testimonials_title": "What is Elusive?",
+  "glitch_title_part2": "Over",
   "header_logo_text": "ELUSIVE",
+  "glitch_title_part3": "Imitation",
+  "glitch_image": "/assets/uploads/glitch-photo.png",
+  "glitch_description": "Every truth has layers. Every memory has gatekeepers. Elusive invites curious minds, brave storytellers, and meaning-cravers to decode stories hidden in plain sight—where art, identity, and mystery collide.",
   "testimonials": [
     {
       "quote": "#Buglary30 was so fun! It's exactly the type of event I like to attend these days. I love celebrating birthdays AND participating in a little mystery and drama!",
