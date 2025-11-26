@@ -179,28 +179,26 @@ export default function VesselTeaser() {
         {/* Future Features Section */}
         <section className="px-6 py-16">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Future Features</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{(content as any)?.roadmap_features_title || "Future Features"}</h2>
             
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
-                <div className="w-16 h-16 bg-[#8B0000] rounded-lg flex items-center justify-center mx-auto mb-6">
-                  <Calendar className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-4 text-[#8B0000]">Live Event Integration</h3>
-                <p className="text-gray-300">
-                  Real-time live integration to cultural investigative events.
-                </p>
-              </div>
-              
-              <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
-                <div className="w-16 h-16 bg-[#8B0000] rounded-lg flex items-center justify-center mx-auto mb-6">
-                  <Lightbulb className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-semibold mb-4 text-[#8B0000]">Creator Empowerment</h3>
-                <p className="text-gray-300">
-                  Provide tools and community for original cultural storytelling initiatives.
-                </p>
-              </div>
+              {((content as any)?.roadmap_features || [
+                { title: "Live Event Integration", description: "Real-time live integration to cultural investigative events.", icon_name: "Calendar" },
+                { title: "Creator Empowerment", description: "Provide tools and community for original cultural storytelling initiatives.", icon_name: "Lightbulb" }
+              ]).map((feature: any, index: number) => {
+                const IconComponent = getIconComponent(feature.icon_name);
+                return (
+                  <div key={index} className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
+                    <div className="w-16 h-16 bg-[#8B0000] rounded-lg flex items-center justify-center mx-auto mb-6">
+                      <IconComponent className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-4 text-[#8B0000]">{feature.title}</h3>
+                    <p className="text-gray-300">
+                      {feature.description}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -208,52 +206,36 @@ export default function VesselTeaser() {
         {/* Vessel Freemium Features Section */}
         <section className="px-6 py-16">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">Vessel Freemium Features</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">{(content as any)?.freemium_section_title || "Vessel Freemium Features"}</h2>
             
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700">
                 <h3 className="text-xl font-semibold mb-6 text-[#FFB90F]">Free Features</h3>
                 <p className="text-gray-300 mb-6">
-                  Access Elusive app with essential tools. Free upgrade user and worldwide features.
+                  {(content as any)?.freemium_description || "Start investigating for free with essential tools, then upgrade for advanced features."}
                 </p>
                 <ul className="space-y-3">
-                  <li className="flex items-center text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-3" />
-                    Basic theory board (note only)
-                  </li>
-                  <li className="flex items-center text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-3" />
-                    Culture theory access (view only)
-                  </li>
-                  <li className="flex items-center text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-3" />
-                    Community discussions
-                  </li>
+                  {((content as any)?.freemium_features || ["Basic theory board (view-only)", "Cultural library access (view-only)", "Community discussions"]).map((feature: string, index: number) => (
+                    <li key={index} className="flex items-center text-gray-300">
+                      <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-3" />
+                      {feature}
+                    </li>
+                  ))}
                 </ul>
               </div>
               
               <div className="bg-gradient-to-r from-[#FFB90F]/10 to-[#FFA500]/10 backdrop-blur-sm rounded-lg p-8 border border-[#FFB90F]/30">
                 <h3 className="text-xl font-semibold mb-6 text-[#FFB90F]">Premium Upgrade</h3>
                 <p className="text-gray-300 mb-6">
-                  Upgrade for community access, advanced tools, and exclusive content.
+                  {(content as any)?.premium_upgrade_text || "Upgrade for commentary features, advanced tools, and exclusive content."}
                 </p>
                 <ul className="space-y-3">
-                  <li className="flex items-center text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-3" />
-                    Unlimited theory boards
-                  </li>
-                  <li className="flex items-center text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-3" />
-                    Full cultural theory access
-                  </li>
-                  <li className="flex items-center text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-3" />
-                    Advanced collaboration tools
-                  </li>
-                  <li className="flex items-center text-gray-300">
-                    <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-3" />
-                    Priority community features
-                  </li>
+                  {((content as any)?.premium_features || ["Unlimited theory boards", "Full cultural library access", "Advanced collaboration tools", "Priority community features"]).map((feature: string, index: number) => (
+                    <li key={index} className="flex items-center text-gray-300">
+                      <ChevronRight className="w-4 h-4 text-[#FFB90F] mr-3" />
+                      {feature}
+                    </li>
+                  ))}
                 </ul>
               </div>
             </div>
@@ -266,11 +248,11 @@ export default function VesselTeaser() {
             <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 border border-gray-700 text-center">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Mail className="w-6 h-6 text-[#FFB90F]" />
-                <h2 className="text-2xl font-semibold text-[#FFB90F]">Join the Waitlist</h2>
+                <h2 className="text-2xl font-semibold text-[#FFB90F]">{(content as any)?.cta_early_access_title || "Join the Waitlist"}</h2>
               </div>
               
-              <p className="text-gray-300 mb-4">Be the first to test the app, submit your feedback, and access hidden features before the launch.</p>
-              <p className="text-sm text-gray-400 mb-6">We typically respond within 48-72 hours after launch.</p>
+              <p className="text-gray-300 mb-4">{(content as any)?.cta_early_access_description || "Be the first to test the app, submit your own theories, and access hidden archives before the public launch."}</p>
+              <p className="text-sm text-gray-400 mb-6">{(content as any)?.feature_voting_description || "Which features would you like to see prioritized?"}</p>
               
               {/* Email Signup Form */}
               <MailerLiteEmbed formType="vessel" className="w-full" />
