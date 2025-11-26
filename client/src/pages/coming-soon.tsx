@@ -104,33 +104,33 @@ export default function ComingSoon() {
 
           {/* Main Headline */}
           <h1 className="text-5xl md:text-7xl font-bold leading-tight mb-6">
-            <span className="text-white">Mystery </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">Worth</span>
+            <span className="text-white">{(content as any)?.main_headline_part1 || "Mystery"} </span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FFB90F] to-[#FFA500]">{(content as any)?.main_headline_part2 || "Worth"}</span>
             <br />
-            <span className="text-white">Remembering</span>
+            <span className="text-white">{(content as any)?.main_headline_part3 || "Remembering"}</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed mb-8">
-            Elusive is an immersive storytelling experience and cultural mystery platform where truth is pieced together by those brave enough to look closer. Not everything lost should stay hidden.
+            {(content as any)?.hero_description || "Elusive is an immersive storytelling experience and cultural mystery platform where truth is pieced together by those brave enough to look closer. Not everything lost should stay hidden."}
           </p>
 
           {/* CTA Section */}
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-lg p-8 mb-8 border border-gray-700">
             <div className="flex items-center justify-center gap-2 mb-4">
               <Mail className="w-6 h-6 text-[#FFB90F]" />
-              <h2 className="text-2xl font-semibold text-[#FFB90F]">Join the First Wave of Truth-Seekers</h2>
+              <h2 className="text-2xl font-semibold text-[#FFB90F]">{(content as any)?.signup_section_title || "Join the First Wave of Truth-Seekers"}</h2>
             </div>
             
-            <p className="text-gray-300 mb-6">Get early access, behind-the-scenes clues, and a first look at the story before it unfolds.</p>
+            <p className="text-gray-300 mb-6">{(content as any)?.signup_section_description || "Get early access, behind-the-scenes clues, and a first look at the story before it unfolds."}</p>
             
             {/* MailerLite Form */}
             <MailerLiteEmbed formType="home" className="w-full" />
             
             <p className="text-xs text-gray-400 text-center mt-4">
-              Join 75+ investigators in our upcoming cultural mystery experience.
+              {(content as any)?.signup_footer_line1 || "Join 75+ investigators in our upcoming cultural mystery experience."}
             </p>
             <p className="text-xs text-gray-500 text-center mt-2">
-              No spam, just mysteries. Unsubscribe at any time.
+              {(content as any)?.signup_form_footer_text || "No spam, just mysteries. Unsubscribe at any time."}
             </p>
           </div>
 
