@@ -73,7 +73,7 @@ export default function Landing() {
 
             {/* Event Description - Above Community Interest */}
             <div className="mb-8 text-left">
-              <h2 className="text-2xl font-bold mb-4 text-[#FFB90F]">The Ones Who Remember</h2>
+              <h2 className="text-2xl font-bold mb-4 text-[#FFB90F]">{(content as any)?.ones_who_remember_heading || "The Ones Who Remember"}</h2>
               <p className="text-white whitespace-pre-line leading-relaxed">
                 {(content as any)?.value_proposition_text || "The first chapter is unfolding. Local investigators are finding evidence related to events where important cultural data was reportedly stolen and then lost. 75+ investigators have joined the investigation, but truth remains obscured.\n\nJoin a burgeoning community to help solve this collaborative mystery and shed light on these stolen truths."}
               </p>
