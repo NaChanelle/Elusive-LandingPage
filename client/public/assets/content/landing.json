@@ -1,86 +1,17 @@
 {
-  "header_title": "ELUSIVE",
-  "back_to_coming_soon_text": "← Coming Soon",
-  "hero_main_headline": "Next Event",
-  "hero_main_headline_part1": "Next",
-  "hero_main_headline_part2": "Event",
-  "hero_sub_headline": "History is now.",
-  "event_date_text": "Live Event Launch: Private",
-  "event_launch_description": "Early Access gets first look at event date once launched.",
-  "value_proposition_text": "The first live chapter of *The Ones Who Remember* is unfolding in Columbus, OH. Local forensic science students are finding evidence related to the events of 1993, where important cultural data was reportedly stolen and then lost. 75+ investigators have joined the investigation, but truth remains obscured. Join a burgeoning community to help solve this collaborative mystery and shed light on these stolen truths.",
-  "target_rsvps": 75,
-  "current_rsvps": 25,
-  "countdown_target_date": "2025-08-31T23:59:59",
-  "image_carousel_title": "Past Mystery Event August 2024 - #Burglary30",
-  "carousel_images": [
-    {
-      "id": 1,
-      "alt": "Community Gathering",
-      "placeholder": "Diverse group of investigators collaborating",
-      "image": "/assets/uploads/dsc02323.jpg"
-    },
-    {
-      "id": 2,
-      "alt": "Mystery Investigation Setup",
-      "placeholder": "Cultural investigation scene with artifacts and clues",
-      "image": "/assets/uploads/dsc02477.jpg"
-    },
-    {
-      "id": 3,
-      "alt": "Storytelling Session",
-      "placeholder": "Intimate storytelling circle with cultural elements",
-      "image": "/assets/uploads/dsc02299.jpg"
-    },
-    {
-      "id": 4,
-      "alt": "Vessel Mobile App",
-      "placeholder": "Mobile app showing investigation tools",
-      "image": "/assets/uploads/dsc02478.jpg"
-    }
-  ],
-  "whats_coming_next_title": "What's Coming Next",
-  "feature1_title": "Investigation Tools",
-  "feature1_description": "Our research demands collaborative detective methodology and deeper community involvement.",
-  "feature2_title": "Companion App",
-  "feature2_description": "The Vessel App helps track clues, build theories and stay connected during each mystery and beyond.",
-  "feature3_title": "Connect",
-  "feature3_description": "Serialized video production focused on the real cultural mysteries we're uncovering.",
-  "access_tiers_title": "Choose Your Investigation Level",
-  "detective_tier_title": "Observer",
-  "detective_tier_price": "$10",
-  "detective_tier_description": "Perfect for curious investigators ready to explore.",
-  "detective_tier_selection": "observer",
-  "detective_tier_features": [
-    {
-      "feature": "Entry to one live activation"
-    },
-    {
-      "feature": "Access to the Witness Table's community discussions"
-    },
-    {
-      "feature": "Basic Vessel app features"
-    }
-  ],
+  "reserve_spot_button_text": "Reserve Your Spot",
+  "signup_form_title": "Ready to Be Part of the Mystery?",
   "curator_tier_title": "Memory Holder",
-  "curator_tier_price": "$30",
-  "curator_tier_description": "For dedicated narrative enthusiasts and story creators. Everything in Observer, plus:",
+  "value_proposition_text": "Where social commentary mingles with suspense, and strangers become accomplices in uncovering the truth about themselves and others.",
+  "detective_tier_title": "Observer",
+  "header_title": "ELUSIVE",
   "curator_tier_tag": "Most Popular",
-  "curator_tier_selection": "Memory Holder",
-  "curator_tier_features": [
-    {
-      "feature": "Access to live story-briefing"
-    },
-    {
-      "feature": "Physical clue artifact"
-    },
-    {
-      "feature": "Mystery mission photo opportunity"
-    }
-  ],
+  "signup_form_description": "This isn't just another event. It's a ceremony. A cipher. A cultural awakening.",
+  "curator_tier_description": "For dedicated narrative enthusiasts and story creators. Everything in Observer, plus:",
+  "detective_tier_description": "Perfect for curious investigators ready to explore.",
+  "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
   "accomplice_tier_title": "Accomplice",
-  "accomplice_tier_price": "$60",
-  "accomplice_tier_description": "For those ready to shape the narrative and lead investigations. Everything in Memory-Holder, plus:",
-  "accomplice_tier_selection": "accomplice",
+  "target_rsvps": 75,
   "accomplice_tier_features": [
     {
       "feature": "Private small-group post-event debrief"
@@ -92,16 +23,47 @@
       "feature": "Direct creator collaboration"
     }
   ],
-  "signup_form_title": "Ready to Be Part of the Mystery?",
-  "signup_form_description": "This isn't just another event. It's a ceremony. A cipher. A cultural awakening.",
-  "signup_form_footer_text": "We'll never share your information. Only mystery updates and event invitations.",
-  "firstname_placeholder": "First Name",
-  "email_placeholder": "Email Address",
-  "signup_button_text": "Reserve Your Role",
-  "signup_button_pending_text": "Reserving...",
-  "reserve_spot_button_text": "Reserve Your Spot",
   "learn_more_button_text": "Learn More",
+  "countdown_target_date": "2025-08-31T23:59:59",
+  "accomplice_tier_description": "For those ready to shape the narrative and lead investigations. Everything in Memory-Holder, plus:",
+  "firstname_placeholder": "First Name",
+  "access_tiers_title": "Choose Your Investigation Level",
   "faq_title": "The Briefing",
+  "email_placeholder": "Email Address",
+  "detective_tier_features": [
+    {
+      "feature": "Entry to one live activation"
+    },
+    {
+      "feature": "Access to the Witness Table's community discussions"
+    },
+    {
+      "feature": "Basic Vessel app features"
+    }
+  ],
+  "contact_us_link_text": "Contact Us",
+  "curator_tier_features": [
+    {
+      "feature": "Access to live story-briefing"
+    },
+    {
+      "feature": "Physical clue artifact"
+    },
+    {
+      "feature": "Mystery mission photo opportunity"
+    }
+  ],
+  "current_rsvps": 25,
+  "signup_button_text": "Reserve Your Role",
+  "feature1_title": "Investigation Tools",
+  "hero_main_headline_part1": "Next",
+  "feature2_title": "Companion App",
+  "curator_tier_price": "$30",
+  "hero_main_headline": "Next Event",
+  "event_launch_description": "Early Access gets first look at event date once launched.",
+  "hero_main_headline_part2": "Event",
+  "feature3_title": "Connect",
+  "detective_tier_price": "$10",
   "faq_items": [
     {
       "question": "Do I need to have seen anything before this event?",
@@ -128,7 +90,45 @@
       "answer": "The next chapter may be in another city—but early members of the Witness Table will get first dibs on clues, locations, and future drops."
     }
   ],
-  "footer_copyright_text": "© 2025 Elusive Origin. All rights reserved.",
-  "contact_us_link_text": "Contact Us",
-  "mailerlite_form1_id": "qp06KG"
+  "carousel_images": [
+    {
+      "id": 1,
+      "alt": "Community Gathering",
+      "placeholder": "Diverse group of investigators collaborating",
+      "image": "/assets/uploads/dsc02323.jpg"
+    },
+    {
+      "id": 2,
+      "alt": "Mystery Investigation Setup",
+      "placeholder": "Cultural investigation scene with artifacts and clues",
+      "image": "/assets/uploads/dsc02477.jpg"
+    },
+    {
+      "id": 3,
+      "alt": "Storytelling Session",
+      "placeholder": "Intimate storytelling circle with cultural elements",
+      "image": "/assets/uploads/dsc02299.jpg"
+    },
+    {
+      "id": 4,
+      "alt": "Vessel Mobile App",
+      "placeholder": "Mobile app showing investigation tools",
+      "image": "/assets/uploads/dsc02478.jpg"
+    }
+  ],
+  "hero_sub_headline": "History is now.",
+  "feature1_description": "Our research demands collaborative detective methodology and deeper community involvement.",
+  "curator_tier_selection": "Memory Holder",
+  "feature2_description": "The Vessel App helps track clues, build theories and stay connected during each mystery and beyond.",
+  "detective_tier_selection": "observer",
+  "event_date_text": "Live Event Launch: Private",
+  "whats_coming_next_title": "What's Coming Next",
+  "mailerlite_form1_id": "qp06KG",
+  "feature3_description": "Serialized video production focused on the real cultural mysteries we're uncovering.",
+  "signup_button_pending_text": "Reserving...",
+  "accomplice_tier_price": "$60",
+  "image_carousel_title": "Past Mystery Event August 2024 - #Burglary30",
+  "signup_form_footer_text": "We'll never share your information. Only mystery updates and event invitations.",
+  "accomplice_tier_selection": "accomplice",
+  "back_to_coming_soon_text": "← Coming Soon"
 }
