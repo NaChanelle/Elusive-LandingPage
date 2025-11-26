@@ -7,21 +7,21 @@ interface MailerLiteEmbedProps {
 
 const formConfigs = {
   home: {
-    formId: '28258222',
-    formHash: '159585664828966487',
-    fetchUrl: 'https://assets.mailerlite.com/jsonp/1605566/forms/159585664828966487/takel',
-    buttonText: 'Get Event Updates'
-  },
-  platform: {
     formId: '28314007',
     formHash: '159733317043749917',
     fetchUrl: 'https://assets.mailerlite.com/jsonp/1605566/forms/159733317043749917/takel',
-    buttonText: 'Join Waitlist'
+    buttonText: 'Get Event Updates'
   },
-  vessel: {
+  platform: {
     formId: '28257750',
     formHash: '159584146254988833',
     fetchUrl: 'https://assets.mailerlite.com/jsonp/1605566/forms/159584146254988833/takel',
+    buttonText: 'Join Waitlist'
+  },
+  vessel: {
+    formId: '28258222',
+    formHash: '159585664828966487',
+    fetchUrl: 'https://assets.mailerlite.com/jsonp/1605566/forms/159585664828966487/takel',
     buttonText: 'Notify Me'
   }
 };
