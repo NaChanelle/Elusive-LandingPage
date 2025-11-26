@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye, ChevronLeft, Play, Zap, Heart } from "lucide-react";
+import { Clock, ChevronRight, Mail, Users, Sparkles, Search, Crown, BookOpen, Calendar, Eye, ChevronLeft, Play, Zap, Heart, Home } from "lucide-react";
 import MailerLiteEmbed from "@/components/MailerLiteEmbed";
 import { useQuery } from "@tanstack/react-query";
 
@@ -48,8 +48,8 @@ export default function Landing() {
           </Link>
           
           <Link href="/">
-            <Button className="bg-[#FFB90F] hover:bg-[#e6a50e] text-black font-medium px-6 py-2">
-              {(content as any)?.back_to_coming_soon_text || "← Coming Soon"}
+            <Button className="bg-[#FFB90F] hover:bg-[#e6a50e] text-black p-2.5 rounded-lg" title="Home">
+              <Home className="w-5 h-5" />
             </Button>
           </Link>
         </div>

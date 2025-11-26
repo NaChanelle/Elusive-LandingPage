@@ -19,6 +19,24 @@ collections:
         name: "coming_soon"
         file: "client/public/assets/content/coming-soon.json"
         fields:
+          # --- NAVIGATION BUTTONS ---
+          - label: "--- NAVIGATION BUTTONS ---"
+            name: "nav_label"
+            widget: "hidden"
+            default: "Navigation Buttons"
+          - label: "Event Updates Button Text"
+            name: "event_updates_button_text"
+            widget: "string"
+            required: false
+            hint: "Text for the yellow navigation button"
+            default: "Event Updates"
+          - label: "Vessel Preview Button Text"
+            name: "vessel_preview_button_text"
+            widget: "string"
+            required: false
+            hint: "Text for the red navigation button"
+            default: "Vessel Preview"
+          
           # --- HERO SECTION ---
           - label: "--- HERO SECTION ---"
             name: "hero_section_label"
